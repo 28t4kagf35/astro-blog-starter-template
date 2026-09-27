@@ -11,10 +11,12 @@ const R2_BASE = "https://pub-fd4b2549c703402ea7ec95adbd09f66d.r2.dev";
 
 // Allowlist of originals this route is willing to transform -- keeps the
 // route from being an open proxy for the whole public bucket.
+// NOTE: matches the "tvinde-" prefix actually uploaded to R2 for this test
+// round, not the full "tvindefossen-" slug -- see src/lib/tvindefossen.ts.
 const ALLOWED_FILES = new Set([
-  "tvindefossen-hero-original.jpg",
-  "tvindefossen-headon-original.jpg",
-  "tvindefossen-close-original.jpg",
+  "tvinde-hero-original.jpg",
+  "tvinde-headon-original.jpg",
+  "tvinde-close-original.jpg",
 ]);
 
 export const GET: APIRoute = async ({ params, request }) => {
