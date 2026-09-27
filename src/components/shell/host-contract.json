@@ -1,0 +1,97 @@
+{
+  "component": "SiteNav",
+  "exportSlot": "sitenav_20260812_1800",
+  "type": "type2-shell-element",
+  "contractVersion": "1.1",
+  "normativeCapsule": "GLOBAL_NAV_CAPSULE.md",
+
+  "props_in": [
+    {
+      "name": "isDark",
+      "type": "boolean | undefined",
+      "required": false,
+      "description": "Controlled dark mode. When provided, overrides the component's internal isDark state. Wire to the host's global theme state."
+    },
+    {
+      "name": "audioPlaying",
+      "type": "boolean | undefined",
+      "required": false,
+      "description": "Audio playing state from the page component. When provided, drives the audio icon visual (speaker waves). Wire to the value returned by the page's onAudioStateChange callback."
+    },
+    {
+      "name": "hidden",
+      "type": "boolean | undefined",
+      "required": false,
+      "description": "Scroll-direction hide. When true, slides the bar out of frame via transform: translateY(-100%). Drive from a host scroll handler that detects scroll direction. Default: false."
+    }
+  ],
+
+  "callbacks_out": [
+    {
+      "name": "onIsDarkChange",
+      "type": "(v: boolean) => void",
+      "required": false,
+      "description": "Fires when the user taps the dark/light toggle icon. Receives the new boolean value. Wire to the host's isDark state setter."
+    },
+    {
+      "name": "onAudioToggle",
+      "type": "() => void",
+      "required": false,
+      "description": "Fires when the user taps the audio icon. Wire to the audio toggle function registered by the page component via registerAudioToggle."
+    }
+  ],
+
+  "self_managed": [
+    {
+      "name": "scrollState",
+      "type": "\"ghost\" | \"veil\" | \"soft\" | \"glass\"",
+      "description": "Bar appearance state. In production: drive from host scroll handler (ghost at top, glass after threshold). Default: \"soft\". Canvas/testing: pass directly."
+    },
+    {
+      "name": "isMobile",
+      "type": "boolean",
+      "description": "Breakpoint flag. In production: derive from viewport width (suggested breakpoint: < 768px). Default: false."
+    },
+    {
+      "name": "isTablet",
+      "type": "boolean",
+      "description": "Breakpoint flag. Accepted but not yet used in layout logic — reserved for future tablet-specific behaviour. Default: false."
+    },
+    {
+      "name": "defaultMenuOpen",
+      "type": "boolean",
+      "description": "Initial menu open state. Always false in production. Canvas and testing use only."
+    }
+  ],
+
+  "mockup_only": [
+    {
+      "name": "overlayItemStyle",
+      "type": "CSSProperties",
+      "description": "Style override for mobile overlay nav items. Canvas comparison use only — not used in production."
+    },
+    {
+      "name": "overlayGlass",
+      "type": "{ bg?: string; blur?: string }",
+      "description": "Glass comparison override for the mobile overlay background. Canvas use only — not used in production."
+    },
+    {
+      "name": "wordmarkFont",
+      "type": "\"ss4\" | \"raleway\"",
+      "description": "Wordmark font variant. Locked to \"raleway\" in production. Canvas A/B comparison use only."
+    },
+    {
+      "name": "wordmarkTracking",
+      "type": "string",
+      "description": "Raleway wordmark letter-spacing override. Canvas comparison use only — not used in production."
+    }
+  ],
+
+  "notes": {
+    "mustHaveBehaviour": "GLOBAL_NAV_CAPSULE.md is normative. Its default theme, persistent toggle, browser-unlock, waterfall audio fade-in, and no-audio-page requirements must be implemented without agent discretion.",
+    "clickOutside": "The EXPLORE drop panel dismisses via a transparent fixed backdrop div (z 998) that sits below the nav bar (z 1000) and panel (z 999). No document-level event listeners are used.",
+    "fonts": "Fonts must be loaded by the host shell <head> before this component mounts. See declarations.json for the Google Fonts URL. The internal useLoadBrandFonts() call is a no-op kept for compatibility.",
+    "audioIcon": "The nav audio icon is visual-only — it does not manage audio playback. It fires onAudioToggle and reflects the audioPlaying state passed in. The page component owns the audio engine.",
+    "languageSelector": "Only EN is active at launch. NO, DE, FR, NL are rendered but non-interactive. Implement routing when additional locales go live."
+  }
+}

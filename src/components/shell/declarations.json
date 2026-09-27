@@ -1,0 +1,82 @@
+{
+  "component": "SiteNav",
+  "exportSlot": "sitenav_20260812_1800",
+  "type": "type2-shell-element",
+  "iteration": "1800",
+
+  "fonts": {
+    "SS4":  "'Source Serif 4', Georgia, serif",
+    "SS3":  "'Source Sans 3', system-ui, sans-serif",
+    "LBL":  "'Raleway', system-ui, sans-serif",
+    "MONO": "'IBM Plex Mono', monospace",
+    "fontsUrl": "https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;1,8..60,300&family=Source+Sans+3:wght@300;400&family=IBM+Plex+Mono:wght@400&family=Raleway:wght@300;400&display=block"
+  },
+
+  "typography": {
+    "wordmark":          { "family": "LBL",  "weight": 300, "size": "0.92rem", "tracking": "0.30em", "transform": "uppercase" },
+    "navItem":           { "family": "LBL",  "weight": 400, "size": "0.76rem", "tracking": "0.14em", "transform": "uppercase" },
+    "overlayNavItem":    { "family": "SS4",  "weight": 300, "size": "1.85rem", "style": "italic", "opsz": "SS4_OPSZ_DISPLAY" },
+    "panelClusterTitle": { "family": "SS4",  "weight": 300, "size": "1.35rem", "style": "italic", "opsz": "SS4_OPSZ_TEXT" },
+    "overlaySubItem":    { "family": "LBL",  "weight": 400, "size": "0.72rem", "tracking": "0.14em", "transform": "uppercase" },
+    "langCode":          { "family": "MONO", "weight": 400, "size": "0.9rem",  "tracking": "0.08em" }
+  },
+
+  "colours": {
+    "dark": {
+      "bg":      "#1A1714",
+      "surface": "#222120",
+      "rule":    "#2C2A28",
+      "muted":   "#6E6A65",
+      "body":    "#C4BEB4",
+      "head":    "#EDE9E2",
+      "bq":      "#7A8B74",
+      "accent":  "#D43535"
+    },
+    "glass":   "rgba(19, 20, 22, 0.48)",
+    "overlay": "rgba(19, 20, 22, 0.93)"
+  },
+
+  "nav": {
+    "items": ["NORWAY", "EXPLORE", "THE CABIN", "ACTIVITIES"],
+    "exploreClusters": [
+      { "title": "NATURE",            "children": ["OBSERVE", "LEARN", "EXPERIENCE"] },
+      { "title": "CULTURE & HISTORY", "children": [] },
+      { "title": "WATERFALLS",        "children": [] }
+    ],
+    "scrollStates": ["ghost", "veil", "soft", "glass"],
+    "defaultScrollState": "soft",
+    "defaultWordmarkFont": "raleway",
+    "barHeight":       { "desktop": 56, "mobile": 68 },
+    "mobileBreakpoint": "< 768px (suggested)"
+  },
+
+  "languages": {
+    "all":         ["EN", "NO", "DE", "FR", "NL"],
+    "launchActive": ["EN"],
+    "note": "Only EN interactive at launch. Remaining codes rendered, non-interactive."
+  },
+
+  "zIndex": {
+    "bar":             1000,
+    "languageDropdown": 1100,
+    "dropPanel":        999,
+    "mobileOverlay":    999,
+    "explorBackdrop":   998
+  },
+
+  "features": [
+    "dark-light-toggle",
+    "ambient-audio-icon",
+    "language-selector",
+    "explore-dropdown-desktop",
+    "explore-inline-mobile",
+    "mobile-hamburger-overlay",
+    "scroll-state-bar",
+    "scroll-direction-hide"
+  ],
+
+  "smoothing": {
+    "WebkitFontSmoothing": "antialiased",
+    "MozOsxFontSmoothing": "grayscale"
+  }
+}

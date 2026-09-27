@@ -1,0 +1,103 @@
+{
+  "component": "SiteNav",
+  "type": "type2-shell-element",
+  "probe": "probe_type2_shell_element_20260620",
+  "protocol_version": "1.1",
+  "date": "2026-08-12",
+  "results": [
+    {
+      "rule": "FONT-1",
+      "status": "PASS",
+      "detail": "SS4 0x, fontVariationSettings 3x \u2014 matched"
+    },
+    {
+      "rule": "FONT-2",
+      "status": "PASS",
+      "detail": "0 fontFamily decls \u2014 all carry fallbacks (or use constants)"
+    },
+    {
+      "rule": "FONT-3",
+      "status": "PASS",
+      "detail": "No fontOpticalSizing"
+    },
+    {
+      "rule": "FONT-4",
+      "status": "PASS",
+      "detail": "Font loading via useLoadBrandFonts() \u2014 URL in brand-fonts.ts"
+    },
+    {
+      "rule": "FONT-5",
+      "status": "PASS",
+      "detail": "No \"ital\" 1"
+    },
+    {
+      "rule": "FONT-6",
+      "status": "PASS",
+      "detail": "No display=swap"
+    },
+    {
+      "rule": "FONT-7",
+      "status": "PASS",
+      "detail": "Live HTTP: valid @font-face CSS returned"
+    },
+    {
+      "rule": "FONT-8",
+      "status": "PASS",
+      "detail": "Font smoothing declared (SS4_SMOOTHING spread or explicit)"
+    },
+    {
+      "rule": "COLOUR-1",
+      "status": "PASS",
+      "detail": "No currentColor or color:inherit"
+    },
+    {
+      "rule": "COLOUR-2",
+      "status": "PASS",
+      "detail": "No CSS variable colours"
+    },
+    {
+      "rule": "LAYOUT-1",
+      "status": "PASS",
+      "detail": "objectFit:cover 0x = objectPosition 0x"
+    },
+    {
+      "rule": "ASSETS-1",
+      "status": "PASS",
+      "detail": "No local asset paths \u2014 correct for a shell element"
+    },
+    {
+      "rule": "CODE-1",
+      "status": "PASS",
+      "detail": "No bare React.CSSProperties"
+    },
+    {
+      "rule": "CODE-2",
+      "status": "PASS",
+      "detail": "No transition:all"
+    },
+    {
+      "rule": "CODE-3",
+      "status": "PASS",
+      "detail": "Named export: SiteNav"
+    },
+    {
+      "rule": "HOST-1",
+      "status": "PASS",
+      "detail": "Contract found (--contract arg (shell/sitenav_20260812_1800/host-contract.json)) \u00b7 13 prop(s) all declared"
+    },
+    {
+      "rule": "HOST-2",
+      "status": "PASS",
+      "detail": "No document/window user-interaction listeners"
+    },
+    {
+      "rule": "HOST-3",
+      "status": "PASS",
+      "detail": "No full-height root containers"
+    }
+  ],
+  "red_flags": 0,
+  "warnings": 0,
+  "verdict": "ALL CLEAR",
+  "exportSlot": "sitenav_20260812_1800"
+}
