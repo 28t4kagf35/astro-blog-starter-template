@@ -1,17 +1,17 @@
 ---
-// Tvindefossen — Day 3 (Astro static). Content is fetched from Sanity at
-// BUILD time; a Sanity edit needs a rebuild + redeploy to appear.
-//
-// Images: pre-baked responsive WebP/JPEG variants served from R2 (generated
-// once at build/content time, not per-request). This replaced the original
-// raw 8-11MB per-image baseline as of the Sept 27 media-pipeline pass.
-// See /dynamic for the on-the-fly Cloudflare Images transform comparison —
-// that route is necessarily on-demand (SSR), this one stays fully static.
+// Comparison route: same Tvindefossen content, but images served via the
+// on-the-fly Cloudflare Images transform (/img/[width]/[file]) instead of
+// pre-baked static variants. This route is intentionally SSR (prerender =
+// false) since the whole point is per-request transform -- it is NOT the
+// measured Day 3 baseline (that stays static at /), it exists to Lighthouse
+// this pipeline choice side by side with the static one.
+export const prerender = false;
+
 import TvindefossenApp from "../components/TvindefossenApp";
 import type { WaterfallContent } from "../components/tvindefossen/TvindefossenFinal";
 import {
   fetchTvindefossenDoc,
-  buildStaticImage,
+  buildDynamicImage,
   HERO_WIDTHS,
   HEADON_WIDTHS,
   CLOSE_WIDTHS,
@@ -20,9 +20,9 @@ import {
 
 const doc = await fetchTvindefossenDoc();
 
-const heroImg = buildStaticImage("hero", HERO_WIDTHS);
-const headonImg = buildStaticImage("headon", HEADON_WIDTHS);
-const closeImg = buildStaticImage("close", CLOSE_WIDTHS);
+const heroImg = buildDynamicImage("hero", HERO_WIDTHS);
+const headonImg = buildDynamicImage("headon", HEADON_WIDTHS);
+const closeImg = buildDynamicImage("close", CLOSE_WIDTHS);
 
 const content: WaterfallContent = {
   name: doc.name,
@@ -39,7 +39,6 @@ const content: WaterfallContent = {
   practicalBody: doc.practicalBody,
   quickFacts: doc.quickFacts,
   planDetails: doc.planDetails,
-  // The export borrows the Tvindefossen close-up as the next-fall placeholder image.
   nextFall: {
     name: doc.nextFall?.name,
     descriptor: doc.nextFall?.descriptor,
@@ -62,7 +61,7 @@ const FONTS_HREF =
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width,initial-scale=1" />
 		<meta name="robots" content="noindex, nofollow" />
-		<title>{content.name} — Voss Waterfalls</title>
+		<title>{content.name} — Voss Waterfalls (dynamic media)</title>
 		<meta name="description" content={content.lede} />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="preconnect" href="https://fonts.googleapis.com" />

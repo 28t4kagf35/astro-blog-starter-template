@@ -290,16 +290,18 @@ export interface WaterfallContent {
   name: string;
   tagline: string;
   heroImage: string;
+  heroImageSrcSet?: string;
+  heroImageSizes?: string;
   heroImagePosition: string;
-  closeupPhoto: { src: string; position: string };
-  widePhoto: { src: string; caption: string };
+  closeupPhoto: { src: string; srcSet?: string; sizes?: string; position: string };
+  widePhoto: { src: string; srcSet?: string; sizes?: string; caption: string };
   lede: string;
   spiceActive: { label: string; pullQuote: string; body: string };
   experiential: string[];
   practicalBody: string;
   quickFacts: Array<{ label: string; sub: string }>;
   planDetails: Array<{ label: string; body: string }>;
-  nextFall: { name: string; descriptor: string; hero: { src: string; position: string } };
+  nextFall: { name: string; descriptor: string; hero: { src: string; srcSet?: string; sizes?: string; position: string } };
   continueCards: { desktop: CardCopy[]; tablet: CardCopy[]; mobile: CardCopy[] };
   ambientAudio: { webm: string; mp4: string };
 }
@@ -411,7 +413,7 @@ export function TvindefossenFinal({
 
       {/* B1 HERO */}
       <div style={{ position: "relative", width: "100%", minHeight: isMobile ? "80vh" : isTablet ? "88vh" : "100dvh", overflow: "hidden" }}>
-        <img data-bb-field="heroImage" data-bb-meta="heroImagePosition" src={content.heroImage} alt="" style={{ position: "absolute", top:0, right:0, bottom:0, left:0, width: "100%", height: "100%", objectFit: "cover", objectPosition: content.heroImagePosition }} />
+        <img data-bb-field="heroImage" data-bb-meta="heroImagePosition" src={content.heroImage} srcSet={content.heroImageSrcSet} sizes={content.heroImageSizes} fetchPriority="high" loading="eager" alt="" style={{ position: "absolute", top:0, right:0, bottom:0, left:0, width: "100%", height: "100%", objectFit: "cover", objectPosition: content.heroImagePosition }} />
         <div style={{ position: "absolute", top:0, right:0, bottom:0, left:0, background: "linear-gradient(to top,rgba(26,23,20,1) 0%,rgba(26,23,20,0.88) 10%,rgba(0,0,0,.5) 24%,rgba(0,0,0,.1) 40%,transparent 52%)", pointerEvents: "none" }} />
         <div style={{ position: "absolute", top:0, right:0, bottom:0, left:0,   backgroundColor: cleared ? "rgba(14,12,10,0)" : "rgba(14,12,10,0.42)", opacity: cleared ? 0 : 1, transition: "background-color 2.6s cubic-bezier(.18,0,.38,1), opacity 2.6s cubic-bezier(.18,0,.38,1)", pointerEvents: "none", zIndex: 2 }} />
 
@@ -435,12 +437,12 @@ export function TvindefossenFinal({
                   ))}
                 </div>
               </div>
-              <img data-bb-field="closeupPhoto" data-bb-meta="closeupPhoto.position" src={content.closeupPhoto.src} alt="" style={{ width: "100%", display: "block", aspectRatio: "3/4", objectFit: "cover", objectPosition: content.closeupPhoto.position }} />
+              <img data-bb-field="closeupPhoto" data-bb-meta="closeupPhoto.position" src={content.closeupPhoto.src} srcSet={content.closeupPhoto.srcSet} sizes={content.closeupPhoto.sizes} loading="lazy" alt="" style={{ width: "100%", display: "block", aspectRatio: "3/4", objectFit: "cover", objectPosition: content.closeupPhoto.position }} />
             </div>
           ) : (
             <div>
               <p data-bb-field="lede" style={{ margin: `0 0 ${SEC}`, ...T_PULL_QUOTE, fontSize: isTablet ? T_SCALE_TEXT.pullQuote.tablet : T_SCALE_TEXT.pullQuote.mobile, color: tk.body }}>{content.lede}</p>
-              <img data-bb-field="closeupPhoto" data-bb-meta="closeupPhoto.position" src={content.closeupPhoto.src} alt="" style={{ width: "100%", display: "block", aspectRatio: isTablet ? "16/9" : "4/3", objectFit: "cover", objectPosition: content.closeupPhoto.position }} />
+              <img data-bb-field="closeupPhoto" data-bb-meta="closeupPhoto.position" src={content.closeupPhoto.src} srcSet={content.closeupPhoto.srcSet} sizes={content.closeupPhoto.sizes} loading="lazy" alt="" style={{ width: "100%", display: "block", aspectRatio: isTablet ? "16/9" : "4/3", objectFit: "cover", objectPosition: content.closeupPhoto.position }} />
             </div>
           )}
         </Fade>
@@ -451,7 +453,7 @@ export function TvindefossenFinal({
         <Fade duration={1.6}>
           <div style={{ padding: PAD, maxWidth: isDesktop ? COL : "none", margin: isDesktop ? "0 auto" : 0 }}>
             <div style={{ position: "relative", width: "100%", overflow: "hidden" }}>
-              <img data-bb-field="widePhoto" src={content.widePhoto.src} alt="" style={{ width: "100%", display: "block", aspectRatio: isMobile ? "4/3" : "16/7", objectFit: "cover", objectPosition: "center 35%" }} />
+              <img data-bb-field="widePhoto" src={content.widePhoto.src} srcSet={content.widePhoto.srcSet} sizes={content.widePhoto.sizes} loading="lazy" alt="" style={{ width: "100%", display: "block", aspectRatio: isMobile ? "4/3" : "16/7", objectFit: "cover", objectPosition: "center 35%" }} />
               <div style={{ position: "absolute", top:0, right:0, bottom:0, left:0, background: `linear-gradient(to top,${tk.bg} 0%,rgba(26,23,20,.52) 14%,transparent 38%)`, pointerEvents: "none" }} />
             </div>
             <p data-bb-field="widePhoto.caption" style={{ margin: isMobile ? "0.75rem 0 0" : isTablet ? "0.8rem 0 0" : "0.9rem 0 0", ...T_MONO_CAPTION, color: tk.muted }}>{content.widePhoto.caption}</p>
@@ -583,7 +585,7 @@ export function TvindefossenFinal({
             {isDesktop ? (
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1.4rem" }}>
                 <div data-bb-field="nextFall" style={{ border: `1px solid ${tk.rule}`, borderRadius: "0.35rem", overflow: "hidden" }}>
-                  <img data-bb-field="nextFall.hero" data-bb-meta="nextFall.hero.position" src={content.nextFall.hero.src} alt="" style={{ width: "100%", aspectRatio: "4/3", objectFit: "cover", objectPosition: content.nextFall.hero.position, display: "block", opacity: 0.72 }} />
+                  <img data-bb-field="nextFall.hero" data-bb-meta="nextFall.hero.position" src={content.nextFall.hero.src} srcSet={content.nextFall.hero.srcSet} sizes={content.nextFall.hero.sizes} loading="lazy" alt="" style={{ width: "100%", aspectRatio: "4/3", objectFit: "cover", objectPosition: content.nextFall.hero.position, display: "block", opacity: 0.72 }} />
                   <div style={{ padding: "1.2rem 1.3rem 1.5rem", background: tk.surface }}>
                     <CardLabel muted={tk.head}>Next fall</CardLabel>
                     <p data-bb-field="nextFall.name" style={{ margin: 0, ...T_BODY_FUNCTIONAL, fontWeight: 400, color: tk.head, lineHeight: 1.4 }}>{content.nextFall.name}</p>
@@ -602,7 +604,7 @@ export function TvindefossenFinal({
             ) : isTablet ? (
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.1rem" }}>
                 <div data-bb-field="nextFall" style={{ border: `1px solid ${tk.rule}`, borderRadius: "0.35rem", overflow: "hidden" }}>
-                  <img data-bb-field="nextFall.hero" data-bb-meta="nextFall.hero.position" src={content.nextFall.hero.src} alt="" style={{ width: "100%", aspectRatio: "4/3", objectFit: "cover", objectPosition: content.nextFall.hero.position, display: "block", opacity: 0.72 }} />
+                  <img data-bb-field="nextFall.hero" data-bb-meta="nextFall.hero.position" src={content.nextFall.hero.src} srcSet={content.nextFall.hero.srcSet} sizes={content.nextFall.hero.sizes} loading="lazy" alt="" style={{ width: "100%", aspectRatio: "4/3", objectFit: "cover", objectPosition: content.nextFall.hero.position, display: "block", opacity: 0.72 }} />
                   <div style={{ padding: "1rem 1.2rem 1.3rem", background: tk.surface }}>
                     <CardLabel muted={tk.head}>Next fall</CardLabel>
                     <p data-bb-field="nextFall.name" style={{ margin: 0, ...T_BODY_FUNCTIONAL, color: tk.head }}>{content.nextFall.name}</p>
@@ -621,7 +623,7 @@ export function TvindefossenFinal({
             ) : (
               <div style={{ display: "flex", flexDirection: "column", gap: "1.1rem" }}>
                 <div data-bb-field="nextFall" style={{ border: `1px solid ${tk.rule}`, borderRadius: "0.35rem", overflow: "hidden" }}>
-                  <img data-bb-field="nextFall.hero" data-bb-meta="nextFall.hero.position" src={content.nextFall.hero.src} alt="" style={{ width: "100%", aspectRatio: "16/9", objectFit: "cover", objectPosition: content.nextFall.hero.position, display: "block", opacity: 0.72 }} />
+                  <img data-bb-field="nextFall.hero" data-bb-meta="nextFall.hero.position" src={content.nextFall.hero.src} srcSet={content.nextFall.hero.srcSet} sizes={content.nextFall.hero.sizes} loading="lazy" alt="" style={{ width: "100%", aspectRatio: "16/9", objectFit: "cover", objectPosition: content.nextFall.hero.position, display: "block", opacity: 0.72 }} />
                   <div style={{ padding: "1rem 1.2rem 1.4rem", background: tk.surface }}>
                     <CardLabel muted={tk.head}>Next fall</CardLabel>
                     <p data-bb-field="nextFall.name" style={{ margin: 0, ...T_BODY_FUNCTIONAL, fontSize: T_SCALE_BODY.mobile, fontWeight: 400, color: tk.head }}>{content.nextFall.name}</p>
