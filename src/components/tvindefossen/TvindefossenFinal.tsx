@@ -278,6 +278,22 @@ function WaterfallMap({ lng, lat, label, height, markerColor, mutedColor }: {
   );
 }
 
+// ── Honest media placeholder ────────────────────────────────────────────────
+// When a page has no image for a slot yet, render a box of the exact same size
+// (same style / aspect ratio) that says so, in the same register as the
+// "aerial video unavailable" slot. The grid never collapses.
+
+function MediaImg({ src, style, surface, muted, ...rest }: React.ImgHTMLAttributes<HTMLImageElement> & {
+  surface: string; muted: string;
+}) {
+  if (src) return <img src={src} style={style} {...rest} />;
+  return (
+    <div data-bb-field={(rest as Record<string, unknown>)["data-bb-field"] as string | undefined} style={{ ...style, background: surface, display: "flex", alignItems: "center", justifyContent: "center", opacity: 1 }}>
+      <span style={{ ...T_MONO_CAPTION, color: muted }}>image unavailable</span>
+    </div>
+  );
+}
+
 // ── CONTENT shape (hardcoded values removed — supplied at build time from Sanity) ──
 // Day 3 port: the literal content object that lived here was deleted. The same
 // shape is now passed in as the `content` prop by the Astro page, which fetches
@@ -304,6 +320,8 @@ export interface WaterfallContent {
   nextFall: { name: string; descriptor: string; hero: { src: string; srcSet?: string; sizes?: string; position: string } };
   continueCards: { desktop: CardCopy[]; tablet: CardCopy[]; mobile: CardCopy[] };
   ambientAudio: { webm: string; mp4: string };
+  /** Map pin. Omitted → the map slot says the location is unavailable. */
+  location?: { lng: number; lat: number };
 }
 
 // Referenced by the export but never defined in component.tsx (the SiteNav
@@ -406,14 +424,14 @@ export function TvindefossenFinal({
   return (
     <div ref={node => { containerRef.current = node; observedRef.current = node; }} data-scroll style={{ width: "100%", background: tk.bg, minHeight: "100vh", overflowY: "auto", overflowX: "hidden", fontFamily: SS3, transition: "background 0.35s ease" , ...SS4_SMOOTHING }}>
       <video ref={videoRef} muted autoPlay loop playsInline style={{ position: "fixed", top: 0, left: 0, width: 2, height: 2, opacity: 0, pointerEvents: "none", zIndex: -1 }}>
-        <source src={content.ambientAudio.webm} type="video/webm" />
-        <source src={content.ambientAudio.mp4} type="video/mp4" />
+        {content.ambientAudio.webm && <source src={content.ambientAudio.webm} type="video/webm" />}
+        {content.ambientAudio.mp4 && <source src={content.ambientAudio.mp4} type="video/mp4" />}
       </video>
 
 
       {/* B1 HERO */}
       <div style={{ position: "relative", width: "100%", minHeight: isMobile ? "80vh" : isTablet ? "88vh" : "100dvh", overflow: "hidden" }}>
-        <img data-bb-field="heroImage" data-bb-meta="heroImagePosition" src={content.heroImage} srcSet={content.heroImageSrcSet} sizes={content.heroImageSizes} fetchPriority="high" loading="eager" alt="" style={{ position: "absolute", top:0, right:0, bottom:0, left:0, width: "100%", height: "100%", objectFit: "cover", objectPosition: content.heroImagePosition }} />
+        <MediaImg surface={tk.surface} muted={tk.muted} data-bb-field="heroImage" data-bb-meta="heroImagePosition" src={content.heroImage} srcSet={content.heroImageSrcSet} sizes={content.heroImageSizes} fetchPriority="high" loading="eager" alt="" style={{ position: "absolute", top:0, right:0, bottom:0, left:0, width: "100%", height: "100%", objectFit: "cover", objectPosition: content.heroImagePosition }} />
         <div style={{ position: "absolute", top:0, right:0, bottom:0, left:0, background: "linear-gradient(to top,rgba(26,23,20,1) 0%,rgba(26,23,20,0.88) 10%,rgba(0,0,0,.5) 24%,rgba(0,0,0,.1) 40%,transparent 52%)", pointerEvents: "none" }} />
         <div style={{ position: "absolute", top:0, right:0, bottom:0, left:0,   backgroundColor: cleared ? "rgba(14,12,10,0)" : "rgba(14,12,10,0.42)", opacity: cleared ? 0 : 1, transition: "background-color 2.6s cubic-bezier(.18,0,.38,1), opacity 2.6s cubic-bezier(.18,0,.38,1)", pointerEvents: "none", zIndex: 2 }} />
 
@@ -437,12 +455,12 @@ export function TvindefossenFinal({
                   ))}
                 </div>
               </div>
-              <img data-bb-field="closeupPhoto" data-bb-meta="closeupPhoto.position" src={content.closeupPhoto.src} srcSet={content.closeupPhoto.srcSet} sizes={content.closeupPhoto.sizes} loading="lazy" alt="" style={{ width: "100%", display: "block", aspectRatio: "3/4", objectFit: "cover", objectPosition: content.closeupPhoto.position }} />
+              <MediaImg surface={tk.surface} muted={tk.muted} data-bb-field="closeupPhoto" data-bb-meta="closeupPhoto.position" src={content.closeupPhoto.src} srcSet={content.closeupPhoto.srcSet} sizes={content.closeupPhoto.sizes} loading="lazy" alt="" style={{ width: "100%", display: "block", aspectRatio: "3/4", objectFit: "cover", objectPosition: content.closeupPhoto.position }} />
             </div>
           ) : (
             <div>
               <p data-bb-field="lede" style={{ margin: `0 0 ${SEC}`, ...T_PULL_QUOTE, fontSize: isTablet ? T_SCALE_TEXT.pullQuote.tablet : T_SCALE_TEXT.pullQuote.mobile, color: tk.body }}>{content.lede}</p>
-              <img data-bb-field="closeupPhoto" data-bb-meta="closeupPhoto.position" src={content.closeupPhoto.src} srcSet={content.closeupPhoto.srcSet} sizes={content.closeupPhoto.sizes} loading="lazy" alt="" style={{ width: "100%", display: "block", aspectRatio: isTablet ? "16/9" : "4/3", objectFit: "cover", objectPosition: content.closeupPhoto.position }} />
+              <MediaImg surface={tk.surface} muted={tk.muted} data-bb-field="closeupPhoto" data-bb-meta="closeupPhoto.position" src={content.closeupPhoto.src} srcSet={content.closeupPhoto.srcSet} sizes={content.closeupPhoto.sizes} loading="lazy" alt="" style={{ width: "100%", display: "block", aspectRatio: isTablet ? "16/9" : "4/3", objectFit: "cover", objectPosition: content.closeupPhoto.position }} />
             </div>
           )}
         </Fade>
@@ -453,7 +471,7 @@ export function TvindefossenFinal({
         <Fade duration={1.6}>
           <div style={{ padding: PAD, maxWidth: isDesktop ? COL : "none", margin: isDesktop ? "0 auto" : 0 }}>
             <div style={{ position: "relative", width: "100%", overflow: "hidden" }}>
-              <img data-bb-field="widePhoto" src={content.widePhoto.src} srcSet={content.widePhoto.srcSet} sizes={content.widePhoto.sizes} loading="lazy" alt="" style={{ width: "100%", display: "block", aspectRatio: isMobile ? "4/3" : "16/7", objectFit: "cover", objectPosition: "center 35%" }} />
+              <MediaImg surface={tk.surface} muted={tk.muted} data-bb-field="widePhoto" src={content.widePhoto.src} srcSet={content.widePhoto.srcSet} sizes={content.widePhoto.sizes} loading="lazy" alt="" style={{ width: "100%", display: "block", aspectRatio: isMobile ? "4/3" : "16/7", objectFit: "cover", objectPosition: "center 35%" }} />
               <div style={{ position: "absolute", top:0, right:0, bottom:0, left:0, background: `linear-gradient(to top,${tk.bg} 0%,rgba(26,23,20,.52) 14%,transparent 38%)`, pointerEvents: "none" }} />
             </div>
             <p data-bb-field="widePhoto.caption" style={{ margin: isMobile ? "0.75rem 0 0" : isTablet ? "0.8rem 0 0" : "0.9rem 0 0", ...T_MONO_CAPTION, color: tk.muted }}>{content.widePhoto.caption}</p>
@@ -564,15 +582,21 @@ export function TvindefossenFinal({
             )}
 
             <p style={{ margin: "0 0 0.8rem", ...T_SECTION_LABEL, color: tk.body }}>Location</p>
-            <WaterfallMap
-              lng={6.488368} lat={60.725762}
-              label={content.name}
-              bounds={[6.415, 60.627, 6.489, 60.726]}
-              nearbyLng={6.415} nearbyLat={60.627} nearbyLabel="Voss"
-              height={isMobile ? 160 : 200}
-              markerColor={tk.head}
-              mutedColor={tk.body}
-            />
+            {content.location ? (
+              <WaterfallMap
+                lng={content.location.lng} lat={content.location.lat}
+                label={content.name}
+                bounds={[6.415, 60.627, 6.489, 60.726]}
+                nearbyLng={6.415} nearbyLat={60.627} nearbyLabel="Voss"
+                height={isMobile ? 160 : 200}
+                markerColor={tk.head}
+                mutedColor={tk.body}
+              />
+            ) : (
+              <div style={{ width: "100%", height: isMobile ? 160 : 200, background: tk.surface, borderRadius: "0.3rem", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <span style={{ ...T_MONO_CAPTION, color: tk.muted }}>location map unavailable</span>
+              </div>
+            )}
           </div>
         </Fade>
       </div>
@@ -585,7 +609,7 @@ export function TvindefossenFinal({
             {isDesktop ? (
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1.4rem" }}>
                 <div data-bb-field="nextFall" style={{ border: `1px solid ${tk.rule}`, borderRadius: "0.35rem", overflow: "hidden" }}>
-                  <img data-bb-field="nextFall.hero" data-bb-meta="nextFall.hero.position" src={content.nextFall.hero.src} srcSet={content.nextFall.hero.srcSet} sizes={content.nextFall.hero.sizes} loading="lazy" alt="" style={{ width: "100%", aspectRatio: "4/3", objectFit: "cover", objectPosition: content.nextFall.hero.position, display: "block", opacity: 0.72 }} />
+                  <MediaImg surface={tk.surface} muted={tk.muted} data-bb-field="nextFall.hero" data-bb-meta="nextFall.hero.position" src={content.nextFall.hero.src} srcSet={content.nextFall.hero.srcSet} sizes={content.nextFall.hero.sizes} loading="lazy" alt="" style={{ width: "100%", aspectRatio: "4/3", objectFit: "cover", objectPosition: content.nextFall.hero.position, display: "block", opacity: 0.72 }} />
                   <div style={{ padding: "1.2rem 1.3rem 1.5rem", background: tk.surface }}>
                     <CardLabel muted={tk.head}>Next fall</CardLabel>
                     <p data-bb-field="nextFall.name" style={{ margin: 0, ...T_BODY_FUNCTIONAL, fontWeight: 400, color: tk.head, lineHeight: 1.4 }}>{content.nextFall.name}</p>
@@ -604,7 +628,7 @@ export function TvindefossenFinal({
             ) : isTablet ? (
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.1rem" }}>
                 <div data-bb-field="nextFall" style={{ border: `1px solid ${tk.rule}`, borderRadius: "0.35rem", overflow: "hidden" }}>
-                  <img data-bb-field="nextFall.hero" data-bb-meta="nextFall.hero.position" src={content.nextFall.hero.src} srcSet={content.nextFall.hero.srcSet} sizes={content.nextFall.hero.sizes} loading="lazy" alt="" style={{ width: "100%", aspectRatio: "4/3", objectFit: "cover", objectPosition: content.nextFall.hero.position, display: "block", opacity: 0.72 }} />
+                  <MediaImg surface={tk.surface} muted={tk.muted} data-bb-field="nextFall.hero" data-bb-meta="nextFall.hero.position" src={content.nextFall.hero.src} srcSet={content.nextFall.hero.srcSet} sizes={content.nextFall.hero.sizes} loading="lazy" alt="" style={{ width: "100%", aspectRatio: "4/3", objectFit: "cover", objectPosition: content.nextFall.hero.position, display: "block", opacity: 0.72 }} />
                   <div style={{ padding: "1rem 1.2rem 1.3rem", background: tk.surface }}>
                     <CardLabel muted={tk.head}>Next fall</CardLabel>
                     <p data-bb-field="nextFall.name" style={{ margin: 0, ...T_BODY_FUNCTIONAL, color: tk.head }}>{content.nextFall.name}</p>
@@ -623,7 +647,7 @@ export function TvindefossenFinal({
             ) : (
               <div style={{ display: "flex", flexDirection: "column", gap: "1.1rem" }}>
                 <div data-bb-field="nextFall" style={{ border: `1px solid ${tk.rule}`, borderRadius: "0.35rem", overflow: "hidden" }}>
-                  <img data-bb-field="nextFall.hero" data-bb-meta="nextFall.hero.position" src={content.nextFall.hero.src} srcSet={content.nextFall.hero.srcSet} sizes={content.nextFall.hero.sizes} loading="lazy" alt="" style={{ width: "100%", aspectRatio: "16/9", objectFit: "cover", objectPosition: content.nextFall.hero.position, display: "block", opacity: 0.72 }} />
+                  <MediaImg surface={tk.surface} muted={tk.muted} data-bb-field="nextFall.hero" data-bb-meta="nextFall.hero.position" src={content.nextFall.hero.src} srcSet={content.nextFall.hero.srcSet} sizes={content.nextFall.hero.sizes} loading="lazy" alt="" style={{ width: "100%", aspectRatio: "16/9", objectFit: "cover", objectPosition: content.nextFall.hero.position, display: "block", opacity: 0.72 }} />
                   <div style={{ padding: "1rem 1.2rem 1.4rem", background: tk.surface }}>
                     <CardLabel muted={tk.head}>Next fall</CardLabel>
                     <p data-bb-field="nextFall.name" style={{ margin: 0, ...T_BODY_FUNCTIONAL, fontSize: T_SCALE_BODY.mobile, fontWeight: 400, color: tk.head }}>{content.nextFall.name}</p>

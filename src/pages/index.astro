@@ -1,59 +1,10 @@
 ---
-// Tvindefossen — Day 3 (Astro static). Content is fetched from Sanity at
-// BUILD time; a Sanity edit needs a rebuild + redeploy to appear.
-//
-// Images: pre-baked responsive WebP/JPEG variants served from R2 (generated
-// once at build/content time, not per-request). This replaced the original
-// raw 8-11MB per-image baseline as of the Sept 27 media-pipeline pass.
-// See /dynamic for the on-the-fly Cloudflare Images transform comparison —
-// that route is necessarily on-demand (SSR), this one stays fully static.
-import TvindefossenApp from "../components/TvindefossenApp";
-import type { WaterfallContent } from "../components/tvindefossen/TvindefossenFinal";
-import {
-  fetchTvindefossenDoc,
-  buildStaticImage,
-  HERO_WIDTHS,
-  HEADON_WIDTHS,
-  CLOSE_WIDTHS,
-  CLOSE_SIZES,
-} from "../lib/tvindefossen";
+// Root placeholder. Home (sitemap v2 "/") is not built yet. Tvindefossen moved
+// to its sitemap path /explore/waterfalls/tvindefossen on Sept 30.
+// The list below is a preview convenience, built from Sanity at build time.
+import { fetchAllWaterfalls } from "../lib/waterfalls";
 
-const doc = await fetchTvindefossenDoc();
-
-const heroImg = buildStaticImage("hero", HERO_WIDTHS);
-const headonImg = buildStaticImage("headon", HEADON_WIDTHS);
-const closeImg = buildStaticImage("close", CLOSE_WIDTHS);
-
-const content: WaterfallContent = {
-  name: doc.name,
-  tagline: doc.tagline,
-  heroImage: heroImg.src,
-  heroImageSrcSet: heroImg.srcSet,
-  heroImageSizes: heroImg.sizes,
-  heroImagePosition: doc.heroImagePosition,
-  closeupPhoto: { src: closeImg.src, srcSet: closeImg.srcSet, sizes: CLOSE_SIZES, position: doc.closeupPhoto?.position },
-  widePhoto: { src: headonImg.src, srcSet: headonImg.srcSet, sizes: headonImg.sizes, caption: doc.widePhoto?.caption },
-  lede: doc.lede,
-  spiceActive: doc.spiceActive,
-  experiential: doc.experiential,
-  practicalBody: doc.practicalBody,
-  quickFacts: doc.quickFacts,
-  planDetails: doc.planDetails,
-  // The export borrows the Tvindefossen close-up as the next-fall placeholder image.
-  nextFall: {
-    name: doc.nextFall?.name,
-    descriptor: doc.nextFall?.descriptor,
-    hero: { src: closeImg.src, srcSet: closeImg.srcSet, sizes: CLOSE_SIZES, position: doc.nextFall?.hero?.position },
-  },
-  continueCards: doc.continueCards,
-  ambientAudio: {
-    webm: "/audio/tvindefossen/tvinde-ambient.webm",
-    mp4: "/audio/tvindefossen/tvinde-ambient.mp4",
-  },
-};
-
-const FONTS_HREF =
-  "https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;1,8..60,300&family=Source+Sans+3:wght@300;400&family=IBM+Plex+Mono:wght@400&family=Raleway:wght@300;400&display=block";
+const docs = await fetchAllWaterfalls();
 ---
 
 <!doctype html>
@@ -62,18 +13,30 @@ const FONTS_HREF =
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width,initial-scale=1" />
 		<meta name="robots" content="noindex, nofollow" />
-		<title>{content.name} — Voss Waterfalls</title>
-		<meta name="description" content={content.lede} />
+		<title>Voss Waterfalls — preview</title>
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link rel="stylesheet" href={FONTS_HREF} />
 		<style is:global>
-			html { background: #1A1714; }
-			body { margin: 0; }
+			html { background: #1A1714; color: #C4BEB4; }
+			body { margin: 0; font-family: system-ui, sans-serif; }
+			main { max-width: 640px; margin: 0 auto; padding: 3rem 1.25rem; }
+			h1 { color: #EDE9E2; font-weight: 300; font-size: 1.6rem; margin: 0 0 0.5rem; }
+			p { margin: 0 0 2rem; font-size: 0.9rem; line-height: 1.6; }
+			ul { list-style: none; padding: 0; margin: 0; }
+			li { border-top: 1px solid #2C2A28; }
+			a { display: block; padding: 0.9rem 0; color: #EDE9E2; text-decoration: none; }
+			.mono { font-family: ui-monospace, monospace; font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: #6E6A65; }
 		</style>
 	</head>
 	<body>
-		<TvindefossenApp client:load content={content} />
+		<main>
+			<p class="mono">Home unavailable · preview build</p>
+			<h1>Waterfalls</h1>
+			<p>Home is not built yet. Waterfall detail pages:</p>
+			<ul>
+				{docs.map((d) => (
+					<li><a href={`/explore/waterfalls/${d.slug}`}>{d.name}</a></li>
+				))}
+			</ul>
+		</main>
 	</body>
 </html>
