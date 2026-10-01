@@ -1,0 +1,15 @@
+/*
+ * site.css: the ONE place for site-wide behaviour of vosswaterfalls.no v2.
+ * Loaded by src/layouts/SiteLayout.astro, which every page uses.
+ * (src/styles/global.css belongs to the leftover blog starter pages.)
+ */
+
+html {
+	background: #1A1714; /* canonical dark bg; also what shows behind the page */
+	overscroll-behavior-y: none; /* no rubber-band pull past the top/bottom */
+}
+
+body {
+	margin: 0;
+	overscroll-behavior-y: none;
+}

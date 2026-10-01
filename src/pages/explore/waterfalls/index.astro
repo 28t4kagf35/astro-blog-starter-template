@@ -1,4 +1,5 @@
 ---
+import SiteLayout from "../../../layouts/SiteLayout.astro";
 // Waterfalls Master Guide: /explore/waterfalls (sitemap v2: index = Master Guide).
 // Content fetched from Sanity at BUILD time; a Sanity edit needs a rebuild.
 import MasterGuideApp from "../../../components/MasterGuideApp";
@@ -6,28 +7,8 @@ import { fetchMasterGuide } from "../../../lib/masterguide";
 
 const content = await fetchMasterGuide();
 
-const FONTS_HREF =
-	"https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;1,8..60,300&family=Source+Sans+3:wght@300;400&family=IBM+Plex+Mono:wght@400&family=Raleway:wght@300;400&display=block";
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width,initial-scale=1" />
-		<meta name="robots" content="noindex, nofollow" />
-		<title>{content.heroHeadline} — Voss Waterfalls</title>
-		<meta name="description" content={content.heroSubtitle} />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link rel="stylesheet" href={FONTS_HREF} data-brand-fonts="1" />
-		<style is:global>
-			html { background: #1A1714; }
-			body { margin: 0; }
-		</style>
-	</head>
-	<body>
-		<MasterGuideApp client:load content={content} />
-	</body>
-</html>
+<SiteLayout title={`${content.heroHeadline} — Voss Waterfalls`} description={content.heroSubtitle}>
+	<MasterGuideApp client:load content={content} />
+</SiteLayout>

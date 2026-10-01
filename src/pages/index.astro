@@ -1,4 +1,5 @@
 ---
+import SiteLayout from "../layouts/SiteLayout.astro";
 // Root placeholder. Home (sitemap v2 "/") is not built yet. Tvindefossen moved
 // to its sitemap path /explore/waterfalls/tvindefossen on Sept 30.
 // The list below is a preview convenience, built from Sanity at build time.
@@ -7,17 +8,10 @@ import { fetchAllWaterfalls } from "../lib/waterfalls";
 const docs = await fetchAllWaterfalls();
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width,initial-scale=1" />
-		<meta name="robots" content="noindex, nofollow" />
-		<title>Voss Waterfalls — preview</title>
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<style is:global>
-			html { background: #1A1714; color: #C4BEB4; }
-			body { margin: 0; font-family: system-ui, sans-serif; }
+<SiteLayout title={"Voss Waterfalls — preview"}>
+	<style is:global>
+			html { color: #C4BEB4; }
+			body { font-family: system-ui, sans-serif; }
 			main { max-width: 640px; margin: 0 auto; padding: 3rem 1.25rem; }
 			h1 { color: #EDE9E2; font-weight: 300; font-size: 1.6rem; margin: 0 0 0.5rem; }
 			p { margin: 0 0 2rem; font-size: 0.9rem; line-height: 1.6; }
@@ -26,9 +20,7 @@ const docs = await fetchAllWaterfalls();
 			a { display: block; padding: 0.9rem 0; color: #EDE9E2; text-decoration: none; }
 			.mono { font-family: ui-monospace, monospace; font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: #6E6A65; }
 		</style>
-	</head>
-	<body>
-		<main>
+	<main>
 			<p class="mono">Home unavailable · preview build</p>
 			<h1>Waterfalls</h1>
 			<p>Home is not built yet. Waterfall pages:</p>
@@ -39,5 +31,4 @@ const docs = await fetchAllWaterfalls();
 				))}
 			</ul>
 		</main>
-	</body>
-</html>
+</SiteLayout>
