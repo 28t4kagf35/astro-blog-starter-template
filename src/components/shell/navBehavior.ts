@@ -4,8 +4,10 @@
  * <SiteNav>; no page may set its own scroll rule.
  *
  * Rule (user-confirmed intent, Oct 1 2026; values = webglobals SiteNav defaults):
- *  - Look: one constant frosted bar, never transparent: "glass"
- *    (rgba(19,20,22,0.48) + blur(22px), defined inside SiteNav).
+ *  - Look: one constant frosted bar, never transparent: "soft"
+ *    (rgba(19,20,22,0.28) + blur(5px), defined inside SiteNav). Measured on
+ *    the canon Replit mockup (nav/SiteNavDesktop), Oct 1 2026: soft at every
+ *    scroll position.
  *  - Hide: after scrolling DOWN past 1 x viewport height.
  *  - Reveal: after scrolling UP an accumulated 20% of viewport height.
  *  - isMobile: viewport < 768px (shell contract).
@@ -13,7 +15,7 @@
 import { useEffect, useState } from "react";
 import type { NavScrollState } from "./component";
 
-export const NAV_LOOK: NavScrollState = "glass";
+export const NAV_LOOK: NavScrollState = "soft";
 export const NAV_HIDE_AFTER_VH = 1.0;
 export const NAV_REVEAL_UP_VH = 0.2;
 export const NAV_MOBILE_MAX_PX = 767;
