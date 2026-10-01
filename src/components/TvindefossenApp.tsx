@@ -8,7 +8,8 @@
  * component is modified for host concerns.
  */
 import { useCallback, useEffect, useRef, useState } from "react";
-import { SiteNav, type NavScrollState } from "./shell/component";
+import { SiteNav } from "./shell/component";
+import { useNavBehavior } from "./shell/navBehavior";
 import { TvindefossenFinal, type WaterfallContent } from "./tvindefossen/TvindefossenFinal";
 
 export default function TvindefossenApp({ content }: { content: WaterfallContent }) {
@@ -17,9 +18,8 @@ export default function TvindefossenApp({ content }: { content: WaterfallContent
   const audioToggleRef = useRef<(() => void) | null>(null);
   const audioPlayingRef = useRef(false);
 
-  const [isMobile, setIsMobile] = useState(false);
-  const [scrollState, setScrollState] = useState<NavScrollState>("ghost");
-  const [navHidden, setNavHidden] = useState(false);
+  // Navbar look + hide/reveal come from the one global rule.
+  const { scrollState, hidden: navHidden, isMobile } = useNavBehavior();
 
   const registerAudioToggle = useCallback((toggle: () => void) => {
     audioToggleRef.current = toggle;
@@ -27,28 +27,6 @@ export default function TvindefossenApp({ content }: { content: WaterfallContent
   const onAudioStateChange = useCallback((playing: boolean) => {
     audioPlayingRef.current = playing;
     setAudioPlaying(playing);
-  }, []);
-
-  // Breakpoint (contract: isMobile < 768px)
-  useEffect(() => {
-    const measure = () => setIsMobile(window.innerWidth < 768);
-    measure();
-    window.addEventListener("resize", measure);
-    return () => window.removeEventListener("resize", measure);
-  }, []);
-
-  // Scroll appearance + direction hide
-  useEffect(() => {
-    let last = window.scrollY;
-    const onScroll = () => {
-      const y = window.scrollY;
-      setScrollState(y < 40 ? "ghost" : "glass");
-      setNavHidden(y > last && y > 200);
-      last = y;
-    };
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   // Audio intent starts ON: first eligible interaction unlocks playback,
