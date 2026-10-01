@@ -31,8 +31,9 @@ const docs = await fetchAllWaterfalls();
 		<main>
 			<p class="mono">Home unavailable · preview build</p>
 			<h1>Waterfalls</h1>
-			<p>Home is not built yet. Waterfall detail pages:</p>
+			<p>Home is not built yet. Waterfall pages:</p>
 			<ul>
+				<li><a href="/explore/waterfalls">Master Guide — Waterfalls of Voss</a></li>
 				{docs.map((d) => (
 					<li><a href={`/explore/waterfalls/${d.slug}`}>{d.name}</a></li>
 				))}
