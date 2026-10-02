@@ -23,8 +23,8 @@ const SOURCES = [
       ...*[_type in ["learnArticle","experienceArticle","cultureArticle","activity"]].heroImage.asset->{ "slot": _id, "url": url },
       ...*[_type == "activity"].wideTerrainImage.asset->{ "slot": _id, "url": url },
       ...*[_type == "observePage"][0].blocks[].image.asset->{ "slot": _id, "url": url },
-      ...*[_type == "masterGuide"][0].heroImage.asset->{ "slot": _id, "url": url },
-      ...*[_type == "masterGuide"][0].cabinImage.asset->{ "slot": _id, "url": url },
+      ...[*[_type == "masterGuide"][0].heroImage.asset->{ "slot": _id, "url": url }],
+      ...[*[_type == "masterGuide"][0].cabinImage.asset->{ "slot": _id, "url": url }],
       ...*[_type == "masterGuide"][0].falls[].image.asset->{ "slot": _id, "url": url }
     ]`,
     slotOf: (id) => id.split("-")[1].slice(0, 12),
