@@ -10,6 +10,8 @@ import type { CultureFeedContent } from "../page-types/culture-feed";
 import type { ObserveFeedContent } from "../page-types/observe-feed";
 import { learnPages, experiencePages, observePages } from "../clusters/nature";
 import { cultureHistoryPages } from "../clusters/culture-history";
+import type { ActivityContent } from "../page-types/activity";
+import { activityPages } from "../clusters/activities";
 
 type Base = { path: string; title: string; description?: string; listLabel: string };
 
@@ -20,9 +22,10 @@ export type SitePage =
   | (Base & { type: "experienceArticle"; content: ExperienceArticleContent })
   | (Base & { type: "cultureFeed"; content: CultureFeedContent })
   | (Base & { type: "observeFeed"; content: ObserveFeedContent })
+  | (Base & { type: "activity"; content: ActivityContent })
   | (Base & { type: "previewIndex"; content: { links: Array<{ href: string; label: string }> } });
 
-export const PAGE_TYPES = ["waterfall", "masterGuide", "learnArticle", "experienceArticle", "cultureFeed", "observeFeed", "previewIndex"] as const;
+export const PAGE_TYPES = ["waterfall", "masterGuide", "learnArticle", "experienceArticle", "cultureFeed", "observeFeed", "activity", "previewIndex"] as const;
 
 export async function buildSitePages(): Promise<SitePage[]> {
   const pages: SitePage[] = [
@@ -31,6 +34,7 @@ export async function buildSitePages(): Promise<SitePage[]> {
     ...(await experiencePages()),
     ...(await observePages()),
     ...(await cultureHistoryPages()),
+    ...(await activityPages()),
   ];
 
   // "/" until Home is built: a list of what exists.
