@@ -13,7 +13,8 @@ src/globals/<name>/            Global elements (navbar, …), each versioned on 
 src/clusters/<name>/           What one cluster shares: addresses, data loading
 src/page-types/<name>/         Page types; index.tsx = withShell(Component)
 src/site/pages.ts              The list of all pages (address, type, content)
-src/pages/[...path].astro      Front controller: the one route file
+src/pages/[...path].astro      Front controller: the one route file for pages
+src/pages/404.astro            The 404 page (Astro requires this file); same rules
 ```
 
 - Every page is rendered by the front controller, inside the frame and the shell.

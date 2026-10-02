@@ -9,6 +9,7 @@ export const WATERFALLS_PATH = "explore/waterfalls";
 
 export async function waterfallsClusterPages(): Promise<SitePage[]> {
   const [docs, guide] = await Promise.all([fetchAllWaterfalls(), fetchMasterGuide()]);
+  const slugByName = Object.fromEntries(docs.map((d) => [d.name, d.slug]));
   return [
     {
       path: WATERFALLS_PATH,
@@ -19,7 +20,7 @@ export async function waterfallsClusterPages(): Promise<SitePage[]> {
       content: guide,
     },
     ...docs.map((doc): SitePage => {
-      const content = toContent(doc);
+      const content = toContent(doc, slugByName);
       return {
         path: `${WATERFALLS_PATH}/${doc.slug}`,
         type: "waterfall",

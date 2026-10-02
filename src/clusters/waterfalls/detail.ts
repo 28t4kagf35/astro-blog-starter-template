@@ -14,6 +14,7 @@ import {
   CLOSE_SIZES,
 } from "../../lib/tvindefossen";
 import { sanityFetch } from "../../site/sanity";
+import { hrefFor } from "../../site/links";
 
 
 const QUERY = `*[_type == "waterfall"] | order(name asc){
@@ -38,7 +39,7 @@ export async function fetchAllWaterfalls(): Promise<WaterfallDoc[]> {
 // Tvindefossen's pin, as it was hardcoded in the export's map stub.
 const TVINDE_LOCATION = { lng: 6.488368, lat: 60.725762 };
 
-export function toContent(doc: WaterfallDoc): WaterfallContent {
+export function toContent(doc: WaterfallDoc, slugByName: Record<string, string> = {}): WaterfallContent {
   const isTvinde = doc.slug === "tvindefossen";
   const hero = isTvinde ? buildStaticImage("hero", HERO_WIDTHS) : { src: "", srcSet: undefined, sizes: undefined };
   const headon = isTvinde ? buildStaticImage("headon", HEADON_WIDTHS) : { src: "", srcSet: undefined, sizes: undefined };
@@ -54,7 +55,8 @@ export function toContent(doc: WaterfallDoc): WaterfallContent {
   // Most designs only had one flat continue-card list (stored under desktop);
   // tablet and mobile fall back to it rather than rendering nothing.
   const cc = doc.continueCards ?? {};
-  const desktop = cc.desktop ?? [];
+  const withHref = (cards: Array<{ label: string; body: string }> = []) => cards.map((c) => ({ ...c, href: hrefFor(c.label) }));
+  const desktop = withHref(cc.desktop);
 
   return {
     name: doc.name,
@@ -80,12 +82,13 @@ export function toContent(doc: WaterfallDoc): WaterfallContent {
     nextFall: {
       name: doc.nextFall?.name ?? "",
       descriptor: doc.nextFall?.descriptor ?? "",
+      href: slugByName[doc.nextFall?.name] ? `/explore/waterfalls/${slugByName[doc.nextFall.name]}` : hrefFor(doc.nextFall?.name),
       hero: { src: close.src, srcSet: close.srcSet, sizes: isTvinde ? CLOSE_SIZES : undefined, position: doc.nextFall?.hero?.position ?? "center" },
     },
     continueCards: {
       desktop,
-      tablet: cc.tablet ?? desktop,
-      mobile: cc.mobile ?? desktop,
+      tablet: cc.tablet ? withHref(cc.tablet) : desktop,
+      mobile: cc.mobile ? withHref(cc.mobile) : desktop,
     },
     ambientAudio: isTvinde
       ? { webm: "/audio/tvindefossen/tvinde-ambient.webm", mp4: "/audio/tvindefossen/tvinde-ambient.mp4" }

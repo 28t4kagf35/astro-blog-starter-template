@@ -1,0 +1,12 @@
+---
+// The 404 page: the one route file besides the front controller. It exists
+// because Astro looks for exactly this file for unknown addresses. It follows
+// the same rule as every page: inside the frame (SiteLayout), through a page
+// type (which the shell wraps). The build check enforces both.
+import SiteLayout from "../layouts/SiteLayout.astro";
+import NotFoundPage from "../page-types/not-found/index.tsx";
+---
+
+<SiteLayout title="Page not found — Voss Waterfalls">
+	<NotFoundPage client:load content={{}} />
+</SiteLayout>

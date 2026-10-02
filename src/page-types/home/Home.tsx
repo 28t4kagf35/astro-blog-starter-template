@@ -10,6 +10,8 @@
  *  - Doors, "read the article" and the bottom row are not links yet.
  */
 
+import { Stretch } from "../../site/Stretch";
+import { hrefFor } from "../../site/links";
 import React, { createContext, useContext, useEffect, useState, type CSSProperties } from "react";
 import type { ShellPageProps } from "../../shell/SiteShell";
 
@@ -106,6 +108,7 @@ function Pic({ slot, abs, top }: { slot: string; abs?: boolean; top?: string }) 
   );
 }
 
+const doorHref = (slot: string) => (slot === "waterfalls" ? "/explore/waterfalls" : slot === "cabin" ? "/cabin" : undefined); // "The Land" has no page yet
 const doorSlot = (label: string, c: HomeContent) =>
   label === c.doors[0]?.label ? "waterfalls" : label === c.doors[1]?.label ? "lichen" : "cabin";
 
@@ -366,6 +369,7 @@ export function Home({ content }: { content: HomeContent } & ShellPageProps) {
             ].filter(x => x.d).map(({ d, h }) => ({ ...d, tagline: oneLine(d.tagline), h })).map(d => (
               <div key={d.label} style={{ position: "relative", overflow: "hidden", height: d.h }}>
                 <Pic slot={doorSlot(d.label, c)} abs />
+                <Stretch href={doorHref(doorSlot(d.label, c))} label={d.label} />
                 <div style={{ position: "absolute", top: 0, right: 0, bottom: 0, left: 0, background: OVERLAY_DOOR }} />
                 <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "0 1.25rem 1.4rem" }}>
                   <p style={{ margin: "0 0 0.4rem", fontFamily: FONT_MONO, fontSize: "0.55rem", letterSpacing: "0.16em", color: ON_IMAGE.muted, textTransform: "uppercase" as const }}>{d.note}</p>
@@ -382,6 +386,7 @@ export function Home({ content }: { content: HomeContent } & ShellPageProps) {
           <div style={{ display: "grid", gridTemplateColumns: "1.6fr 1fr", gap: "3px", minHeight: "560px" }}>
             <div style={{ position: "relative", overflow: "hidden" }}>
               <Pic slot="waterfalls" abs />
+              <Stretch href={doorHref("waterfalls")} label={doorW?.label ?? ""} />
               <div style={{ position: "absolute", top: 0, right: 0, bottom: 0, left: 0, background: OVERLAY_DOOR }} />
               <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "0 1.4rem 1.8rem" }}>
                 <p style={{ margin: "0 0 0.55rem", fontFamily: FONT_MONO, fontSize: "0.58rem", letterSpacing: "0.18em", color: ON_IMAGE.muted, textTransform: "uppercase" as const }}>{doorW?.note}</p>
@@ -393,6 +398,7 @@ export function Home({ content }: { content: HomeContent } & ShellPageProps) {
               {[doorL, doorC].filter(Boolean).map(d => ({ ...d, tagline: oneLine(d.tagline) })).map(d => (
                 <div key={d.label} style={{ flex: 1, position: "relative", overflow: "hidden" }}>
                   <Pic slot={doorSlot(d.label, c)} abs />
+                <Stretch href={doorHref(doorSlot(d.label, c))} label={d.label} />
                   <div style={{ position: "absolute", top: 0, right: 0, bottom: 0, left: 0, background: OVERLAY_DOOR }} />
                   <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "0 1.2rem 1.4rem" }}>
                     <p style={{ margin: "0 0 0.4rem", fontFamily: FONT_MONO, fontSize: "0.55rem", letterSpacing: "0.16em", color: ON_IMAGE.muted, textTransform: "uppercase" as const }}>{d.note}</p>
@@ -415,6 +421,7 @@ export function Home({ content }: { content: HomeContent } & ShellPageProps) {
             ].filter(x => x.d).map(({ d, flex }) => ({ ...d, flex })).map(d => (
               <div key={d.label} style={{ flex: d.flex, position: "relative", overflow: "hidden", minHeight: "680px" }}>
                 <Pic slot={doorSlot(d.label, c)} abs />
+                <Stretch href={doorHref(doorSlot(d.label, c))} label={d.label} />
                 <div style={{ position: "absolute", top: 0, right: 0, bottom: 0, left: 0, background: OVERLAY_DOOR }} />
                 <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "0 1.4rem 1.8rem" }}>
                   <p style={{ margin: "0 0 0.55rem", fontFamily: FONT_MONO, fontSize: "0.58rem", letterSpacing: "0.18em", color: ON_IMAGE.muted, textTransform: "uppercase" as const }}>{d.note}</p>
@@ -521,9 +528,10 @@ export function Home({ content }: { content: HomeContent } & ShellPageProps) {
             letterSpacing: "0.12em",
             textTransform: "uppercase" as const,
           }}>
-            {c.footerNav.map(l => (
-              <span key={l} style={{ cursor: "pointer" }}>{l}</span>
-            ))}
+            {c.footerNav.map(l => hrefFor(l)
+              ? <a key={l} href={hrefFor(l)} style={{ color: "inherit", textDecoration: "none" }}>{l}</a>
+              : <span key={l}>{l}</span>
+            )}
           </div>
         </div>
       </div>

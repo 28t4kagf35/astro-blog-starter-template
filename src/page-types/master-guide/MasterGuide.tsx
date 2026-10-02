@@ -23,6 +23,7 @@
  * Layout, content, fields, and responsive structure follow the byte-preserved source in native-canon/.
  */
 
+import { Stretch } from "../../site/Stretch";
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 
 const SS4 = "'Source Serif 4', Georgia, serif";
@@ -512,7 +513,7 @@ export function WaterfallsMasterGuideAligned({
                       <p style={{ margin: "0 0 1.6rem", ...T_BODY_FUNCTIONAL, color: tk.body }}>
                         {para("STAY", 1)}
                       </p>
-                      <a href="#" data-bb-field="cabinCtaLabel" style={{ ...T_CARD_LABEL, color: tk.body, textDecoration: "underline", textUnderlineOffset: "3px", textDecorationColor: isDark ? "#4D4A47" : "#B2AEA8", transition: "text-decoration-color 0.2s ease" }} onMouseEnter={e => (e.currentTarget.style.textDecorationColor = "transparent")} onMouseLeave={e => (e.currentTarget.style.textDecorationColor = isDark ? "#4D4A47" : "#B2AEA8")}>{CONTENT.cabinCtaLabel}</a>
+                      <a href="/cabin" data-bb-field="cabinCtaLabel" style={{ ...T_CARD_LABEL, color: tk.body, textDecoration: "underline", textUnderlineOffset: "3px", textDecorationColor: isDark ? "#4D4A47" : "#B2AEA8", transition: "text-decoration-color 0.2s ease" }} onMouseEnter={e => (e.currentTarget.style.textDecorationColor = "transparent")} onMouseLeave={e => (e.currentTarget.style.textDecorationColor = isDark ? "#4D4A47" : "#B2AEA8")}>{CONTENT.cabinCtaLabel}</a>
                     </div>
                   </div>
                 ) : (
@@ -523,7 +524,7 @@ export function WaterfallsMasterGuideAligned({
                     <p style={{ margin: "0 0 1.2rem", ...T_BODY_FUNCTIONAL, fontSize: isMobile ? T_SCALE_BODY.mobile : undefined, color: tk.body }}>
                       {para("STAY_SHORT", 0)}
                     </p>
-                    <a href="#" data-bb-field="cabinCtaLabel" style={{ ...T_CARD_LABEL, color: tk.body, textDecoration: "underline", textUnderlineOffset: "3px", textDecorationColor: isDark ? "#4D4A47" : "#B2AEA8", transition: "text-decoration-color 0.2s ease" }} onMouseEnter={e => (e.currentTarget.style.textDecorationColor = "transparent")} onMouseLeave={e => (e.currentTarget.style.textDecorationColor = isDark ? "#4D4A47" : "#B2AEA8")}>{CONTENT.cabinCtaLabel} →</a>
+                    <a href="/cabin" data-bb-field="cabinCtaLabel" style={{ ...T_CARD_LABEL, color: tk.body, textDecoration: "underline", textUnderlineOffset: "3px", textDecorationColor: isDark ? "#4D4A47" : "#B2AEA8", transition: "text-decoration-color 0.2s ease" }} onMouseEnter={e => (e.currentTarget.style.textDecorationColor = "transparent")} onMouseLeave={e => (e.currentTarget.style.textDecorationColor = isDark ? "#4D4A47" : "#B2AEA8")}>{CONTENT.cabinCtaLabel} →</a>
                   </div>
                 )}
               </div>
@@ -539,16 +540,17 @@ export function WaterfallsMasterGuideAligned({
             <p data-bb-field="closingStatement" style={{ margin: "0 0 2.4rem", ...T_SECTION_TITLE, fontSize: h2Size, color: tk.head, maxWidth: "32ch" }}>{CONTENT.closingStatement}</p>
             <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(3, 1fr)", borderTop: `1px solid ${tk.rule}` }}>
               {[
-                { label: "Observe", sub: item("ONWARD", 0) },
-                { label: "Hiking", sub: item("ONWARD", 1) },
-                { label: "The cabin", sub: item("ONWARD", 2) },
-              ].map(({ label, sub }, i) => (
-                <div key={label} style={{
+                { label: "Observe", sub: item("ONWARD", 0), href: "/explore/nature/observe" },
+                { label: "Hiking", sub: item("ONWARD", 1), href: "/activities/kiellandbu" },
+                { label: "The cabin", sub: item("ONWARD", 2), href: "/cabin" },
+              ].map(({ label, sub, href }, i) => (
+                <div key={label} style={{ position: "relative",
                   padding: isMobile ? "1.1rem 0" : "1.4rem 1.8rem 1.4rem 0",
                   borderRight: !isMobile && i < 2 ? `1px solid ${tk.rule}` : "none",
                   paddingLeft: !isMobile && i > 0 ? "1.8rem" : 0,
                   cursor: "pointer",
                 }}>
+                  <Stretch href={href} label={label} />
                   <p style={{ margin: "0 0 0.6rem", ...T_CARD_LABEL, color: tk.head }}>{label}</p>
                   <p style={{ margin: 0, ...T_BODY_SMALL, letterSpacing: "0.02em", color: tk.body }}>{sub}</p>
                 </div>

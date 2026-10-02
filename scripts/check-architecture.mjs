@@ -5,9 +5,9 @@
 //     globals.lock.json with the same version and the same file fingerprint.
 //     (Change a global by pulling/approving a new version, then update the lock.)
 //  2. Only src/shell imports from src/globals.
-//  3. Only the front controller (and the listed leftovers) are route files.
+//  3. Only the front controller, the 404 page (and the listed leftovers) are route files.
 //  4. Every page type's index.tsx is made with withShell(...).
-//  5. The front controller renders inside SiteLayout.
+//  5. The front controller and the 404 page render inside SiteLayout; the 404 page uses a page type.
 //
 // CLI:  node scripts/check-architecture.mjs          -> run the check
 //       node scripts/check-architecture.mjs --print  -> print current fingerprints
@@ -26,6 +26,7 @@ const LEGACY_ROUTES = [
   "rss.xml.js",
 ];
 const FRONT_CONTROLLER = "[...path].astro";
+const ERROR_PAGE = "404.astro"; // Astro serves this file for unknown addresses
 
 function walk(dir) {
   const out = [];
@@ -92,7 +93,7 @@ export function checkArchitecture(root) {
   const routes = walk(pagesDir).map((f) => posix(relative(pagesDir, f)));
   if (!routes.includes(FRONT_CONTROLLER)) errors.push(`The front controller src/pages/${FRONT_CONTROLLER} is missing.`);
   for (const r of routes) {
-    if (r !== FRONT_CONTROLLER && !LEGACY_ROUTES.includes(r)) {
+    if (r !== FRONT_CONTROLLER && r !== ERROR_PAGE && !LEGACY_ROUTES.includes(r)) {
       errors.push(`src/pages/${r} is a second route file. Every page is rendered by src/pages/${FRONT_CONTROLLER}; add a page type instead.`);
     }
   }
@@ -110,6 +111,13 @@ export function checkArchitecture(root) {
   const fc = join(pagesDir, FRONT_CONTROLLER);
   if (existsSync(fc) && !readFileSync(fc, "utf8").includes("<SiteLayout")) {
     errors.push(`src/pages/${FRONT_CONTROLLER} must render inside <SiteLayout>.`);
+  }
+
+  const ep = join(pagesDir, ERROR_PAGE);
+  if (existsSync(ep)) {
+    const t = readFileSync(ep, "utf8");
+    if (!t.includes("<SiteLayout")) errors.push(`src/pages/${ERROR_PAGE} must render inside <SiteLayout>.`);
+    if (!/page-types\/[^"']+/.test(t)) errors.push(`src/pages/${ERROR_PAGE} must render a page type from src/page-types.`);
   }
 
   return errors;

@@ -16,6 +16,7 @@
  *   8. interface CONTENT retained verbatim from canvas source
  */
 
+import { Stretch } from "../../site/Stretch";
 import React, { useEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
 
@@ -300,7 +301,7 @@ function MediaImg({ src, style, surface, muted, ...rest }: React.ImgHTMLAttribut
 // the Tvindefossen `waterfall` document from Sanity at build time. Image/audio
 // `src` values are the zip's assets, mapped in the page layer.
 
-type CardCopy = { label: string; body: string };
+type CardCopy = { label: string; body: string; href?: string };
 
 export interface WaterfallContent {
   name: string;
@@ -317,7 +318,7 @@ export interface WaterfallContent {
   practicalBody: string;
   quickFacts: Array<{ label: string; sub: string }>;
   planDetails: Array<{ label: string; body: string }>;
-  nextFall: { name: string; descriptor: string; hero: { src: string; srcSet?: string; sizes?: string; position: string } };
+  nextFall: { name: string; descriptor: string; href?: string; hero: { src: string; srcSet?: string; sizes?: string; position: string } };
   continueCards: { desktop: CardCopy[]; tablet: CardCopy[]; mobile: CardCopy[] };
   ambientAudio: { webm: string; mp4: string };
   /** Map pin. Omitted → the map slot says the location is unavailable. */
@@ -608,7 +609,8 @@ export function TvindefossenFinal({
             <SectionLabel color={tk.body}>Continue</SectionLabel>
             {isDesktop ? (
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1.4rem" }}>
-                <div data-bb-field="nextFall" style={{ border: `1px solid ${tk.rule}`, borderRadius: "0.35rem", overflow: "hidden" }}>
+                <div data-bb-field="nextFall" style={{ position: "relative", border: `1px solid ${tk.rule}`, borderRadius: "0.35rem", overflow: "hidden" }}>
+                  <Stretch href={content.nextFall.href} label={content.nextFall.name} />
                   <MediaImg surface={tk.surface} muted={tk.muted} data-bb-field="nextFall.hero" data-bb-meta="nextFall.hero.position" src={content.nextFall.hero.src} srcSet={content.nextFall.hero.srcSet} sizes={content.nextFall.hero.sizes} loading="lazy" alt="" style={{ width: "100%", aspectRatio: "4/3", objectFit: "cover", objectPosition: content.nextFall.hero.position, display: "block", opacity: 0.72 }} />
                   <div style={{ padding: "1.2rem 1.3rem 1.5rem", background: tk.surface }}>
                     <CardLabel muted={tk.head}>Next fall</CardLabel>
@@ -617,8 +619,9 @@ export function TvindefossenFinal({
                   </div>
                 </div>
                 <div data-bb-field="continueCards" style={{ display: "contents" }}>
-                  {content.continueCards.desktop.map(({ label, body }) => (
-                    <div key={label} style={{ border: `1px solid ${tk.rule}`, borderRadius: "0.35rem", padding: "1.6rem", display: "flex", flexDirection: "column", background: tk.surface }}>
+                  {content.continueCards.desktop.map(({ label, body, href }) => (
+                    <div key={label} style={{ position: "relative", border: `1px solid ${tk.rule}`, borderRadius: "0.35rem", padding: "1.6rem", display: "flex", flexDirection: "column", background: tk.surface }}>
+                      <Stretch href={href} label={label} />
                       <span data-bb-field="continueCards.label" style={{ ...T_SECTION_LABEL, color: tk.head, display: "block", marginBottom: "0.7rem" }}>{label}</span>
                       <p data-bb-field="continueCards.body" style={{ margin: 0, ...T_BODY_FUNCTIONAL, color: tk.body }}>{body}</p>
                     </div>
@@ -627,7 +630,8 @@ export function TvindefossenFinal({
               </div>
             ) : isTablet ? (
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.1rem" }}>
-                <div data-bb-field="nextFall" style={{ border: `1px solid ${tk.rule}`, borderRadius: "0.35rem", overflow: "hidden" }}>
+                <div data-bb-field="nextFall" style={{ position: "relative", border: `1px solid ${tk.rule}`, borderRadius: "0.35rem", overflow: "hidden" }}>
+                  <Stretch href={content.nextFall.href} label={content.nextFall.name} />
                   <MediaImg surface={tk.surface} muted={tk.muted} data-bb-field="nextFall.hero" data-bb-meta="nextFall.hero.position" src={content.nextFall.hero.src} srcSet={content.nextFall.hero.srcSet} sizes={content.nextFall.hero.sizes} loading="lazy" alt="" style={{ width: "100%", aspectRatio: "4/3", objectFit: "cover", objectPosition: content.nextFall.hero.position, display: "block", opacity: 0.72 }} />
                   <div style={{ padding: "1rem 1.2rem 1.3rem", background: tk.surface }}>
                     <CardLabel muted={tk.head}>Next fall</CardLabel>
@@ -636,8 +640,9 @@ export function TvindefossenFinal({
                   </div>
                 </div>
                 <div data-bb-field="continueCards" style={{ display: "flex", flexDirection: "column", gap: "1.1rem" }}>
-                  {content.continueCards.tablet.map(({ label, body }) => (
-                    <div key={label} style={{ border: `1px solid ${tk.rule}`, borderRadius: "0.35rem", padding: "1.3rem", background: tk.surface, flex: 1 }}>
+                  {content.continueCards.tablet.map(({ label, body, href }) => (
+                    <div key={label} style={{ position: "relative", border: `1px solid ${tk.rule}`, borderRadius: "0.35rem", padding: "1.3rem", background: tk.surface, flex: 1 }}>
+                      <Stretch href={href} label={label} />
                       <span data-bb-field="continueCards.label" style={{ ...T_SECTION_LABEL, color: tk.head, display: "block", marginBottom: "0.7rem" }}>{label}</span>
                       <p data-bb-field="continueCards.body" style={{ margin: 0, ...T_BODY_FUNCTIONAL, fontSize: T_SCALE_BODY.mobile, color: tk.body }}>{body}</p>
                     </div>
@@ -646,7 +651,8 @@ export function TvindefossenFinal({
               </div>
             ) : (
               <div style={{ display: "flex", flexDirection: "column", gap: "1.1rem" }}>
-                <div data-bb-field="nextFall" style={{ border: `1px solid ${tk.rule}`, borderRadius: "0.35rem", overflow: "hidden" }}>
+                <div data-bb-field="nextFall" style={{ position: "relative", border: `1px solid ${tk.rule}`, borderRadius: "0.35rem", overflow: "hidden" }}>
+                  <Stretch href={content.nextFall.href} label={content.nextFall.name} />
                   <MediaImg surface={tk.surface} muted={tk.muted} data-bb-field="nextFall.hero" data-bb-meta="nextFall.hero.position" src={content.nextFall.hero.src} srcSet={content.nextFall.hero.srcSet} sizes={content.nextFall.hero.sizes} loading="lazy" alt="" style={{ width: "100%", aspectRatio: "16/9", objectFit: "cover", objectPosition: content.nextFall.hero.position, display: "block", opacity: 0.72 }} />
                   <div style={{ padding: "1rem 1.2rem 1.4rem", background: tk.surface }}>
                     <CardLabel muted={tk.head}>Next fall</CardLabel>
@@ -655,8 +661,9 @@ export function TvindefossenFinal({
                   </div>
                 </div>
                 <div data-bb-field="continueCards" style={{ display: "flex", flexDirection: "column", gap: "1.1rem" }}>
-                  {content.continueCards.mobile.map(({ label, body }) => (
-                    <div key={label} style={{ border: `1px solid ${tk.rule}`, borderRadius: "0.35rem", padding: "1.3rem", background: tk.surface }}>
+                  {content.continueCards.mobile.map(({ label, body, href }) => (
+                    <div key={label} style={{ position: "relative", border: `1px solid ${tk.rule}`, borderRadius: "0.35rem", padding: "1.3rem", background: tk.surface }}>
+                      <Stretch href={href} label={label} />
                       <span data-bb-field="continueCards.label" style={{ ...T_SECTION_LABEL, color: tk.head, display: "block", marginBottom: "0.7rem" }}>{label}</span>
                       <p data-bb-field="continueCards.body" style={{ margin: 0, ...T_BODY_FUNCTIONAL, fontSize: T_SCALE_BODY.mobile, color: tk.body }}>{body}</p>
                     </div>

@@ -18,6 +18,8 @@
  * Slot: activities_kiellandbu_20260521_1100
  */
 
+import { Stretch } from "../../site/Stretch";
+import { hrefFor } from "../../site/links";
 import { useEffect, useRef, useState, type CSSProperties, type RefObject, type ReactNode } from "react";
 import type { ShellPageProps } from "../../shell/SiteShell";
 
@@ -507,7 +509,7 @@ export function Activity({ content }: { content: ActivityContent } & ShellPagePr
           marginBottom: "2.5rem",
         }}>
           {c.exits.map((link, i) => (
-            <div key={i} style={{
+            <div key={i} style={{ position: "relative",
               borderTop: `1px solid ${tk.rule}`,
               borderLeft: (isDesktop && i > 0) ? `1px solid ${tk.rule}` : "none",
               padding: isDesktop
@@ -517,6 +519,7 @@ export function Activity({ content }: { content: ActivityContent } & ShellPagePr
               justifyContent: "space-between",
               alignItems: "center",
             }}>
+              <Stretch href={hrefFor(link.label)} label={link.label} />
               <div>
                 <div style={{
                   fontFamily: FONT_MONO,
@@ -543,11 +546,12 @@ export function Activity({ content }: { content: ActivityContent } & ShellPagePr
           paddingBottom: "3.5rem",
         }}>
           {c.nearby.map((link, i) => (
-            <div key={i} style={{
+            <div key={i} style={{ position: "relative",
               borderLeft: i > 0 ? `1px solid ${tk.rule}` : "none",
               paddingLeft: i > 0 ? (isMobile ? "1rem" : "1.75rem") : 0,
               paddingRight: i < 3 ? (isMobile ? "1rem" : "1.75rem") : 0,
             }}>
+              <Stretch href={hrefFor(link.label)} label={link.label} />
               <div style={{
                 fontFamily: FONT_MONO,
                 fontSize: "0.48rem",
