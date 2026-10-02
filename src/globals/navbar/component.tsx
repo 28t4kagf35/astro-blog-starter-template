@@ -91,6 +91,9 @@ const MOBILE_BAR_H = 68;
 const LANGUAGES = ["EN", "NO", "DE", "FR", "NL"] as const;
 type Lang = typeof LANGUAGES[number];
 const LAUNCH_ACTIVE: Lang[] = ["EN"];
+// Launch is English only, so the language labels are hidden. Set to true to
+// bring back the language selector (desktop) and the language row (mobile).
+const SHOW_LANGUAGE = false;
 
 // ── Component ─────────────────────────────────────────────────────────────────
 export function SiteNav({
@@ -274,20 +277,8 @@ export function SiteNav({
     userSelect: "none",
   };
 
-  // Desktop EXPLORE panel cluster titles (Raleway, like every other desktop nav text)
-  const panelClusterTitle: CSSProperties = {
-    fontFamily: FONT_LBL,
-    fontSize: "0.92rem",
-    fontWeight: 400,
-    fontStyle: "normal",
-    letterSpacing: "0.14em",
-    textTransform: "uppercase",
-    color: DARK.head,
-    opacity: 1,
-    lineHeight: 1.2,
-    cursor: "pointer",
-    userSelect: "none",
-  };
+  // Desktop EXPLORE panel cluster titles: exactly the bar's own text style.
+  const panelClusterTitle: CSSProperties = { ...navItem, lineHeight: 1.2 };
 
   const overlaySubItem: CSSProperties = {
     fontFamily: FONT_LBL,
@@ -384,8 +375,8 @@ export function SiteNav({
             </button>
           )}
 
-          {/* Language selector — desktop/tablet only */}
-          {!overlayOpen && !isMobile && (
+          {/* Language selector — desktop/tablet only (hidden at launch: SHOW_LANGUAGE) */}
+          {SHOW_LANGUAGE && !overlayOpen && !isMobile && (
             <div style={{ position: "relative", height: BAR_H, display: "flex", alignItems: "center" }}>
               <span
                 style={{ ...monoCtrl, display: "flex", alignItems: "center", gap: "0.28em" }}
@@ -546,7 +537,7 @@ export function SiteNav({
           <div style={{ flex: 1 }} />
 
           <div style={{ display: "flex", flexDirection: "column", gap: "2.4rem", paddingBottom: "2.4rem" }}>
-            <div style={{ display: "flex", gap: "2.2rem", alignItems: "center" }}>
+            {SHOW_LANGUAGE && <div style={{ display: "flex", gap: "2.2rem", alignItems: "center" }}>
               {LANGUAGES.map(l => {
                 const active = LAUNCH_ACTIVE.includes(l);
                 return (
@@ -564,7 +555,7 @@ export function SiteNav({
                   </span>
                 );
               })}
-            </div>
+            </div>}
             <span style={{ fontFamily: FONT_LBL, fontSize: "0.92rem", fontWeight: 300, letterSpacing: "0.30em", color: DARK.head, opacity: 0.30, textTransform: "uppercase" }}>
               vosswaterfalls.no
             </span>

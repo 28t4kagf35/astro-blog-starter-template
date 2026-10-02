@@ -1,5 +1,15 @@
 # navbar: changelog
 
+## 1.1.0 (draft, awaiting owner approval; based on 1.0.0, includes 1.0.1)
+
+- Desktop EXPLORE panel: the cluster titles now use exactly the bar's own text
+  style (Raleway, 0.76rem, same tracking and colour). 1.0.1 had them larger and
+  brighter, which was never designed.
+- Language labels are hidden: launch is English only. They are not removed: a
+  single switch (`SHOW_LANGUAGE`, false) in component.tsx brings back the
+  desktop selector and the mobile language row, with their styling.
+- Includes everything in 1.0.1 below.
+
 ## 1.0.1 (draft, awaiting owner approval; based on 1.0.0)
 
 - Desktop EXPLORE panel: the cluster titles are set in Raleway (uppercase,
