@@ -17,6 +17,8 @@ import ObserveFeedPage from "../page-types/observe-feed/index.tsx";
 import ActivityPage from "../page-types/activity/index.tsx";
 import HomePage from "../page-types/home/index.tsx";
 import CabinPage from "../page-types/cabin/index.tsx";
+import ExploreHomePage from "../page-types/explore-home/index.tsx";
+import ActivitiesHomePage from "../page-types/activities-home/index.tsx";
 import PreviewIndex from "../page-types/preview-index/PreviewIndex.astro";
 import { buildSitePages, PAGE_TYPES, type SitePage } from "../site/pages";
 
@@ -44,5 +46,7 @@ if (!(PAGE_TYPES as readonly string[]).includes(page.type)) {
 	{page.type === "activity" && <ActivityPage client:load content={page.content} />}
 	{page.type === "home" && <HomePage client:load content={page.content} />}
 	{page.type === "cabin" && <CabinPage client:load content={page.content} />}
+	{page.type === "exploreHome" && <ExploreHomePage client:load content={page.content} />}
+	{page.type === "activitiesHome" && <ActivitiesHomePage client:load content={page.content} />}
 	{page.type === "previewIndex" && <PreviewIndex links={page.content.links} />}
 </SiteLayout>

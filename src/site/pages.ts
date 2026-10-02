@@ -16,6 +16,10 @@ import type { HomeContent } from "../page-types/home";
 import { homePages } from "../clusters/home";
 import type { CabinContent } from "../page-types/cabin";
 import { cabinPages } from "../clusters/cabin";
+import type { ExploreHomeContent } from "../page-types/explore-home";
+import { explorePages } from "../clusters/explore";
+import type { ActivitiesHomeContent } from "../page-types/activities-home";
+import { activitiesHomePages } from "../clusters/activities/home";
 
 type Base = { path: string; title: string; description?: string; listLabel: string };
 
@@ -29,9 +33,11 @@ export type SitePage =
   | (Base & { type: "activity"; content: ActivityContent })
   | (Base & { type: "home"; content: HomeContent })
   | (Base & { type: "cabin"; content: CabinContent })
+  | (Base & { type: "exploreHome"; content: ExploreHomeContent })
+  | (Base & { type: "activitiesHome"; content: ActivitiesHomeContent })
   | (Base & { type: "previewIndex"; content: { links: Array<{ href: string; label: string }> } });
 
-export const PAGE_TYPES = ["waterfall", "masterGuide", "learnArticle", "experienceArticle", "cultureFeed", "observeFeed", "activity", "home", "cabin", "previewIndex"] as const;
+export const PAGE_TYPES = ["waterfall", "masterGuide", "learnArticle", "experienceArticle", "cultureFeed", "observeFeed", "activity", "home", "cabin", "exploreHome", "activitiesHome", "previewIndex"] as const;
 
 export async function buildSitePages(): Promise<SitePage[]> {
   const pages: SitePage[] = [
@@ -43,6 +49,8 @@ export async function buildSitePages(): Promise<SitePage[]> {
     ...(await cultureHistoryPages()),
     ...(await activityPages()),
     ...(await cabinPages()),
+    ...(await explorePages()),
+    ...(await activitiesHomePages()),
   ];
 
   // "/preview": a plain list of every page, for walking the site before the

@@ -1,5 +1,14 @@
 # navbar: changelog
 
+## 1.2.0 (draft, awaiting owner approval; based on 1.0.0, includes 1.0.1 and 1.1.0)
+
+- The four top-level items are links: NORWAY to `/`, EXPLORE to `/explore`,
+  THE CABIN to `/cabin`, ACTIVITIES to `/activities`. On desktop, hovering
+  EXPLORE still opens the panel; clicking it follows the link.
+- The Explore panel's items (Nature, Culture & History, Waterfalls) and the
+  mobile menu's sub-list are not links yet. On mobile, tapping EXPLORE follows
+  the link, so its sub-list no longer opens.
+
 ## 1.1.0 (draft, awaiting owner approval; based on 1.0.0, includes 1.0.1)
 
 - Desktop EXPLORE panel: the cluster titles now use exactly the bar's own text

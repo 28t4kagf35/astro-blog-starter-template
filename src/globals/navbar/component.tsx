@@ -77,6 +77,15 @@ interface SiteNavProps {
 // ── Constants ─────────────────────────────────────────────────────────────────
 const NAV_ITEMS = ["NORWAY", "EXPLORE", "THE CABIN", "ACTIVITIES"] as const;
 
+// Where each top-level item goes. The Explore panel's own items (Nature,
+// Culture & History, Waterfalls) are not links yet.
+const NAV_HREFS: Record<typeof NAV_ITEMS[number], string> = {
+  "NORWAY": "/",
+  "EXPLORE": "/explore",
+  "THE CABIN": "/cabin",
+  "ACTIVITIES": "/activities",
+};
+
 const EXPLORE_CLUSTERS: { title: string; children: string[] }[] = [
   { title: "NATURE",            children: ["OBSERVE", "LEARN", "EXPERIENCE"] },
   { title: "CULTURE & HISTORY", children: [] },
@@ -111,7 +120,7 @@ export function SiteNav({
   const [isDarkInt,    setIsDarkInt]    = useState(true);
 
   const navRef        = useRef<HTMLDivElement>(null);
-  const exploreRef    = useRef<HTMLSpanElement>(null);
+  const exploreRef    = useRef<HTMLAnchorElement>(null);
   const hoverOpenRef  = useRef<ReturnType<typeof setTimeout> | null>(null);
   const hoverCloseRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [exploreLeft, setExploreLeft] = useState<number | null>(null);
@@ -165,11 +174,6 @@ export function SiteNav({
   }
   function onPanelMouseLeave() {
     hoverCloseRef.current = setTimeout(() => setExploreOpen(false), 150);
-  }
-  function onExploreClick() {
-    if (hoverOpenRef.current)  { clearTimeout(hoverOpenRef.current);  hoverOpenRef.current  = null; }
-    if (hoverCloseRef.current) { clearTimeout(hoverCloseRef.current); hoverCloseRef.current = null; }
-    setExploreOpen(v => !v);
   }
 
   // ── Bar appearance ────────────────────────────────────────────────────────
@@ -326,15 +330,15 @@ export function SiteNav({
               const isExplore = item === "EXPLORE";
               const opacity = exploreOpen ? (isExplore ? 1 : 0.5) : 0.78;
               return (
-                <span
+                <a
                   key={item}
+                  href={NAV_HREFS[item]}
                   ref={isExplore ? exploreRef : undefined}
-                  style={{ ...navItem, opacity, transition: "opacity 280ms ease-out" }}
-                  onClick={isExplore ? onExploreClick : undefined}
+                  style={{ ...navItem, textDecoration: "none", opacity, transition: "opacity 280ms ease-out" }}
                   onMouseEnter={isExplore ? onExploreMouseEnter : onOtherItemMouseEnter}
                 >
                   {item}
-                </span>
+                </a>
               );
             })}
           </div>
@@ -443,12 +447,12 @@ export function SiteNav({
           <div style={{ display: "flex", flexDirection: "column", gap: "2.4rem" }}>
             {NAV_ITEMS.map(item => (
               <div key={item}>
-                <span
-                  style={{ ...overlayNavItem, ...overlayItemStyle }}
-                  onClick={item === "EXPLORE" ? () => setExploreOpen(v => !v) : undefined}
+                <a
+                  href={NAV_HREFS[item]}
+                  style={{ ...overlayNavItem, ...overlayItemStyle, textDecoration: "none" }}
                 >
                   {item}
-                </span>
+                </a>
 
                 {item === "EXPLORE" && (
                   <div style={{
