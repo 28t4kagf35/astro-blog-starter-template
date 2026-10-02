@@ -1,18 +1,21 @@
 // Waterfalls Master Guide (/explore/waterfalls): fetched from Sanity at BUILD
 // time and mapped onto the finished guide component's content shape.
-// Only Tvindefossen has a real image (R2). The design's borrowed photos for the
-// hero, the other cards and the cabin band are not carried over.
+// Tvindefossen's card uses its real R2 image. The other images come from Sanity:
+// for now the design's mockup photos (borrowed Tvindefossen shots, titled
+// PLACEHOLDER in the media library), so the page can be judged for style.
 
 import type { MasterGuideContent, GuideFall } from "../../page-types/master-guide/MasterGuide";
 import { R2_BASE } from "../../lib/tvindefossen";
 import { sanityFetch } from "../../site/sanity";
+import { mediaSrc } from "../../site/media";
 
 
 const QUERY = `*[_type == "masterGuide"][0]{
+  "heroId": heroImage.asset->_id, "cabinId": cabinImage.asset->_id,
   heroHeadline, heroSubtitle, heroCtaLabel, orientHeadline, orientLead,
   cabinHeadline, cabinIntro, cabinCtaLabel, closingStatement,
   sections[]{key, label, heading, paragraphs, items},
-  falls[]{ "name": waterfall->name, "slug": waterfall->slug.current, tier, imagePosition,
+  falls[]{ "imageId": image.asset->_id, "name": waterfall->name, "slug": waterfall->slug.current, tier, imagePosition,
            micro, blurb, distinguishing, chooserCue, spiceLabel, tags, group, labels },
   chooserTypes[]{ label, copy, "falls": falls[]->name }
 }`;
@@ -27,7 +30,7 @@ export async function fetchMasterGuide(): Promise<MasterGuideContent> {
     name: f.name,
     slug: f.slug,
     tier: f.tier ?? "support",
-    image: f.slug === "tvindefossen" ? TVINDE_CARD_IMAGE : "",
+    image: f.slug === "tvindefossen" ? TVINDE_CARD_IMAGE : mediaSrc(f.imageId),
     imagePosition: f.imagePosition ?? "center",
     micro: f.micro ?? "",
     blurb: f.blurb ?? "",
@@ -40,13 +43,13 @@ export async function fetchMasterGuide(): Promise<MasterGuideContent> {
   }));
 
   return {
-    heroImage: { src: "" },
+    heroImage: { src: mediaSrc(d.heroId) },
     heroHeadline: d.heroHeadline ?? "",
     heroSubtitle: d.heroSubtitle ?? "",
     heroCtaLabel: d.heroCtaLabel ?? "",
     orientHeadline: d.orientHeadline ?? "",
     orientLead: d.orientLead ?? "",
-    cabinImage: { src: "" },
+    cabinImage: { src: mediaSrc(d.cabinId) },
     cabinHeadline: d.cabinHeadline ?? "",
     cabinIntro: d.cabinIntro ?? "",
     cabinCtaLabel: d.cabinCtaLabel ?? "",
