@@ -13,6 +13,7 @@ import MasterGuidePage from "../page-types/master-guide/index.tsx";
 import LearnArticlePage from "../page-types/learn-article/index.tsx";
 import ExperienceArticlePage from "../page-types/experience-article/index.tsx";
 import CultureFeedPage from "../page-types/culture-feed/index.tsx";
+import ObserveFeedPage from "../page-types/observe-feed/index.tsx";
 import PreviewIndex from "../page-types/preview-index/PreviewIndex.astro";
 import { buildSitePages, PAGE_TYPES, type SitePage } from "../site/pages";
 
@@ -36,5 +37,6 @@ if (!(PAGE_TYPES as readonly string[]).includes(page.type)) {
 	{page.type === "learnArticle" && <LearnArticlePage client:load content={page.content} />}
 	{page.type === "experienceArticle" && <ExperienceArticlePage client:load content={page.content} />}
 	{page.type === "cultureFeed" && <CultureFeedPage client:load content={page.content} />}
+	{page.type === "observeFeed" && <ObserveFeedPage client:load content={page.content} />}
 	{page.type === "previewIndex" && <PreviewIndex links={page.content.links} />}
 </SiteLayout>

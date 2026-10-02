@@ -1,7 +1,8 @@
 # vosswaterfalls.no v2: orientation
 
-Astro site on Cloudflare Workers; content from Sanity (project `h6p17t07`,
-dataset `production`) fetched at build time. A push to `main` deploys.
+Astro site on Cloudflare Workers; content from Sanity (project `r102svrh`,
+private dataset `production`) fetched at build time with the build variable
+`SANITY_READ_TOKEN`. A push to `main` deploys.
 
 ## How the site is put together
 
@@ -47,5 +48,5 @@ place changes are pushed.
 
 ## Leftovers
 
-`/dynamic`, `src/pages/img/`, and the starter's blog/about/rss pages predate
+`src/pages/img/`, and the starter's blog/about/rss pages predate
 this structure and are listed as allowed leftovers in the build check.

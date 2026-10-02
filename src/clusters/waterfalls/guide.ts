@@ -5,9 +5,8 @@
 
 import type { MasterGuideContent, GuideFall } from "../../page-types/master-guide/MasterGuide";
 import { R2_BASE } from "../../lib/tvindefossen";
+import { sanityFetch } from "../../site/sanity";
 
-const SANITY_PROJECT = "h6p17t07";
-const SANITY_DATASET = "production";
 
 const QUERY = `*[_type == "masterGuide"][0]{
   heroHeadline, heroSubtitle, heroCtaLabel, orientHeadline, orientLead,
@@ -21,12 +20,7 @@ const QUERY = `*[_type == "masterGuide"][0]{
 const TVINDE_CARD_IMAGE = `${R2_BASE}/tvinde-hero-1600.webp`;
 
 export async function fetchMasterGuide(): Promise<MasterGuideContent> {
-  const url =
-    `https://${SANITY_PROJECT}.api.sanity.io/v2025-02-19/data/query/${SANITY_DATASET}` +
-    `?query=${encodeURIComponent(QUERY)}&perspective=published`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`Sanity fetch failed: ${res.status} ${await res.text()}`);
-  const d = (await res.json()).result;
+  const d = await sanityFetch<any>(QUERY);
   if (!d) throw new Error("Sanity: masterGuide document not found");
 
   const falls: GuideFall[] = (d.falls ?? []).filter((f: any) => f.slug).map((f: any) => ({

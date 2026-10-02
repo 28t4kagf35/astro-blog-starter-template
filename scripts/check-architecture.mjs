@@ -19,7 +19,6 @@ import { fileURLToPath } from "node:url";
 // Route files allowed besides the front controller. Leftovers from the stack
 // proof and the starter template; to be removed in the pre-launch clean-up.
 const LEGACY_ROUTES = [
-  "dynamic.astro",
   "img/[width]/[file].ts",
   "about.astro",
   "blog/index.astro",

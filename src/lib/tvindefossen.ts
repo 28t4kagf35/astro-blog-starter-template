@@ -1,25 +1,5 @@
-// Shared between the static (build-time, prerendered) Tvindefossen page and
-// the /dynamic (on-demand) comparison page: the Sanity fetch and the two
-// image-URL strategies being A/B'd for the media-pipeline test.
-
-const SANITY_PROJECT = "h6p17t07"; // vssw-sept2026
-const SANITY_DATASET = "production";
-const QUERY = `*[_type == "waterfall" && name == "Tvindefossen"][0]{
-  name, tagline, heroImagePosition, lede, spiceActive, experiential,
-  practicalBody, quickFacts[]{label, sub}, planDetails[]{label, body},
-  closeupPhoto, widePhoto, nextFall, continueCards
-}`;
-
-export async function fetchTvindefossenDoc() {
-  const url =
-    `https://${SANITY_PROJECT}.api.sanity.io/v2025-02-19/data/query/${SANITY_DATASET}` +
-    `?query=${encodeURIComponent(QUERY)}&perspective=published`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`Sanity fetch failed: ${res.status} ${await res.text()}`);
-  const doc = (await res.json()).result;
-  if (!doc) throw new Error("Sanity: Tvindefossen waterfall document not found");
-  return doc;
-}
+// Tvindefossen media helpers: image addresses on R2 (pre-baked variants) and
+// the on-request /img/ route.
 
 export const R2_BASE = "https://pub-fd4b2549c703402ea7ec95adbd09f66d.r2.dev";
 

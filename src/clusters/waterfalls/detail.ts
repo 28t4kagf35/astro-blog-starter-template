@@ -13,9 +13,8 @@ import {
   CLOSE_WIDTHS,
   CLOSE_SIZES,
 } from "../../lib/tvindefossen";
+import { sanityFetch } from "../../site/sanity";
 
-const SANITY_PROJECT = "h6p17t07";
-const SANITY_DATASET = "production";
 
 const QUERY = `*[_type == "waterfall"] | order(name asc){
   name, "slug": slug.current, tagline, heroImagePosition, lede, spiceActive,
@@ -27,12 +26,7 @@ const QUERY = `*[_type == "waterfall"] | order(name asc){
 export type WaterfallDoc = Record<string, any> & { slug: string; name: string };
 
 export async function fetchAllWaterfalls(): Promise<WaterfallDoc[]> {
-  const url =
-    `https://${SANITY_PROJECT}.api.sanity.io/v2025-02-19/data/query/${SANITY_DATASET}` +
-    `?query=${encodeURIComponent(QUERY)}&perspective=published`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`Sanity fetch failed: ${res.status} ${await res.text()}`);
-  const docs = (await res.json()).result as WaterfallDoc[];
+  const docs = await sanityFetch<WaterfallDoc[]>(QUERY);
   if (!docs?.length) throw new Error("Sanity: no waterfall documents found");
   const noSlug = docs.filter((d) => !d.slug);
   if (noSlug.length) {

@@ -35,3 +35,23 @@ export async function experiencePages(): Promise<SitePage[]> {
     content: { clusterLabel: "Experience · Voss", title: d.title, subtitle: d.subtitle ?? undefined, heroImage: "", body: d.body ?? [] },
   }));
 }
+
+export async function observePages(): Promise<SitePage[]> {
+  const doc = await sanityFetch<{ title?: string; blocks?: Array<{ _key: string; caption?: string; mediaFilename?: string }> } | null>(
+    `*[_type == "observePage"][0]{ title, blocks[]{ _key, caption, mediaFilename } }`,
+  );
+  if (!doc) return [];
+  const title = doc.title ?? "Observe";
+  return [
+    {
+      path: `${NATURE_PATH}/observe`,
+      type: "observeFeed",
+      title: `${title} — Voss Waterfalls`,
+      description: doc.blocks?.[0]?.caption,
+      listLabel: `${title} — feed`,
+      content: {
+        blocks: (doc.blocks ?? []).map((b) => ({ id: b._key, image: "", mediaFilename: b.mediaFilename, caption: b.caption ?? "" })),
+      },
+    },
+  ];
+}
