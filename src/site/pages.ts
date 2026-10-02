@@ -6,7 +6,9 @@ import type { MasterGuideContent } from "../page-types/master-guide";
 import type { LearnArticleContent } from "../page-types/learn-article";
 import { waterfallsClusterPages } from "../clusters/waterfalls";
 import type { ExperienceArticleContent } from "../page-types/experience-article";
+import type { CultureFeedContent } from "../page-types/culture-feed";
 import { learnPages, experiencePages } from "../clusters/nature";
+import { cultureHistoryPages } from "../clusters/culture-history";
 
 type Base = { path: string; title: string; description?: string; listLabel: string };
 
@@ -15,15 +17,17 @@ export type SitePage =
   | (Base & { type: "masterGuide"; content: MasterGuideContent })
   | (Base & { type: "learnArticle"; content: LearnArticleContent })
   | (Base & { type: "experienceArticle"; content: ExperienceArticleContent })
+  | (Base & { type: "cultureFeed"; content: CultureFeedContent })
   | (Base & { type: "previewIndex"; content: { links: Array<{ href: string; label: string }> } });
 
-export const PAGE_TYPES = ["waterfall", "masterGuide", "learnArticle", "experienceArticle", "previewIndex"] as const;
+export const PAGE_TYPES = ["waterfall", "masterGuide", "learnArticle", "experienceArticle", "cultureFeed", "previewIndex"] as const;
 
 export async function buildSitePages(): Promise<SitePage[]> {
   const pages: SitePage[] = [
     ...(await waterfallsClusterPages()),
     ...(await learnPages()),
     ...(await experiencePages()),
+    ...(await cultureHistoryPages()),
   ];
 
   // "/" until Home is built: a list of what exists.
