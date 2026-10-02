@@ -2,13 +2,14 @@
 // /explore/nature/experience/<slug>, /explore/nature/observe).
 import type { SitePage } from "../../site/pages";
 import { sanityFetch, requireSlugs } from "../../site/sanity";
+import { mediaSrc } from "../../site/media";
 
 export const NATURE_PATH = "explore/nature";
 
-type ArticleDoc = { title: string; slug: string; subtitle?: string; body?: Array<{ kind: "paragraph" | "heading" | "break"; text?: string }> };
+type ArticleDoc = { title: string; slug: string; subtitle?: string; heroId?: string; body?: Array<{ kind: "paragraph" | "heading" | "break"; text?: string }> };
 
 const articleQuery = (type: string) =>
-  `*[_type == "${type}"] | order(title asc){ title, "slug": slug.current, subtitle, body[]{kind, text} }`;
+  `*[_type == "${type}"] | order(title asc){ title, "slug": slug.current, subtitle, "heroId": heroImage.asset->_id, body[]{kind, text} }`;
 
 const firstParagraph = (d: ArticleDoc) => d.body?.find((b) => b.kind === "paragraph" && b.text)?.text;
 
@@ -20,7 +21,7 @@ export async function learnPages(): Promise<SitePage[]> {
     title: `${d.title} — Voss Waterfalls`,
     description: firstParagraph(d),
     listLabel: `Learn — ${d.title}`,
-    content: { clusterLabel: "Learn", title: d.title, subtitle: d.subtitle ?? undefined, heroImage: "", body: d.body ?? [] },
+    content: { clusterLabel: "Learn", title: d.title, subtitle: d.subtitle ?? undefined, heroImage: mediaSrc(d.heroId), body: d.body ?? [] },
   }));
 }
 
@@ -32,13 +33,13 @@ export async function experiencePages(): Promise<SitePage[]> {
     title: `${d.title} — Voss Waterfalls`,
     description: firstParagraph(d),
     listLabel: `Experience — ${d.title}`,
-    content: { clusterLabel: "Experience · Voss", title: d.title, subtitle: d.subtitle ?? undefined, heroImage: "", body: d.body ?? [] },
+    content: { clusterLabel: "Experience · Voss", title: d.title, subtitle: d.subtitle ?? undefined, heroImage: mediaSrc(d.heroId), body: d.body ?? [] },
   }));
 }
 
 export async function observePages(): Promise<SitePage[]> {
-  const doc = await sanityFetch<{ title?: string; blocks?: Array<{ _key: string; caption?: string; mediaFilename?: string }> } | null>(
-    `*[_type == "observePage"][0]{ title, blocks[]{ _key, caption, mediaFilename } }`,
+  const doc = await sanityFetch<{ title?: string; blocks?: Array<{ _key: string; caption?: string; mediaFilename?: string; imageId?: string }> } | null>(
+    `*[_type == "observePage"][0]{ title, blocks[]{ _key, caption, mediaFilename, "imageId": image.asset->_id } }`,
   );
   if (!doc) return [];
   const title = doc.title ?? "Observe";
@@ -50,7 +51,7 @@ export async function observePages(): Promise<SitePage[]> {
       description: doc.blocks?.[0]?.caption,
       listLabel: `${title} — feed`,
       content: {
-        blocks: (doc.blocks ?? []).map((b) => ({ id: b._key, image: "", mediaFilename: b.mediaFilename, caption: b.caption ?? "" })),
+        blocks: (doc.blocks ?? []).map((b) => ({ id: b._key, image: mediaSrc(b.imageId), mediaFilename: b.mediaFilename, caption: b.caption ?? "" })),
       },
     },
   ];

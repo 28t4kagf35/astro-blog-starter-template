@@ -40,6 +40,8 @@ const DARK = {
 
 // ── Content (Sanity type `activity`, build time) ─────────────────────────────
 export interface ActivityContent {
+  heroImage: string;   // "" = no image yet
+  wideImage: string;
   title: string;
   breadcrumb: string;
   locationLine: string;
@@ -60,6 +62,15 @@ export interface ActivityContent {
 }
 
 type Stat = { label: string; value: string };
+
+// Photo that fills its box, or the honest stand-in when there is none.
+function Photo({ src, position, label, style }: { src: string; position: string; label: string; style?: CSSProperties }) {
+  return src ? (
+    <img src={src} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: position }} />
+  ) : (
+    <Unavailable label={label} style={style} />
+  );
+}
 
 // Same-size stand-in for media that does not exist yet.
 function Unavailable({ label, style }: { label: string; style?: CSSProperties }) {
@@ -191,7 +202,7 @@ export function Activity({ content }: { content: ActivityContent } & ShellPagePr
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", minHeight: 580 }}>
           {/* Left: terrain photograph */}
           <div style={{ position: "relative", overflow: "hidden" }}>
-            <Unavailable label="Image unavailable" style={{ minHeight: 580 }} />
+            <Photo src={c.heroImage} position="center 28%" label="Image unavailable" style={{ minHeight: 580 }} />
             <div style={{
               position: "absolute",
               top: 0, right: 0, bottom: 0, left: 0,
@@ -268,7 +279,7 @@ export function Activity({ content }: { content: ActivityContent } & ShellPagePr
             height: isMobile ? 520 : 560,
             overflow: "hidden",
           }}>
-            <Unavailable label="Image unavailable" style={{ alignItems: "flex-start", paddingTop: "30%" }} />
+            <Photo src={c.heroImage} position="center 28%" label="Image unavailable" style={{ alignItems: "flex-start", paddingTop: "30%" }} />
             <div style={{
               position: "absolute",
               top: 0, right: 0, bottom: 0, left: 0,
@@ -357,10 +368,10 @@ export function Activity({ content }: { content: ActivityContent } & ShellPagePr
       {/* ── WIDE TERRAIN IMAGE ────────────────────────────────────────────── */}
       <div style={{
         height: isMobile ? 240 : isTablet ? 320 : 400,
-        overflow: "hidden",
+        overflow: "hidden", position: "relative",
         margin: `${isMobile ? "2rem" : "2.75rem"} 0`,
       }}>
-        <Unavailable label="Image unavailable" />
+        <Photo src={c.wideImage} position="center 44%" label="Image unavailable" />
       </div>
 
       {/* ── ON THE ROUTE ──────────────────────────────────────────────────── */}

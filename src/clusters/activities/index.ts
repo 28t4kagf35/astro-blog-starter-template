@@ -2,11 +2,13 @@
 import type { SitePage } from "../../site/pages";
 import type { ActivityContent } from "../../page-types/activity";
 import { sanityFetch, requireSlugs } from "../../site/sanity";
+import { mediaSrc } from "../../site/media";
 
 export const ACTIVITIES_PATH = "activities";
 
 type Section = { key: string; heading?: string; paragraphs?: string[]; items?: string[] };
 type ActivityDoc = {
+  heroId?: string; wideId?: string;
   title: string; slug: string; lede?: string; locationLine?: string;
   stats?: Array<{ label: string; value: string }>; highlights?: string[]; sections?: Section[];
 };
@@ -23,6 +25,8 @@ function toContent(d: ActivityDoc): ActivityContent {
   const variants = sec("LEDE_VARIANTS").paragraphs ?? [];
   const lede = d.lede ?? "";
   return {
+    heroImage: mediaSrc(d.heroId),
+    wideImage: mediaSrc(d.wideId),
     title: d.title,
     breadcrumb: sec("BREADCRUMB").items?.[0] ?? "",
     locationLine: d.locationLine ?? "",
@@ -45,7 +49,7 @@ function toContent(d: ActivityDoc): ActivityContent {
 
 export async function activityPages(): Promise<SitePage[]> {
   const docs = requireSlugs("activity", await sanityFetch<ActivityDoc[]>(
-    `*[_type == "activity"] | order(title asc){ title, "slug": slug.current, lede, locationLine,
+    `*[_type == "activity"] | order(title asc){ title, "slug": slug.current, "heroId": heroImage.asset->_id, "wideId": wideTerrainImage.asset->_id, lede, locationLine,
       stats[]{label, value}, highlights, sections[]{key, heading, paragraphs, items} }`,
   ));
   return docs.map((d): SitePage => ({

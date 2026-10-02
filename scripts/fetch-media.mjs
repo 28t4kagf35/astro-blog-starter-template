@@ -16,6 +16,16 @@ const DATASET = "production";
 // Which Sanity documents carry media, and the folder each one gets.
 const SOURCES = [
   { folder: "home", query: `*[_type == "homePage"][0].media[]{ "slot": slot, "url": image.asset->url }` },
+  {
+    folder: "pages",
+    // images attached directly to documents: articles, activity, observe feed
+    query: `[
+      ...*[_type in ["learnArticle","experienceArticle","cultureArticle","activity"]].heroImage.asset->{ "slot": _id, "url": url },
+      ...*[_type == "activity"].wideTerrainImage.asset->{ "slot": _id, "url": url },
+      ...*[_type == "observePage"][0].blocks[].image.asset->{ "slot": _id, "url": url }
+    ]`,
+    slotOf: (id) => id.split("-")[1].slice(0, 12),
+  },
   { folder: "cabin", query: `*[_type == "cabinPage"][0].media[]{ "slot": slot, "url": image.asset->url }` },
 ];
 
@@ -31,10 +41,12 @@ export async function fetchMedia(root) {
     console.warn("[media] SANITY_READ_TOKEN is not set: no media fetched, pages will show 'image unavailable'.");
     return;
   }
-  for (const { folder, query } of SOURCES) {
+  for (const { folder, query, slotOf } of SOURCES) {
     try {
       const listUrl = `https://${PROJECT}.api.sanity.io/v2025-02-19/data/query/${DATASET}?query=${encodeURIComponent(query)}&perspective=published`;
-      const items = (JSON.parse((await fetchOk(listUrl, token)).toString()).result ?? []).filter((m) => m?.slot && m?.url);
+      const items = (JSON.parse((await fetchOk(listUrl, token)).toString()).result ?? []).filter((m) => m?.slot && m?.url)
+        .map((m) => ({ ...m, slot: slotOf ? slotOf(m.slot) : m.slot }))
+        .filter((m, i, all) => all.findIndex((x) => x.slot === m.slot) === i);
       const dir = join(root, "public", "media", folder);
       mkdirSync(dir, { recursive: true });
       let done = 0;

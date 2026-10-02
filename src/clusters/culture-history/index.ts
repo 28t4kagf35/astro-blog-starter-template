@@ -4,10 +4,11 @@
 import type { SitePage } from "../../site/pages";
 import type { CultureFeedContent } from "../../page-types/culture-feed";
 import { sanityFetch, requireSlugs } from "../../site/sanity";
+import { mediaSrc } from "../../site/media";
 
 export const CULTURE_PATH = "explore/culture-history";
 
-type Doc = { title: string; slug: string; teaser?: string[]; expanded?: string[] };
+type Doc = { title: string; slug: string; heroId?: string; teaser?: string[]; expanded?: string[] };
 
 // Sanity has no order field for the cards yet: the design export's card order
 // is used; cards it does not list follow alphabetically.
@@ -32,7 +33,7 @@ const DESIGN_ORDER = [
 export async function cultureHistoryPages(): Promise<SitePage[]> {
   const docs = requireSlugs(
     "cultureArticle",
-    await sanityFetch<Doc[]>(`*[_type == "cultureArticle"] | order(title asc){ title, "slug": slug.current, teaser, expanded }`),
+    await sanityFetch<Doc[]>(`*[_type == "cultureArticle"] | order(title asc){ title, "slug": slug.current, "heroId": heroImage.asset->_id, teaser, expanded }`),
   );
   const rank = (slug: string) => {
     const i = DESIGN_ORDER.indexOf(slug);
@@ -45,11 +46,11 @@ export async function cultureHistoryPages(): Promise<SitePage[]> {
     title: d.title,
     teaser: d.teaser ?? [],
     expanded: d.expanded ?? [],
-    image: "",
+    image: mediaSrc(d.heroId),
     imagePosition: "center",
   }));
   const feed = (focusSlug?: string): CultureFeedContent => ({
-    heroImage: { src: "", position: "center 25%" },
+    heroImage: { src: mediaSrc(docs.find((d) => d.heroId)?.heroId), position: "center 25%" },
     cards,
     focusSlug,
   });
