@@ -1,0 +1,34 @@
+---
+// FRONT CONTROLLER: the one route file of the site.
+// Every page is rendered here: inside SiteLayout (the frame), as a registered
+// page type. Page types are wrapped by the shell (src/shell), which mounts the
+// global elements. There is no other way for a page to exist.
+//
+// To add a page type: build it in src/page-types/<name>/ (default export =
+// withShell(Component)), add its pages in its cluster under src/clusters/,
+// add its type to SitePage in src/site/pages.ts, and add one branch below.
+import SiteLayout from "../layouts/SiteLayout.astro";
+import WaterfallPage from "../page-types/waterfall/index.tsx";
+import MasterGuidePage from "../page-types/master-guide/index.tsx";
+import PreviewIndex from "../page-types/preview-index/PreviewIndex.astro";
+import { buildSitePages, PAGE_TYPES, type SitePage } from "../site/pages";
+
+export async function getStaticPaths() {
+	const pages = await buildSitePages();
+	return pages.map((page) => ({
+		params: { path: page.path === "" ? undefined : page.path },
+		props: { page },
+	}));
+}
+
+const { page } = Astro.props as { page: SitePage };
+if (!(PAGE_TYPES as readonly string[]).includes(page.type)) {
+	throw new Error(`No page type registered for "${(page as any).type}" (address "/${(page as any).path}").`);
+}
+---
+
+<SiteLayout title={page.title} description={page.description}>
+	{page.type === "waterfall" && <WaterfallPage client:load content={page.content} />}
+	{page.type === "masterGuide" && <MasterGuidePage client:load content={page.content} />}
+	{page.type === "previewIndex" && <PreviewIndex links={page.content.links} />}
+</SiteLayout>

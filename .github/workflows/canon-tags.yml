@@ -1,0 +1,42 @@
+name: Canon tags
+
+# Creates the git tag for every canon global listed in globals.lock.json
+# (field "canonTag") that does not have its tag yet. The tag is placed on the
+# commit that is being pushed. Existing tags are never moved.
+
+on:
+  push:
+    branches: [main]
+    paths: ["globals.lock.json"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Create missing canon tags
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          node -e '
+            const lock = require("./globals.lock.json");
+            for (const [name, g] of Object.entries(lock.globals || {})) {
+              if (g.status === "canon" && g.canonTag) console.log(g.canonTag + "\t" + name + " " + g.version);
+            }
+          ' | while IFS=$'\t' read -r tag label; do
+            if git rev-parse -q --verify "refs/tags/$tag" >/dev/null; then
+              echo "exists: $tag"
+            else
+              git tag -a "$tag" -m "Canon: $label (globals.lock.json)"
+              git push origin "refs/tags/$tag"
+              echo "created: $tag"
+            fi
+          done

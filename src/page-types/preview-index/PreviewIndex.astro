@@ -1,0 +1,31 @@
+---
+// Built-in page type for "/" until Home (Sanity type `homePage`) is built:
+// a plain list of the pages that exist on the preview.
+// Styles are SCOPED to this component: every page shares one route file, so
+// page-wide (global) styles here would leak onto all other pages.
+interface Props {
+	links: Array<{ href: string; label: string }>;
+}
+const { links } = Astro.props;
+---
+
+<main class="preview-index">
+	<p class="mono">Home unavailable · preview build</p>
+	<h1>Waterfalls</h1>
+	<p>Home is not built yet. Waterfall pages:</p>
+	<ul>
+		{links.map((l) => (
+			<li><a href={l.href}>{l.label}</a></li>
+		))}
+	</ul>
+</main>
+
+<style>
+	.preview-index { max-width: 640px; margin: 0 auto; padding: 3rem 1.25rem; color: #C4BEB4; font-family: system-ui, sans-serif; }
+	.preview-index h1 { color: #EDE9E2; font-weight: 300; font-size: 1.6rem; margin: 0 0 0.5rem; }
+	.preview-index p { margin: 0 0 2rem; font-size: 0.9rem; line-height: 1.6; }
+	.preview-index ul { list-style: none; padding: 0; margin: 0; }
+	.preview-index li { border-top: 1px solid #2C2A28; }
+	.preview-index a { display: block; padding: 0.9rem 0; color: #EDE9E2; text-decoration: none; }
+	.preview-index .mono { font-family: ui-monospace, monospace; font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: #6E6A65; }
+</style>

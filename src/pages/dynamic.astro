@@ -8,8 +8,7 @@ import SiteLayout from "../layouts/SiteLayout.astro";
 // this pipeline choice side by side with the static one.
 export const prerender = false;
 
-import TvindefossenApp from "../components/TvindefossenApp";
-import type { WaterfallContent } from "../components/tvindefossen/TvindefossenFinal";
+import WaterfallPage, { type WaterfallContent } from "../page-types/waterfall/index.tsx";
 import {
   fetchTvindefossenDoc,
   buildDynamicImage,
@@ -56,5 +55,5 @@ const content: WaterfallContent = {
 ---
 
 <SiteLayout title={`${content.name} — Voss Waterfalls (dynamic media)`} description={content.lede}>
-	<TvindefossenApp client:load content={content} />
+	<WaterfallPage client:load content={content} />
 </SiteLayout>

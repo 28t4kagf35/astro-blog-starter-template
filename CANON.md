@@ -26,9 +26,13 @@ measured on 2026-10-01.
 - Component: SiteNav from the webglobals export
   (`replit-cloudflare-adapter-shell`), unchanged.
 
-**Files (git blob ids at approval)**
-- `src/components/shell/component.tsx`: `da4b9ccf876c1504633aeefd5edbaf5037d42d9e`
-- `src/components/shell/navBehavior.ts`: `aba32a6f0fdd85b03d5390eb4f26d2459a9a1e3a`
+**Files** (moved on 2026-10-02 into the globals structure; content unchanged,
+same git blob ids as at approval)
+- `src/globals/navbar/component.tsx`: `da4b9ccf876c1504633aeefd5edbaf5037d42d9e`
+- `src/globals/navbar/behavior.ts`: `aba32a6f0fdd85b03d5390eb4f26d2459a9a1e3a`
 
-**Where it applies:** every page through the one rule file
-(`navBehavior.ts`), used by the page hosts inside `SiteLayout`.
+**Locked as** navbar 1.0.0 in `globals.lock.json`; the build fails if the
+files in `src/globals/navbar/` differ from the lock.
+
+**Where it applies:** every page. The shell (`src/shell/SiteShell.tsx`) is the
+only place the navbar is mounted, and every page type goes through the shell.

@@ -5,19 +5,19 @@
 // audio). Every other waterfall gets empty image sources, which the component
 // renders as correctly sized "image unavailable" boxes. No borrowed photos.
 
-import type { WaterfallContent } from "../components/tvindefossen/TvindefossenFinal";
+import type { WaterfallContent } from "../../page-types/waterfall/WaterfallDetail";
 import {
   buildStaticImage,
   HERO_WIDTHS,
   HEADON_WIDTHS,
   CLOSE_WIDTHS,
   CLOSE_SIZES,
-} from "./tvindefossen";
+} from "../../lib/tvindefossen";
 
 const SANITY_PROJECT = "h6p17t07";
 const SANITY_DATASET = "production";
 
-const QUERY = `*[_type == "waterfall" && defined(slug.current)] | order(name asc){
+const QUERY = `*[_type == "waterfall"] | order(name asc){
   name, "slug": slug.current, tagline, heroImagePosition, lede, spiceActive,
   experientialLead, experiential, practicalBody,
   quickFacts[]{label, sub}, planDetails[]{label, body},
@@ -34,6 +34,10 @@ export async function fetchAllWaterfalls(): Promise<WaterfallDoc[]> {
   if (!res.ok) throw new Error(`Sanity fetch failed: ${res.status} ${await res.text()}`);
   const docs = (await res.json()).result as WaterfallDoc[];
   if (!docs?.length) throw new Error("Sanity: no waterfall documents found");
+  const noSlug = docs.filter((d) => !d.slug);
+  if (noSlug.length) {
+    throw new Error(`Sanity: waterfall without a slug: ${noSlug.map((d) => d.name).join(", ")}. Every published waterfall needs a slug to get an address.`);
+  }
   return docs;
 }
 

@@ -3,8 +3,8 @@
 // Only Tvindefossen has a real image (R2). The design's borrowed photos for the
 // hero, the other cards and the cabin band are not carried over.
 
-import type { MasterGuideContent, GuideFall } from "../components/masterguide/MasterGuideFinal";
-import { R2_BASE } from "./tvindefossen";
+import type { MasterGuideContent, GuideFall } from "../../page-types/master-guide/MasterGuide";
+import { R2_BASE } from "../../lib/tvindefossen";
 
 const SANITY_PROJECT = "h6p17t07";
 const SANITY_DATASET = "production";

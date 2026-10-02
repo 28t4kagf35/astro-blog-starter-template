@@ -2,8 +2,9 @@
 // SiteLayout: the ONE page frame for every vosswaterfalls.no v2 page.
 // Owns everything site-wide in <head> (noindex, fonts, favicon) and loads
 // src/styles/site.css (global behaviour). Pages pass a title/description and
-// put only their own content in the slot. Navbar look + hide/reveal live in
-// src/components/shell/navBehavior.ts.
+// put only their own content in the slot. It is used by the front controller
+// (src/pages/[...path].astro). Global elements (navbar, …) are mounted by the
+// shell (src/shell), from src/globals.
 import "../styles/site.css";
 
 interface Props {
