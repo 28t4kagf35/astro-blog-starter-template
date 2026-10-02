@@ -1,0 +1,13 @@
+{
+  "name": "navbar",
+  "version": "1.1.0",
+  "status": "draft (awaiting owner approval)",
+  "source": {
+    "repo": "28t4kagf35/DESIGN-EXPORTS-PUSH-COPY",
+    "branch": "webglobals",
+    "commit": "dc77131",
+    "path": "replit-cloudflare-adapter-shell",
+    "note": "component.tsx and its contract files are byte-identical to the source. behavior.ts was written in this repo and approved on the live preview (reference: canon Replit mockup nav/SiteNavDesktop). 1.0.1 and 1.1.0 change component.tsx: see CHANGELOG."
+  },
+  "basedOn": "1.0.0 (canon/navbar-v1)"
+}
