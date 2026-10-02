@@ -3,19 +3,33 @@ import type { SitePage } from "../../site/pages";
 import type { HomeContent } from "../../page-types/home";
 import { sanityFetch } from "../../site/sanity";
 
+// Same widths scripts/fetch-media.mjs writes to public/media/home/.
+const WIDTHS = [640, 1080, 1600, 2400];
+
 type Section = { key: string; heading?: string; label?: string; paragraphs?: string[]; items?: string[] };
-type HomeDoc = { heroHeadline?: string; heroSubtitle?: string; evidenceQuote?: string; evidenceAttribution?: string; sections?: Section[] };
+type HomeDoc = { media?: Array<{ slot?: string; position?: string; alt?: string; hasImage?: boolean }>; heroHeadline?: string; heroSubtitle?: string; evidenceQuote?: string; evidenceAttribution?: string; sections?: Section[] };
 
 export async function homePages(): Promise<SitePage[]> {
   const d = await sanityFetch<HomeDoc | null>(
-    `*[_type == "homePage"][0]{ heroHeadline, heroSubtitle, evidenceQuote, evidenceAttribution,
+    `*[_type == "homePage"][0]{ media[]{slot, position, alt, "hasImage": defined(image.asset)}, heroHeadline, heroSubtitle, evidenceQuote, evidenceAttribution,
       sections[]{key, heading, label, paragraphs, items} }`,
   );
   if (!d) return [];
   const sec = (key: string): Section => d.sections?.find((s) => s.key === key) ?? { key };
   const door = (key: string) => ({ label: sec(key).heading ?? "", note: sec(key).label ?? "", tagline: sec(key).paragraphs?.[0] ?? "" });
   const depth = sec("B2_DEPTH");
+  const images: HomeContent["images"] = {};
+  for (const m of d.media ?? []) {
+    if (!m.slot || !m.hasImage) continue;
+    images[m.slot] = {
+      src: `/media/home/${m.slot}-1600.webp`,
+      srcSet: WIDTHS.map((w) => `/media/home/${m.slot}-${w}.webp ${w}w`).join(", "),
+      position: m.position || "center center",
+      alt: m.alt ?? "",
+    };
+  }
   const content: HomeContent = {
+    images,
     heroLabel: sec("B1_WORLD").label ?? "",
     heroHeadline: d.heroHeadline ?? "",
     heroSubtitle: d.heroSubtitle ?? "",

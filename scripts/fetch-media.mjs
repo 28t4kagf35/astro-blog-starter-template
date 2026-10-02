@@ -15,6 +15,7 @@ const DATASET = "production";
 
 // Which Sanity documents carry media, and the folder each one gets.
 const SOURCES = [
+  { folder: "home", query: `*[_type == "homePage"][0].media[]{ "slot": slot, "url": image.asset->url }` },
   { folder: "cabin", query: `*[_type == "cabinPage"][0].media[]{ "slot": slot, "url": image.asset->url }` },
 ];
 

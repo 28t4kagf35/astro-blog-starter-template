@@ -2,13 +2,15 @@
  * Page type: Home (Sanity type `homePage`).
  * Ported from the design export (homepage_20260521_1100); its built-in text is
  * replaced by the `content` prop (Sanity, build time). Differences:
- *  - Every image: none yet -> same-size "image unavailable" boxes.
+ *  - Images come from Sanity (fetched at build); one stored focal position
+ *    per image is used wherever the design reuses it. A picture without an
+ *    image shows a same-size "image unavailable" box.
  *  - Fonts come from the frame.
  *  - Width is read after load and follows window resizing.
  *  - Doors, "read the article" and the bottom row are not links yet.
  */
 
-import React, { useEffect, useState, type CSSProperties } from "react";
+import React, { createContext, useContext, useEffect, useState, type CSSProperties } from "react";
 import type { ShellPageProps } from "../../shell/SiteShell";
 
 // ── Inlined brand constants ──────────────────────────────────────────────────
@@ -48,6 +50,8 @@ const ON_IMAGE = {
 // ── Content (Sanity type `homePage`, build time) ─────────────────────────────
 
 export interface HomeContent {
+  /** Images by picture (from Sanity). A picture without an image shows "image unavailable". */
+  images: Record<string, { src: string; srcSet: string; position: string; alt: string }>;
   heroLabel: string;
   heroHeadline: string;
   heroSubtitle: string;
@@ -81,6 +85,29 @@ function NoImage({ abs, top }: { abs?: boolean; top?: string }) {
     </div>
   );
 }
+
+const ImgCtx = createContext<HomeContent["images"]>({});
+
+/** The image for one picture on the page, or the honest placeholder. */
+function Pic({ slot, abs, top }: { slot: string; abs?: boolean; top?: string }) {
+  const img = useContext(ImgCtx)[slot];
+  if (!img) return <NoImage abs={abs} top={top} />;
+  return (
+    <img
+      src={img.src}
+      srcSet={img.srcSet}
+      sizes="100vw"
+      alt={img.alt}
+      style={{
+        ...(abs ? { position: "absolute", top: 0, right: 0, bottom: 0, left: 0 } : {}),
+        width: "100%", height: "100%", objectFit: "cover", objectPosition: img.position, display: "block",
+      }}
+    />
+  );
+}
+
+const doorSlot = (label: string, c: HomeContent) =>
+  label === c.doors[0]?.label ? "waterfalls" : label === c.doors[1]?.label ? "lichen" : "cabin";
 
 const OVERLAY_HERO = "linear-gradient(to bottom, rgba(20,17,14,0.48) 0%, rgba(20,17,14,0.30) 45%, rgba(26,23,20,0.80) 100%)";
 const OVERLAY_DOOR = "linear-gradient(to bottom, rgba(14,12,10,0.14) 0%, rgba(14,12,10,0.20) 40%, rgba(14,12,10,0.86) 100%)";
@@ -136,6 +163,7 @@ export function Home({ content }: { content: HomeContent } & ShellPageProps) {
   const subHero = isMobile ? "0.88rem" : isTablet ? "0.95rem" : "1rem";
 
   return (
+    <ImgCtx.Provider value={c.images}>
     <div data-scroll style={{ ...SS4_SMOOTHING, background: tk.bg, minHeight: "100vh", color: tk.body, overflowX: "hidden" }}>
 
       {/* ══ B1 · WORLD ══ */}
@@ -149,7 +177,7 @@ export function Home({ content }: { content: HomeContent } & ShellPageProps) {
         alignItems:     "center",
         justifyContent: "center",
       }}>
-        <NoImage abs top="24vh" />
+        <Pic slot="hero" abs top="24vh" />
         <div style={{ position: "absolute", top: 0, right: 0, bottom: 0, left: 0, background: OVERLAY_HERO }} />
 
         <div style={{
@@ -243,21 +271,21 @@ export function Home({ content }: { content: HomeContent } & ShellPageProps) {
             marginBottom:        "2.4rem",
           }}>
             <div style={{ gridColumn: 1, gridRow: "1 / 3", position: "relative", overflow: "hidden" }}>
-              <NoImage />
+              <Pic slot="waterfalls" />
               <ImageLabel>{c.mosaicLabels[0]}</ImageLabel>
             </div>
             <div style={{ gridColumn: 2, gridRow: 1, position: "relative", overflow: "hidden" }}>
-              <NoImage />
+              <Pic slot="lichen" />
               <ImageLabel>{c.mosaicLabels[1]}</ImageLabel>
             </div>
             {isDesktop && (
               <div style={{ gridColumn: 3, gridRow: 1, position: "relative", overflow: "hidden" }}>
-                <NoImage />
+                <Pic slot="culture" />
                 <ImageLabel>{c.mosaicLabels[2]}</ImageLabel>
               </div>
             )}
             <div style={{ gridColumn: isTablet ? 2 : "2 / 4", gridRow: 2, position: "relative", overflow: "hidden" }}>
-              <NoImage />
+              <Pic slot="cabin" />
               <ImageLabel>{c.mosaicLabels[3]}</ImageLabel>
             </div>
           </div>
@@ -266,7 +294,7 @@ export function Home({ content }: { content: HomeContent } & ShellPageProps) {
         {/* Mobile: single featured image */}
         {isMobile && (
           <div style={{ position: "relative", width: "100%", aspectRatio: "4 / 3", overflow: "hidden", marginBottom: "2rem" }}>
-            <NoImage />
+            <Pic slot="waterfalls" />
             <ImageLabel>{c.mosaicLabels[0]}</ImageLabel>
           </div>
         )}
@@ -337,7 +365,7 @@ export function Home({ content }: { content: HomeContent } & ShellPageProps) {
               { d: doorC, h: "44vw" },
             ].filter(x => x.d).map(({ d, h }) => ({ ...d, tagline: oneLine(d.tagline), h })).map(d => (
               <div key={d.label} style={{ position: "relative", overflow: "hidden", height: d.h }}>
-                <NoImage abs />
+                <Pic slot={doorSlot(d.label, c)} abs />
                 <div style={{ position: "absolute", top: 0, right: 0, bottom: 0, left: 0, background: OVERLAY_DOOR }} />
                 <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "0 1.25rem 1.4rem" }}>
                   <p style={{ margin: "0 0 0.4rem", fontFamily: FONT_MONO, fontSize: "0.55rem", letterSpacing: "0.16em", color: ON_IMAGE.muted, textTransform: "uppercase" as const }}>{d.note}</p>
@@ -353,7 +381,7 @@ export function Home({ content }: { content: HomeContent } & ShellPageProps) {
         {isTablet && (
           <div style={{ display: "grid", gridTemplateColumns: "1.6fr 1fr", gap: "3px", minHeight: "560px" }}>
             <div style={{ position: "relative", overflow: "hidden" }}>
-              <NoImage abs />
+              <Pic slot="waterfalls" abs />
               <div style={{ position: "absolute", top: 0, right: 0, bottom: 0, left: 0, background: OVERLAY_DOOR }} />
               <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "0 1.4rem 1.8rem" }}>
                 <p style={{ margin: "0 0 0.55rem", fontFamily: FONT_MONO, fontSize: "0.58rem", letterSpacing: "0.18em", color: ON_IMAGE.muted, textTransform: "uppercase" as const }}>{doorW?.note}</p>
@@ -364,7 +392,7 @@ export function Home({ content }: { content: HomeContent } & ShellPageProps) {
             <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
               {[doorL, doorC].filter(Boolean).map(d => ({ ...d, tagline: oneLine(d.tagline) })).map(d => (
                 <div key={d.label} style={{ flex: 1, position: "relative", overflow: "hidden" }}>
-                  <NoImage abs />
+                  <Pic slot={doorSlot(d.label, c)} abs />
                   <div style={{ position: "absolute", top: 0, right: 0, bottom: 0, left: 0, background: OVERLAY_DOOR }} />
                   <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "0 1.2rem 1.4rem" }}>
                     <p style={{ margin: "0 0 0.4rem", fontFamily: FONT_MONO, fontSize: "0.55rem", letterSpacing: "0.16em", color: ON_IMAGE.muted, textTransform: "uppercase" as const }}>{d.note}</p>
@@ -386,7 +414,7 @@ export function Home({ content }: { content: HomeContent } & ShellPageProps) {
               { d: doorC, flex: 1.0 },
             ].filter(x => x.d).map(({ d, flex }) => ({ ...d, flex })).map(d => (
               <div key={d.label} style={{ flex: d.flex, position: "relative", overflow: "hidden", minHeight: "680px" }}>
-                <NoImage abs />
+                <Pic slot={doorSlot(d.label, c)} abs />
                 <div style={{ position: "absolute", top: 0, right: 0, bottom: 0, left: 0, background: OVERLAY_DOOR }} />
                 <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, padding: "0 1.4rem 1.8rem" }}>
                   <p style={{ margin: "0 0 0.55rem", fontFamily: FONT_MONO, fontSize: "0.58rem", letterSpacing: "0.18em", color: ON_IMAGE.muted, textTransform: "uppercase" as const }}>{d.note}</p>
@@ -452,7 +480,7 @@ export function Home({ content }: { content: HomeContent } & ShellPageProps) {
           </div>
 
           <div style={{ position: "relative", overflow: "hidden", height: isMobile ? "200px" : "240px" }}>
-            <NoImage />
+            <Pic slot="lichen" />
             <div style={{ position: "absolute", top: 0, right: 0, bottom: 0, left: 0, border: `1px solid ${tk.rule}` }} />
           </div>
         </div>
@@ -500,5 +528,6 @@ export function Home({ content }: { content: HomeContent } & ShellPageProps) {
         </div>
       </div>
     </div>
+    </ImgCtx.Provider>
   );
 }
