@@ -2,7 +2,8 @@
  * Page type: The Cabin (Sanity type `cabinPage`).
  * Ported from the design export (cabin_20260521_1100); its built-in text is
  * replaced by the `content` prop (Sanity, build time). Differences:
- *  - Every image: none yet -> same-size "image unavailable" boxes.
+ *  - Images come from Sanity (fetched at build). A place without an image
+ *    shows a same-size "image unavailable" box.
  *  - NO stay planner (not part of this build). The "stay" panel that opened as
  *    a full-screen overlay in the design is a plain section in the page flow
  *    (no scroll takeover, no "Back to The Cabin" bar).
@@ -12,10 +13,12 @@
  *    (Sanity holds only part of them).
  *  - Fonts come from the frame. Width is read after load.
  */
-import React, { useEffect, useRef, useState, type CSSProperties } from "react";
+import React, { createContext, useContext, useEffect, useRef, useState, type CSSProperties } from "react";
 import type { ShellPageProps } from "../../shell/SiteShell";
 
 export interface CabinContent {
+  /** Images by place on the page (from Sanity). A place without an image shows "image unavailable". */
+  images: Record<string, { src: string; srcSet: string; position: string; alt: string }>;
   heroLabel: string;
   placeHeading: string;
   placeParagraphs: string[];
@@ -74,6 +77,30 @@ function NoImage({ abs, style }: { abs?: boolean; style?: CSSProperties }) {
   );
 }
 
+const ImgCtx = createContext<CabinContent["images"]>({});
+
+/** The image for one place on the page, or the honest placeholder. */
+function Pic({ slot, abs, filter, style }: { slot: string; abs?: boolean; filter?: string; style?: CSSProperties }) {
+  const img = useContext(ImgCtx)[slot];
+  if (!img) return <NoImage abs={abs} style={style} />;
+  return (
+    <img
+      src={img.src}
+      srcSet={img.srcSet}
+      sizes="100vw"
+      alt={img.alt}
+      loading="lazy"
+      style={{
+        ...(abs ? { position: "absolute", top: 0, right: 0, bottom: 0, left: 0 } : {}),
+        width: "100%", height: "100%", objectFit: "cover", objectPosition: img.position, display: "block", filter,
+      }}
+    />
+  );
+}
+
+const VIGNETTE = "radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,0.45) 100%)";
+const shade = (bg: string): CSSProperties => ({ position: "absolute", top: 0, right: 0, bottom: 0, left: 0, background: bg, pointerEvents: "none" });
+
 const lines = (t: string) => t.split("\n").map((l, i, a) => <span key={i}>{l}{i < a.length - 1 && <br />}</span>);
 
 // ── B1 · Arrival ───────────────────────────────────────────────────────────
@@ -82,7 +109,8 @@ function Arrival({ c }: { c: CabinContent }) {
   const m = w < BP_SM, t = w >= BP_SM && w < BP_MD;
   return (
     <div style={{ position: "relative", width: "100%", height: "95vh", minHeight: 640, overflow: "hidden", background: CABIN_BG, ...SMOOTH }}>
-      <NoImage abs />
+      <Pic slot="hero" abs />
+      <div style={shade("rgba(14,12,10,0.10)")} />
       <div style={{ position: "absolute", top: 0, right: 0, bottom: 0, left: 0, background: `linear-gradient(to bottom, transparent 55%, rgba(19,20,22,0.55) 78%, rgba(19,20,22,1) 100%)`, pointerEvents: "none" }} />
       <div style={{ position: "absolute", bottom: m ? "2.4rem" : t ? "3rem" : "3.8rem", left: 0, width: "100%", padding: m ? "0 28px" : t ? "0 40px" : "0 60px", boxSizing: "border-box", pointerEvents: "none", zIndex: 4 }}>
         <div style={{ fontFamily: FONT_SS4, fontWeight: 300, fontStyle: "italic", fontVariationSettings: OPSZ_DISPLAY, lineHeight: 1.06, letterSpacing: "-0.01em", fontSize: m ? "1.95rem" : t ? "2.4rem" : "2.85rem", color: "rgba(237,233,226,0.60)" }}>
@@ -100,7 +128,13 @@ function PlaceAndLand({ c }: { c: CabinContent }) {
   const sidePad = m ? "40px 28px 48px" : t ? "56px 40px 56px" : "72px 60px";
   const cap = { fontFamily: FONT_SS4, fontSize: "1rem", fontVariationSettings: OPSZ_TEXT, lineHeight: 1.65, color: "rgba(237,233,226,1)", margin: 0, fontStyle: "italic" as const, whiteSpace: "pre-line" as const };
   const capBox = { position: "absolute" as const, bottom: 0, left: 0, right: 0, padding: m ? "80px 28px 36px" : t ? "120px 36px 44px" : "160px 36px 52px", background: "linear-gradient(to top, rgba(19,20,22,1) 0%, rgba(19,20,22,0.6) 60%, rgba(19,20,22,0) 100%)" };
-  const photo = (h?: string | number) => <div style={{ position: "relative", overflow: "hidden", height: h }}><NoImage abs /></div>;
+  const photo = (h?: string | number) => (
+    <div style={{ position: "relative", overflow: "hidden", height: h }}>
+      <Pic slot="river" abs />
+      <div style={shade("rgba(19,20,22,0.28)")} />
+      <div style={shade(t ? "linear-gradient(to bottom, transparent 50%, rgba(19,20,22,0.5) 100%)" : "linear-gradient(to right, rgba(19,20,22,0.35) 0%, transparent 40%)")} />
+    </div>
+  );
   return (
     <div style={{ position: "relative", ...SMOOTH }}>
       <div style={{ background: CABIN_BG, display: "grid", gridTemplateColumns: t ? "1fr" : "45% 55%", minHeight: t ? undefined : 560 }}>
@@ -117,7 +151,8 @@ function PlaceAndLand({ c }: { c: CabinContent }) {
       </div>
       <div style={{ background: CABIN_BG, color: DARK.cream }}>
         <section style={{ position: "relative", width: "100%", minHeight: m ? 220 : t ? 280 : 380, display: "flex", flexDirection: "column", justifyContent: "flex-end", overflow: "hidden" }}>
-          <NoImage abs />
+          <Pic slot="aerial" abs />
+          <div style={shade("rgba(19,20,22,0.30)")} />
           <div style={{ position: "absolute", top: 0, right: 0, bottom: 0, left: 0, background: "linear-gradient(rgba(19,20,22,0) 40%, rgba(19,20,22,0.6) 60%, rgba(19,20,22,0.98) 100%)" }} />
           <div style={{ position: "relative", zIndex: 1, padding: m ? "0 24px 36px" : t ? "0 40px 44px" : "0 60px 52px", maxWidth: 600 }}>
             <p style={{ fontFamily: FONT_SS4, fontSize: m ? "1.35rem" : "2rem", fontVariationSettings: OPSZ_DISPLAY, lineHeight: 1.25, color: ON_IMAGE.head, margin: "0 0 16px", fontWeight: 300, letterSpacing: "-0.01em", fontStyle: "italic" }}>{c.riversHeading}</p>
@@ -126,11 +161,11 @@ function PlaceAndLand({ c }: { c: CabinContent }) {
         </section>
         <section style={{ display: "grid", gridTemplateColumns: t ? "1fr" : "1fr 1fr", gap: 0 }}>
           <div style={{ position: "relative", overflow: "hidden", height: t ? undefined : "100%", minHeight: t ? 220 : 360 }}>
-            <NoImage abs />
+            <Pic slot="gorge" abs filter="brightness(0.9) saturate(0.9)" />
             <div style={capBox}><p style={cap}>{c.gorgeCaption}</p></div>
           </div>
           <div style={{ position: "relative", overflow: "hidden", height: t ? undefined : "100%", minHeight: t ? 220 : 360 }}>
-            <NoImage abs />
+            <Pic slot="cascade" abs filter="brightness(0.9) saturate(0.9)" />
             <div style={capBox}><p style={cap}>{c.cascadeCaption}</p></div>
           </div>
         </section>
@@ -164,7 +199,7 @@ function Ritual({ c }: { c: CabinContent }) {
   return (
     <div style={{ background: CABIN_BG, color: DARK.cream, position: "relative", ...SMOOTH }}>
       <div ref={heroRef} style={{ position: "relative", width: "100%", height: m ? "70vh" : "62vw", maxHeight: m ? undefined : 700, minHeight: m ? 400 : 360, overflow: "hidden" }}>
-        <NoImage />
+        <Pic slot="fire" />
       </div>
       <div style={{ overflow: "hidden", maxHeight: revealed ? 2000 : 0, transition: revealed ? "max-height 1.4s cubic-bezier(0.4, 0, 0.2, 1)" : "none" }}>
         <div style={{ position: "relative", overflow: "hidden", background: CABIN_BG }}>
@@ -172,7 +207,10 @@ function Ritual({ c }: { c: CabinContent }) {
             {c.ritual.map((text, i) => (
               <div key={i} style={{ width: `${100 / n}%`, flexShrink: 0, display: "grid", gridTemplateColumns: m ? "1fr" : "2fr 1.5fr" }}>
                 <div style={{ padding: m ? "32px 28px 8px" : "48px 32px 48px" }}>
-                  <div style={{ position: "relative", aspectRatio: "1/1", overflow: "hidden" }}><NoImage abs /></div>
+                  <div style={{ position: "relative", aspectRatio: "1/1", overflow: "hidden" }}>
+                    <Pic slot={`ritual-${i + 1}`} abs />
+                    <div style={shade(VIGNETTE)} />
+                  </div>
                 </div>
                 <div style={{ padding: m ? "8px 28px 40px" : "48px 40px 48px 8px", display: "flex", flexDirection: "column", justifyContent: "center" }}>
                   <p style={{ fontFamily: FONT_SS4, fontSize: m ? "1rem" : "1.08rem", fontStyle: "italic", fontWeight: 300, lineHeight: 1.7, color: DARK.body, margin: 0, whiteSpace: "pre-line" }}>{text}</p>
@@ -198,7 +236,7 @@ function LivedRhythm({ c }: { c: CabinContent }) {
   const side = m ? 28 : t ? 40 : 60;
   return (
     <div style={{ background: CABIN_BG, position: "relative", ...SMOOTH }}>
-      <div style={{ width: "100%", height: m ? "54vw" : "48vw", overflow: "hidden" }}><NoImage /></div>
+      <div style={{ width: "100%", height: m ? "54vw" : "48vw", overflow: "hidden" }}><Pic slot="lived" filter="brightness(0.88) saturate(0.79) sepia(0.18)" /></div>
       <div style={{ padding: `${m ? 56 : 80}px ${side}px` }}>
         <p style={{ fontFamily: FONT_SS4, fontSize: m ? "1.08rem" : t ? "1.18rem" : "1.32rem", fontStyle: "italic", fontWeight: 300, fontVariationSettings: OPSZ_TEXT, lineHeight: 1.58, color: DARK.body, margin: 0, maxWidth: 560 }}>{c.longingLine}</p>
         <p style={{ fontFamily: FONT_SS4, fontSize: m ? "1.08rem" : t ? "1.2rem" : "1.38rem", fontStyle: "italic", fontWeight: 300, fontVariationSettings: OPSZ_TEXT, lineHeight: 1.52, color: DARK.body, margin: `${m ? "2.5rem" : "3.75rem"} 0 0`, maxWidth: 520 }}>{lines(c.longingClosing)}</p>
@@ -209,10 +247,11 @@ function LivedRhythm({ c }: { c: CabinContent }) {
 
 // ── B5 · Masonry and the interior gallery ─────────────────────────────────
 const GAP = "0.4rem";
-function Tile({ entered, delay = 0, area, aspect, children }: { entered: boolean; delay?: number; area?: string; aspect?: string; children?: React.ReactNode }) {
+function Tile({ slot, entered, delay = 0, area, aspect, children }: { slot: string; entered: boolean; delay?: number; area?: string; aspect?: string; children?: React.ReactNode }) {
   return (
     <div style={{ position: "relative", overflow: "hidden", background: "#141210", gridArea: area, aspectRatio: aspect, opacity: entered ? 1 : 0, transform: entered ? "scale(1)" : "scale(1.04)", transition: `opacity 1.1s ease ${delay}s, transform 1.3s ease ${delay}s` }}>
-      <NoImage abs />
+      <Pic slot={slot} abs />
+      <div style={shade(VIGNETTE)} />
       {children}
     </div>
   );
@@ -239,17 +278,17 @@ function Masonry({ c }: { c: CabinContent }) {
     <div ref={bandRef} style={{ background: "#0C0B0A", ...SMOOTH, cursor: open ? "default" : "pointer" }} onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} onClick={openGallery}>
       {desktop ? (
         <div style={{ display: "grid", padding: GAP, gap: GAP, gridTemplateColumns: "repeat(5, 1fr)", gridTemplateRows: "38vh 38vh", gridTemplateAreas: `"a a b c c" "d d e e e"`, paddingBottom: open ? 0 : GAP }}>
-          <Tile entered={entered} area="a" />
-          <Tile entered={entered} delay={0.1} area="b" />
-          <Tile entered={entered} delay={0.2} area="c" />
-          <Tile entered={entered} delay={0.3} area="d" />
-          <Tile entered={entered} delay={0.4} area="e">{fade(open)}</Tile>
+          <Tile slot="masonry-a" entered={entered} area="a" />
+          <Tile slot="masonry-b" entered={entered} delay={0.1} area="b" />
+          <Tile slot="masonry-c" entered={entered} delay={0.2} area="c" />
+          <Tile slot="masonry-d" entered={entered} delay={0.3} area="d" />
+          <Tile slot="masonry-e" entered={entered} delay={0.4} area="e">{fade(open)}</Tile>
         </div>
       ) : (
         <>
-          <div style={row("1fr")}><Tile entered={entered} aspect="21/8" /></div>
-          <div style={row("3fr 2fr")}><Tile entered={entered} delay={0.1} aspect="4/3" /><Tile entered={entered} delay={0.2} aspect="4/3" /></div>
-          <div style={{ ...row("2fr 3fr"), paddingBottom: open ? 0 : GAP }}><Tile entered={entered} delay={0.3} aspect="3/4" /><Tile entered={entered} delay={0.4} aspect="3/4">{fade(open)}</Tile></div>
+          <div style={row("1fr")}><Tile slot="masonry-a" entered={entered} aspect="21/8" /></div>
+          <div style={row("3fr 2fr")}><Tile slot="masonry-b" entered={entered} delay={0.1} aspect="4/3" /><Tile slot="masonry-c" entered={entered} delay={0.2} aspect="4/3" /></div>
+          <div style={{ ...row("2fr 3fr"), paddingBottom: open ? 0 : GAP }}><Tile slot="masonry-d" entered={entered} delay={0.3} aspect="3/4" /><Tile slot="masonry-e" entered={entered} delay={0.4} aspect="3/4">{fade(open)}</Tile></div>
         </>
       )}
       {!open && (
@@ -260,9 +299,9 @@ function Masonry({ c }: { c: CabinContent }) {
       )}
       <div style={{ overflow: "hidden", maxHeight: open ? "4000px" : 0, transition: open ? "max-height 2s cubic-bezier(0.4, 0, 0.2, 1)" : "max-height 0.6s ease" }}>
         <div style={{ opacity: inn ? 1 : 0, transform: inn ? "translateY(0)" : "translateY(20px)", transition: "opacity 0.9s ease 0.25s, transform 0.9s ease 0.25s" }}>
-          <div style={row("1fr")}><Tile entered={inn} aspect="16/7" /></div>
-          <div style={row("1fr 1fr")}><Tile entered={inn} delay={0.1} aspect="4/3" /><Tile entered={inn} delay={0.18} aspect="4/3" /></div>
-          <div style={row("3fr 2fr", true)}><Tile entered={inn} delay={0.24} aspect="4/3" /><Tile entered={inn} delay={0.3} aspect="4/3" /></div>
+          <div style={row("1fr")}><Tile slot="interior-1" entered={inn} aspect="16/7" /></div>
+          <div style={row("1fr 1fr")}><Tile slot="interior-2" entered={inn} delay={0.1} aspect="4/3" /><Tile slot="interior-3" entered={inn} delay={0.18} aspect="4/3" /></div>
+          <div style={row("3fr 2fr", true)}><Tile slot="interior-4" entered={inn} delay={0.24} aspect="4/3" /><Tile slot="interior-5" entered={inn} delay={0.3} aspect="4/3" /></div>
           <div style={{ display: "flex", justifyContent: "center", paddingBottom: "1.8rem" }}>
             <span style={{ fontFamily: FONT_MONO, fontSize: "0.54rem", letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(200,185,154,0.15)" }}>{c.stayLabel}</span>
           </div>
@@ -309,7 +348,8 @@ function Stay({ c }: { c: CabinContent }) {
       </div>
 
       <div style={{ position: "relative", height: w <= BP_SM ? "62vh" : "70vh", borderBottom: `1px solid ${DARK.divider}`, overflow: "hidden", background: DARK.surface }}>
-        <NoImage abs />
+        <Pic slot="stay" abs />
+        <div style={shade("linear-gradient(to bottom, rgba(14,12,10,0.35) 0%, rgba(14,12,10,0.72) 55%, rgba(14,12,10,0.97) 100%)")} />
       </div>
 
       <div style={{ background: LIGHT.surface }}>
@@ -379,6 +419,7 @@ function Footer() {
 
 export function Cabin({ content }: { content: CabinContent } & ShellPageProps) {
   return (
+    <ImgCtx.Provider value={content.images}>
     <div style={{ background: CABIN_BG, minHeight: "100vh", overflowX: "hidden", ...SMOOTH }}>
       <Arrival c={content} />
       <PlaceAndLand c={content} />
@@ -388,5 +429,6 @@ export function Cabin({ content }: { content: CabinContent } & ShellPageProps) {
       <Stay c={content} />
       <Footer />
     </div>
+    </ImgCtx.Provider>
   );
 }

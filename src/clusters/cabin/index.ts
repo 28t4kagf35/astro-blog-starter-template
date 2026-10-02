@@ -3,17 +3,31 @@ import type { SitePage } from "../../site/pages";
 import type { CabinContent } from "../../page-types/cabin";
 import { sanityFetch } from "../../site/sanity";
 
+// Same widths scripts/fetch-media.mjs writes to public/media/cabin/.
+const WIDTHS = [640, 1080, 1600, 2400];
+
 type Section = { key: string; heading?: string; label?: string; paragraphs?: string[]; items?: string[] };
-type CabinDoc = { amenities?: Array<{ title: string; items?: string[] }>; sections?: Section[] };
+type CabinDoc = { media?: Array<{ slot?: string; position?: string; alt?: string; hasImage?: boolean }>; amenities?: Array<{ title: string; items?: string[] }>; sections?: Section[] };
 
 export async function cabinPages(): Promise<SitePage[]> {
   const d = await sanityFetch<CabinDoc | null>(
-    `*[_type == "cabinPage"][0]{ amenities[]{title, items}, sections[]{key, heading, label, paragraphs, items} }`,
+    `*[_type == "cabinPage"][0]{ media[]{slot, position, alt, "hasImage": defined(image.asset)}, amenities[]{title, items}, sections[]{key, heading, label, paragraphs, items} }`,
   );
   if (!d) return [];
   const sec = (key: string): Section => d.sections?.find((s) => s.key === key) ?? { key };
   const place = sec("B2_PLACE"), rivers = sec("B2_RIVERS"), longing = sec("B4_LONGING");
+  const images: CabinContent["images"] = {};
+  for (const m of d.media ?? []) {
+    if (!m.slot || !m.hasImage) continue;
+    images[m.slot] = {
+      src: `/media/cabin/${m.slot}-1600.webp`,
+      srcSet: WIDTHS.map((w) => `/media/cabin/${m.slot}-${w}.webp ${w}w`).join(", "),
+      position: m.position || "center center",
+      alt: m.alt ?? "",
+    };
+  }
   const content: CabinContent = {
+    images,
     heroLabel: sec("B1_ARRIVAL").label ?? "",
     placeHeading: place.heading ?? "",
     placeParagraphs: place.paragraphs ?? [],
@@ -33,7 +47,7 @@ export async function cabinPages(): Promise<SitePage[]> {
     closeHeading: sec("B7_CLOSE").heading ?? "",
   };
   return [{
-    path: "the-cabin",
+    path: "cabin",
     type: "cabin",
     title: "The Cabin — Voss Waterfalls",
     description: place.paragraphs?.[0],

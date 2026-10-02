@@ -2,11 +2,11 @@
   "_about": "Lock for global elements (src/globals). The build fails when a global's files differ from its entry here. An entry changes only when a new version is approved.",
   "globals": {
     "navbar": {
-      "version": "1.0.0",
-      "status": "canon",
-      "canonTag": "canon/navbar-v1",
+      "version": "1.0.1",
+      "status": "draft",
       "source": "28t4kagf35/DESIGN-EXPORTS-PUSH-COPY@dc77131 (branch webglobals, replit-cloudflare-adapter-shell) + behavior.ts approved 2026-10-01",
-      "fingerprint": "1e3bcc9c0caa96d0bb786dcd7dccf1dc00d67a1d238208d72b248fe2a2dfb32f"
+      "fingerprint": "8ff80b00e9a386fa4e0e93e0cfdf9fbd1c4c7aae412a1b7c932bd4f45e2a131f",
+      "basedOn": "1.0.0 (canon/navbar-v1)"
     }
   }
 }

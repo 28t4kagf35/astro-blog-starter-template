@@ -161,6 +161,12 @@ export function SiteNav({
     if (hoverOpenRef.current) { clearTimeout(hoverOpenRef.current); hoverOpenRef.current = null; }
     hoverCloseRef.current = setTimeout(() => setExploreOpen(false), 150);
   }
+  // Moving onto any other top-level item releases the open panel.
+  function onOtherItemMouseEnter() {
+    if (hoverOpenRef.current)  { clearTimeout(hoverOpenRef.current);  hoverOpenRef.current  = null; }
+    if (hoverCloseRef.current) { clearTimeout(hoverCloseRef.current); hoverCloseRef.current = null; }
+    setExploreOpen(false);
+  }
   function onPanelMouseEnter() {
     if (hoverCloseRef.current) { clearTimeout(hoverCloseRef.current); hoverCloseRef.current = null; }
   }
@@ -268,15 +274,14 @@ export function SiteNav({
     userSelect: "none",
   };
 
-  // Desktop EXPLORE panel cluster titles
+  // Desktop EXPLORE panel cluster titles (Raleway, like every other desktop nav text)
   const panelClusterTitle: CSSProperties = {
-    fontFamily: FONT_SS4,
-    fontSize: "1.35rem",
-    fontWeight: 300,
-    fontStyle: "italic",
-    fontVariationSettings: SS4_OPSZ_TEXT,
-    letterSpacing: "0.01em",
-    textTransform: "none",
+    fontFamily: FONT_LBL,
+    fontSize: "0.92rem",
+    fontWeight: 400,
+    fontStyle: "normal",
+    letterSpacing: "0.14em",
+    textTransform: "uppercase",
     color: DARK.head,
     opacity: 1,
     lineHeight: 1.2,
@@ -345,7 +350,7 @@ export function SiteNav({
                   ref={isExplore ? exploreRef : undefined}
                   style={{ ...navItem, opacity, transition: "opacity 280ms ease-out" }}
                   onClick={isExplore ? onExploreClick : undefined}
-                  onMouseEnter={isExplore ? onExploreMouseEnter : undefined}
+                  onMouseEnter={isExplore ? onExploreMouseEnter : onOtherItemMouseEnter}
                 >
                   {item}
                 </span>

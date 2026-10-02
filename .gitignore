@@ -200,3 +200,6 @@ dist
 
 ### Astro ###
 .astro/
+
+# Page media fetched from Sanity at build time (scripts/fetch-media.mjs)
+public/media/
