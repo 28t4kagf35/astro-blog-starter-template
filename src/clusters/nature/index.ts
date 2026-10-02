@@ -23,3 +23,15 @@ export async function learnPages(): Promise<SitePage[]> {
     content: { clusterLabel: "Learn", title: d.title, subtitle: d.subtitle ?? undefined, heroImage: "", body: d.body ?? [] },
   }));
 }
+
+export async function experiencePages(): Promise<SitePage[]> {
+  const docs = requireSlugs("experienceArticle", await sanityFetch<ArticleDoc[]>(articleQuery("experienceArticle")));
+  return docs.map((d): SitePage => ({
+    path: `${NATURE_PATH}/experience/${d.slug}`,
+    type: "experienceArticle",
+    title: `${d.title} — Voss Waterfalls`,
+    description: firstParagraph(d),
+    listLabel: `Experience — ${d.title}`,
+    content: { clusterLabel: "Experience · Voss", title: d.title, subtitle: d.subtitle ?? undefined, heroImage: "", body: d.body ?? [] },
+  }));
+}
