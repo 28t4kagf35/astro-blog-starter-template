@@ -9,7 +9,7 @@
  *   open   — full-screen dark overlay (mobile hamburger / any breakpoint trigger)
  *
  * Layout:
- *   desktop/tablet  [VOSS WATERFALLS]   NORWAY · EXPLORE · ACTIVITIES · THE CABIN   [♪]  NO · EN
+ *   desktop/tablet  [VOSS WATERFALLS]   NORWAY · EXPLORE · ACTIVITIES · THE CABIN   [♪]
  *   mobile          [VOSS WATERFALLS]                                                 [♪]  [≡]
  *
  * Host integration:
@@ -88,13 +88,6 @@ const OVERLAY_BG = "rgba(19, 20, 22, 0.93)";
 const BAR_H        = 56;
 const MOBILE_BAR_H = 68;
 
-const LANGUAGES = ["EN", "NO", "DE", "FR", "NL"] as const;
-type Lang = typeof LANGUAGES[number];
-const LAUNCH_ACTIVE: Lang[] = ["EN"];
-// Launch is English only, so the language labels are hidden. Set to true to
-// bring back the language selector (desktop) and the language row (mobile).
-const SHOW_LANGUAGE = false;
-
 // ── Component ─────────────────────────────────────────────────────────────────
 export function SiteNav({
   scrollState      = "soft",
@@ -116,9 +109,6 @@ export function SiteNav({
   const [exploreOpen,  setExploreOpen]  = useState(false);
   const [audioOn,      setAudioOn]      = useState(false);
   const [isDarkInt,    setIsDarkInt]    = useState(true);
-  const [lang,         setLang]         = useState<Lang>("EN");
-  const [langOpen,     setLangOpen]     = useState(false);
-  const [langHover,    setLangHover]    = useState<Lang | null>(null);
 
   const navRef        = useRef<HTMLDivElement>(null);
   const exploreRef    = useRef<HTMLSpanElement>(null);
@@ -375,53 +365,6 @@ export function SiteNav({
             </button>
           )}
 
-          {/* Language selector — desktop/tablet only (hidden at launch: SHOW_LANGUAGE) */}
-          {SHOW_LANGUAGE && !overlayOpen && !isMobile && (
-            <div style={{ position: "relative", height: BAR_H, display: "flex", alignItems: "center" }}>
-              <span
-                style={{ ...monoCtrl, display: "flex", alignItems: "center", gap: "0.28em" }}
-                onClick={() => setLangOpen(v => !v)}
-              >
-                {lang}
-                <span style={{ fontSize: "0.5rem", opacity: 0.5, lineHeight: 1 }}>▾</span>
-              </span>
-              {langOpen && (
-                <div style={{
-                  position: "absolute", top: "calc(100% + 4px)", right: 0,
-                  background: "rgba(22,20,18,0.68)", backdropFilter: "blur(20px)",
-                  WebkitBackdropFilter: "blur(20px)",
-                  border: "1px solid rgba(255,255,255,0.09)",
-                  borderRadius: 4, padding: "5px 0", minWidth: 68, zIndex: 1100,
-                }}>
-                  {LANGUAGES.filter(l => l !== lang).map(l => {
-                    const active = LAUNCH_ACTIVE.includes(l);
-                    const hovered = langHover === l;
-                    return (
-                      <div
-                        key={l}
-                        onClick={() => { if (active) { setLang(l); setLangOpen(false); } }}
-                        onMouseEnter={() => setLangHover(l)}
-                        onMouseLeave={() => setLangHover(null)}
-                        style={{
-                          fontFamily: FONT_LBL, fontSize: "0.76rem", fontWeight: 400,
-                          letterSpacing: "0.14em", textTransform: "uppercase",
-                          padding: "7px 16px",
-                          color: DARK.head,
-                          cursor: active ? "pointer" : "default",
-                          display: "flex", justifyContent: "flex-end",
-                          background: hovered ? "rgba(255,255,255,0.06)" : "transparent",
-                          transition: "background 120ms ease",
-                        }}
-                      >
-                        <span>{l}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-          )}
-
           {/* Hamburger / close — mobile only */}
           {isMobile && (
             <button
@@ -537,25 +480,6 @@ export function SiteNav({
           <div style={{ flex: 1 }} />
 
           <div style={{ display: "flex", flexDirection: "column", gap: "2.4rem", paddingBottom: "2.4rem" }}>
-            {SHOW_LANGUAGE && <div style={{ display: "flex", gap: "2.2rem", alignItems: "center" }}>
-              {LANGUAGES.map(l => {
-                const active = LAUNCH_ACTIVE.includes(l);
-                return (
-                  <span
-                    key={l}
-                    onClick={() => { if (active) setLang(l); }}
-                    style={{
-                      fontFamily: FONT_MONO, fontSize: "0.9rem", letterSpacing: "0.08em",
-                      color: l === lang ? DARK.head : DARK.body,
-                      opacity: l === lang ? 1 : 0.68,
-                      cursor: active ? "pointer" : "default",
-                    }}
-                  >
-                    {l}
-                  </span>
-                );
-              })}
-            </div>}
             <span style={{ fontFamily: FONT_LBL, fontSize: "0.92rem", fontWeight: 300, letterSpacing: "0.30em", color: DARK.head, opacity: 0.30, textTransform: "uppercase" }}>
               vosswaterfalls.no
             </span>
