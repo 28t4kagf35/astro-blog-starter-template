@@ -12,6 +12,8 @@ import { learnPages, experiencePages, observePages } from "../clusters/nature";
 import { cultureHistoryPages } from "../clusters/culture-history";
 import type { ActivityContent } from "../page-types/activity";
 import { activityPages } from "../clusters/activities";
+import type { HomeContent } from "../page-types/home";
+import { homePages } from "../clusters/home";
 
 type Base = { path: string; title: string; description?: string; listLabel: string };
 
@@ -23,12 +25,14 @@ export type SitePage =
   | (Base & { type: "cultureFeed"; content: CultureFeedContent })
   | (Base & { type: "observeFeed"; content: ObserveFeedContent })
   | (Base & { type: "activity"; content: ActivityContent })
+  | (Base & { type: "home"; content: HomeContent })
   | (Base & { type: "previewIndex"; content: { links: Array<{ href: string; label: string }> } });
 
-export const PAGE_TYPES = ["waterfall", "masterGuide", "learnArticle", "experienceArticle", "cultureFeed", "observeFeed", "activity", "previewIndex"] as const;
+export const PAGE_TYPES = ["waterfall", "masterGuide", "learnArticle", "experienceArticle", "cultureFeed", "observeFeed", "activity", "home", "previewIndex"] as const;
 
 export async function buildSitePages(): Promise<SitePage[]> {
   const pages: SitePage[] = [
+    ...(await homePages()),
     ...(await waterfallsClusterPages()),
     ...(await learnPages()),
     ...(await experiencePages()),
@@ -37,9 +41,10 @@ export async function buildSitePages(): Promise<SitePage[]> {
     ...(await activityPages()),
   ];
 
-  // "/" until Home is built: a list of what exists.
-  pages.unshift({
-    path: "",
+  // "/preview": a plain list of every page, for walking the site before the
+  // menu and the links between pages exist.
+  pages.push({
+    path: "preview",
     type: "previewIndex",
     title: "Voss Waterfalls — preview",
     listLabel: "Preview index",
