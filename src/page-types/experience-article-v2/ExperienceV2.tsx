@@ -146,15 +146,17 @@ export function ExperienceV2({ content }: { content: ExperienceV2Content }) {
   // CTRL-1: isDark hardened to true; toggle buttons stripped
   const tk = DARK;
 
-  const PAD_H   = isMobile ? "20px"    : isTablet ? "28px"   : "32px";
+  // Pass 2/3: canon gutters and section spacing
+  const PAD_H   = isMobile ? "1.25rem" : isTablet ? "1.4rem" : "1rem";
+  const SEC = isMobile ? "3.5rem" : isTablet ? "4.5rem" : "5.5rem";
   const COL     = isDesktop ? "680px"  : isTablet ? "600px"  : "100%";
   const heroH   = isMobile ? "52vh"    : isTablet ? "58vh"   : "62vh";
-  const heroBot = isMobile ? "44px"    : isTablet ? "64px"   : "80px";
+  const heroBot = SEC;
   const h1Sz    = isMobile ? "1.5rem"  : isTablet ? "1.9rem" : "2.4rem";
   const lblSz   = isMobile ? "0.82rem" : isTablet ? "0.94rem" : "1.06rem";
   const bodySz  = isMobile ? "0.95rem" : isTablet ? "1.0rem"  : "1.05rem";
   const shortSz = isMobile ? "0.95rem" : isTablet ? "1.05rem" : "1.1rem";
-  const bodyPad = isMobile ? `2.8rem ${PAD_H} 0` : isTablet ? `3.5rem ${PAD_H} 0` : `4.5rem ${PAD_H} 0`;
+  const bodyPad = `${SEC} ${PAD_H} 0`;
 
   const [cleared,     setCleared]     = useState(false);
   const [textVisible, setTextVisible] = useState(false);
@@ -356,7 +358,7 @@ export function ExperienceV2({ content }: { content: ExperienceV2Content }) {
         </div>
       </div>
 
-      <div style={{ height: isMobile ? "8vh" : "6vh" }} />
+      <div style={{ height: SEC }} />
     </div>
   );
 }

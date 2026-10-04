@@ -113,10 +113,12 @@ export function LearnV2({ content, isDark = true }: { content: LearnV2Content; i
   const isMobile = bp === "mobile";
   const isTablet = bp === "tablet";
 
-  const PAD_H  = isMobile ? "20px"    : isTablet ? "28px"    : "32px";
+  // Pass 2/3: canon gutters and section spacing
+  const PAD_H  = isMobile ? "1.25rem" : isTablet ? "1.4rem" : "1rem";
+  const SEC = isMobile ? "3.5rem" : isTablet ? "4.5rem" : "5.5rem";
   const lblSz  = isMobile ? "0.82rem" : isTablet ? "0.94rem" : "1.06rem";
   const h1Sz   = isMobile ? "1.5rem"  : isTablet ? "1.9rem"  : "2.4rem";
-  const heroBot = isMobile ? "80px"   : isTablet ? "110px"   : "140px";
+  const heroBot = SEC;
   const h2Sz   = isMobile ? "1.4rem"  : isTablet ? "1.7rem"  : "2rem";
   const bodySz = isMobile ? "0.95rem" : isTablet ? "1.0rem"  : "1.05rem";
   const shortSz = isMobile ? "0.95rem" : isTablet ? "1.05rem" : "1.1rem";
@@ -218,7 +220,7 @@ export function LearnV2({ content, isDark = true }: { content: LearnV2Content; i
         style={{
           maxWidth:     PROSE_MAX,
           margin:       "0 auto",
-          paddingTop:   "44px",
+          paddingTop:   SEC,
           paddingLeft:  PAD_H,
           paddingRight: PAD_H,
         }}
@@ -282,10 +284,10 @@ export function LearnV2({ content, isDark = true }: { content: LearnV2Content; i
           );
         })}
 
-        <div style={{ width: "100%", height: 1, background: tk.rule, marginTop: "88px" }} />
+        <div style={{ width: "100%", height: 1, background: tk.rule, marginTop: SEC }} />
       </div>
 
-      <div style={{ height: "88px" }} />
+      <div style={{ height: SEC }} />
     </div>
   );
 }
