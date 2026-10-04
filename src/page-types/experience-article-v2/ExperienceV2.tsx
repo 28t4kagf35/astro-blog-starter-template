@@ -45,6 +45,17 @@ const DARK = {
   accent:  "#D43535",
 } as const;
 
+const LIGHT = {
+  bg:      "#F4F2EE",
+  surface: "#EBE7DF",
+  rule:    "#D6D2CB",
+  muted:   "#8E8A84",
+  body:    "#201E18",
+  head:    "#111010",
+  bq:      "#A4AE9C",
+  accent:  "#D43535",
+} as const;
+
 const ON_IMAGE = {
   head:  "rgba(237,233,226,0.96)",
   body:  "rgba(196,190,180,0.82)",
@@ -121,7 +132,7 @@ const HERO_WIDTHS = [640, 1080, 1600, 2400];
 const heroSrcSet = (src: string): string | undefined =>
   src.endsWith("-1600.webp") ? HERO_WIDTHS.map((w) => `${src.replace("-1600.webp", `-${w}.webp`)} ${w}w`).join(", ") : undefined;
 
-export function ExperienceV2({ content }: { content: ExperienceV2Content }) {
+export function ExperienceV2({ content, isDark = true }: { content: ExperienceV2Content; isDark?: boolean }) {
   // Font loading — display=block (FONT-6)
   useEffect(() => {
     const id = "brand-fonts-experience";
@@ -143,8 +154,8 @@ export function ExperienceV2({ content }: { content: ExperienceV2Content }) {
   const isTablet  = bp === "tablet";
   const isDesktop = bp === "desktop";
 
-  // CTRL-1: isDark hardened to true; toggle buttons stripped
-  const tk = DARK;
+  // Pass 4: light mode from the shell (hero overlay stays dark)
+  const tk = isDark ? DARK : LIGHT;
 
   // Pass 2/3: canon gutters and section spacing
   const PAD_H   = isMobile ? "1.25rem" : isTablet ? "1.4rem" : "1rem";
@@ -170,7 +181,7 @@ export function ExperienceV2({ content }: { content: ExperienceV2Content }) {
   }, []);
 
   return (
-    <div data-scroll="root" style={{ ...SS4_SMOOTHING, background: tk.bg, minHeight: "100vh" }}>
+    <div data-scroll="root" style={{ ...SS4_SMOOTHING, background: tk.bg, minHeight: "100vh", transition: "background 0.35s ease" }}>
 
       {/* ── HERO ── */}
       <div style={{
