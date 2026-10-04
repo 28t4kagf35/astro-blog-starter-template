@@ -242,6 +242,17 @@ export function ActivityV2({ content, isDark = true }: { content: ActivityV2Cont
             justifyContent: "center",
             padding: `${SEC} ${padH} ${SEC} 3rem`,
           }}>
+            <div style={{
+              fontFamily: FONT_MONO,
+              fontSize: "0.74rem",
+              letterSpacing: "0.16em",
+              color: tk.muted,
+              textTransform: "uppercase",
+              lineHeight: 1.4,
+              marginBottom: "1rem",
+            }}>
+              {c.breadcrumb}
+            </div>
             <h1 style={{
               fontFamily: FONT_SS4,
               fontWeight: 300,
@@ -254,18 +265,6 @@ export function ActivityV2({ content, isDark = true }: { content: ActivityV2Cont
             }}>
               {c.title}
             </h1>
-            <div style={{
-              fontFamily: FONT_LBL,
-              fontSize: "1.06rem",
-              fontWeight: 400,
-              letterSpacing: "0.13em",
-              color: tk.muted,
-              textTransform: "uppercase",
-              lineHeight: 1.4,
-              margin: "-0.5rem 0 1.25rem",
-            }}>
-              {c.breadcrumb}
-            </div>
             <p style={{
               fontFamily: FONT_SS3,
               fontSize: "0.95rem",
@@ -288,7 +287,7 @@ export function ActivityV2({ content, isDark = true }: { content: ActivityV2Cont
 
       ) : (
         <>
-          <Hero image={c.heroImage} srcSet={mediaSrcSet(c.heroImage)} position="center 28%" title={c.title} tagline={c.breadcrumb} isMobile={isMobile} isTablet={isTablet} isDesktop={false} />
+          <Hero image={c.heroImage} srcSet={mediaSrcSet(c.heroImage)} position="center 28%" title={c.title} placement={c.breadcrumb} isMobile={isMobile} isTablet={isTablet} isDesktop={false} />
 
           <Sect pt={SEC} pb={0}>
             <p style={{ fontFamily: FONT_SS3, fontSize: isMobile ? "0.95rem" : "1rem", lineHeight: 1.82, color: tk.body, margin: 0, maxWidth: "66ch" }}>

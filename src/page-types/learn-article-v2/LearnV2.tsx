@@ -146,7 +146,7 @@ export function LearnV2({ content, isDark = true }: { content: LearnV2Content; i
     }}>
 
       {/* ── HERO — shared with the other v2 pages ── */}
-      <Hero image={content.heroImage} srcSet={heroSrcSet(content.heroImage)} position="center" alt={content.title} title={content.title} tagline={content.clusterLabel} isMobile={isMobile} isTablet={isTablet} isDesktop={!isMobile && !isTablet} />
+      <Hero image={content.heroImage} srcSet={heroSrcSet(content.heroImage)} position="center" alt={content.title} title={content.title} placement={content.clusterLabel} isMobile={isMobile} isTablet={isTablet} isDesktop={!isMobile && !isTablet} />
 
       {/* ── ARTICLE BODY ── */}
       <div
