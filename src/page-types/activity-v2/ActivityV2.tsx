@@ -40,6 +40,12 @@ const DARK = {
   bg: "#1A1714", surface: "#222120", rule: "#2C2A28",
   muted: "#6E6A65", body: "#C4BEB4", head: "#EDE9E2", bq: "#7A8B74",
 };
+// Pass 4: light set (same as the other pages)
+const LIGHT = {
+  bg: "#F4F2EE", surface: "#EBE7DF", rule: "#D6D2CB",
+  muted: "#8E8A84", body: "#201E18", head: "#111010", bq: "#A4AE9C",
+};
+type Tokens = { [K in keyof typeof DARK]: string };
 
 // ── Content (Sanity type `activity`, build time) ─────────────────────────────
 export interface ActivityV2Content {
@@ -81,7 +87,7 @@ function Unavailable({ label, style }: { label: string; style?: CSSProperties })
     <div style={{
       width: "100%", height: "100%", background: "#222120", boxSizing: "border-box",
       display: "flex", alignItems: "center", justifyContent: "center",
-      fontFamily: FONT_MONO, fontSize: "0.50rem", letterSpacing: "0.12em",
+      fontFamily: FONT_MONO, fontSize: "0.58rem", letterSpacing: "0.12em",
       textTransform: "uppercase", color: "#6E6A65", ...style,
     }}>
       {label}
@@ -107,11 +113,11 @@ function useContainerWidth(): { ref: RefObject<HTMLDivElement | null>; width: nu
 }
 
 // ── Sub-components ────────────────────────────────────────────────────────────
-function SectionLabel({ text, tk, small }: { text: string; tk: typeof DARK; small?: boolean }) {
+function SectionLabel({ text, tk, small }: { text: string; tk: Tokens; small?: boolean }) {
   return (
     <div style={{
       fontFamily: FONT_LBL,
-      fontSize: small ? "0.56rem" : "0.60rem",
+      fontSize: small ? "0.58rem" : "0.60rem",
       letterSpacing: "0.13em",
       color: tk.muted,
       textTransform: "uppercase",
@@ -125,7 +131,7 @@ function SectionLabel({ text, tk, small }: { text: string; tk: typeof DARK; smal
 function StatsGrid({ stats, cols, tk, cellPad, valSize }: {
   stats: Stat[];
   cols: string;
-  tk: typeof DARK;
+  tk: Tokens;
   cellPad: string;
   valSize: string;
 }) {
@@ -142,7 +148,7 @@ function StatsGrid({ stats, cols, tk, cellPad, valSize }: {
         <div key={s.label} style={{ background: tk.surface, padding: cellPad }}>
           <div style={{
             fontFamily: FONT_MONO,
-            fontSize: "0.50rem",
+            fontSize: "0.58rem",
             color: tk.muted,
             letterSpacing: "0.10em",
             textTransform: "uppercase",
@@ -165,9 +171,9 @@ function StatsGrid({ stats, cols, tk, cellPad, valSize }: {
 }
 
 // ── Main component ────────────────────────────────────────────────────────────
-export function ActivityV2({ content }: { content: ActivityV2Content } & ShellPageProps) {
+export function ActivityV2({ content, isDark = true }: { content: ActivityV2Content } & Partial<ShellPageProps>) {
   const c = content;
-  const tk = DARK;
+  const tk: Tokens = isDark ? DARK : LIGHT;
 
   const { ref: rootRef, width } = useContainerWidth();
   const isMobile  = width > 0 && width < 600;
@@ -201,7 +207,7 @@ export function ActivityV2({ content }: { content: ActivityV2Content } & ShellPa
   );
 
   return (
-    <div ref={rootRef} data-scroll="root" style={{ ...SS4_SMOOTHING, background: tk.bg, minHeight: "100vh", fontFamily: FONT_SS3, color: tk.body, position: "relative" }}>
+    <div ref={rootRef} data-scroll="root" style={{ ...SS4_SMOOTHING, background: tk.bg, transition: "background 0.35s ease", minHeight: "100vh", fontFamily: FONT_SS3, color: tk.body, position: "relative" }}>
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       {isDesktop ? (
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", minHeight: 580 }}>
@@ -218,7 +224,7 @@ export function ActivityV2({ content }: { content: ActivityV2Content } & ShellPa
               bottom: 28,
               left: 36,
               fontFamily: FONT_MONO,
-              fontSize: "0.48rem",
+              fontSize: "0.58rem",
               color: "#EDE9E2",
               opacity: 0.40,
               letterSpacing: "0.12em",
@@ -463,7 +469,7 @@ export function ActivityV2({ content }: { content: ActivityV2Content } & ShellPa
             >
               <span style={{
                 fontFamily: FONT_MONO,
-                fontSize: "0.50rem",
+                fontSize: "0.58rem",
                 color: tk.muted,
                 letterSpacing: "0.08em",
                 textAlign: "center",
@@ -526,7 +532,7 @@ export function ActivityV2({ content }: { content: ActivityV2Content } & ShellPa
               <div>
                 <div style={{
                   fontFamily: FONT_MONO,
-                  fontSize: "0.50rem",
+                  fontSize: "0.58rem",
                   color: tk.muted,
                   letterSpacing: "0.10em",
                   textTransform: "uppercase",
@@ -557,7 +563,7 @@ export function ActivityV2({ content }: { content: ActivityV2Content } & ShellPa
               <Stretch href={hrefFor(link.label)} label={link.label} />
               <div style={{
                 fontFamily: FONT_MONO,
-                fontSize: "0.48rem",
+                fontSize: "0.58rem",
                 color: tk.muted,
                 letterSpacing: "0.10em",
                 textTransform: "uppercase",

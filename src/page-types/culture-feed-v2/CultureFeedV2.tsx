@@ -455,10 +455,10 @@ export function CultureFeedV2({ content, isDark = true }: { content: CultureFeed
         display:        "flex",
         justifyContent: "space-between",
       }}>
-        <p style={{ margin: 0, fontFamily: FONT_MONO, fontSize: "0.54rem", color: tk.muted, letterSpacing: "0.12em", textTransform: "uppercase" as const }}>
+        <p style={{ margin: 0, fontFamily: FONT_MONO, fontSize: "0.58rem", color: tk.muted, letterSpacing: "0.12em", textTransform: "uppercase" as const }}>
           Culture · History
         </p>
-        <p style={{ margin: 0, fontFamily: FONT_MONO, fontSize: "0.54rem", color: tk.muted, letterSpacing: "0.12em", textTransform: "uppercase" as const }}>
+        <p style={{ margin: 0, fontFamily: FONT_MONO, fontSize: "0.58rem", color: tk.muted, letterSpacing: "0.12em", textTransform: "uppercase" as const }}>
           Voss · Hardanger
         </p>
       </div>

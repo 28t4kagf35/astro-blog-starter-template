@@ -223,10 +223,10 @@ export function ObserveFeedV2({ content }: { content: ObserveFeedV2Content }) {
         justifyContent: "space-between",
         marginTop: SEC,
       }}>
-        <p style={{ margin: 0, fontFamily: FONT_MONO, fontSize: "0.54rem", color: DARK.muted, letterSpacing: "0.12em", textTransform: "uppercase" }}>
+        <p style={{ margin: 0, fontFamily: FONT_MONO, fontSize: "0.58rem", color: DARK.muted, letterSpacing: "0.12em", textTransform: "uppercase" }}>
           Observe
         </p>
-        <p style={{ margin: 0, fontFamily: FONT_MONO, fontSize: "0.54rem", color: DARK.muted, letterSpacing: "0.12em", textTransform: "uppercase" }}>
+        <p style={{ margin: 0, fontFamily: FONT_MONO, fontSize: "0.58rem", color: DARK.muted, letterSpacing: "0.12em", textTransform: "uppercase" }}>
           Voss · Hardanger
         </p>
       </div>
