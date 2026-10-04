@@ -96,7 +96,7 @@ export interface CultureFeedV2Content {
   focusSlug?: string;
 }
 
-const FEED_MAX = 560; // px: desktop/tablet column ("Option A")
+const FEED_MAX = 860; // px: the reading column (canon)
 
 function Unavailable({ tk }: { tk: typeof DARK | typeof LIGHT }) {
   return (
@@ -163,7 +163,8 @@ function ArticleCard({
   const imgRatio  = isMobile ? "4 / 5" : "3 / 2";
   const titleSz   = isMobile ? "1.32rem" : isTablet ? "1.24rem" : "1.4rem";
   const bodySz    = isMobile ? "0.95rem" : isTablet ? "0.9rem"  : "0.98rem";
-  const pad       = isMobile ? "1.4rem 1.25rem 0" : isTablet ? "1.2rem 1.1rem 0" : "1.4rem 1.4rem 0";
+  const padH      = isMobile ? "1.25rem" : isTablet ? "1.4rem" : "1rem"; // canon gutters
+  const pad       = `1.4rem ${padH} 0`;
 
   return (
     <div
@@ -338,8 +339,11 @@ export function CultureFeedV2({ content, isDark = true }: { content: CultureFeed
 
   const h1Sz     = isMobile ? "2.6rem"  : isTablet ? "3.2rem" : "4rem";
   const gridCols = "1fr";                                  // one column on every screen
-  const maxW     = isMobile ? "none" : `${FEED_MAX}px`;   // narrow centred column on tablet/desktop
+  const maxW     = isMobile ? "none" : `${FEED_MAX}px`;   // reading column on tablet/desktop
   const gridPad  = "0 0";
+  // canon gutters; hero and footer text line up with the feed column
+  const padH     = isMobile ? "1.25rem" : isTablet ? "1.4rem" : "1rem";
+  const colX     = isMobile ? padH : `max(${padH}, calc((100% - ${FEED_MAX}px) / 2 + ${padH}))`;
 
   return (
     <div data-scroll style={{ ...SS4_SMOOTHING,
@@ -391,7 +395,7 @@ export function CultureFeedV2({ content, isDark = true }: { content: CultureFeed
           bottom:     "2.4rem",
           left:       0,
           right:      0,
-          padding:    isMobile ? "0 1.25rem" : isTablet ? "0 2rem" : "0 3.5rem",
+          padding:    `0 ${colX}`,
           zIndex:     3,
           opacity:    textVisible ? 1 : 0,
           transition: "opacity 1.3s ease",
@@ -447,7 +451,7 @@ export function CultureFeedV2({ content, isDark = true }: { content: CultureFeed
       {/* ── FOOTER ── */}
       <div data-bb-field="footerRegionLabel" style={{
         borderTop:      `1px solid ${tk.rule}`,
-        padding:        isMobile ? "1.8rem 1.25rem" : "1.8rem 3rem",
+        padding:        `1.8rem ${colX}`,
         display:        "flex",
         justifyContent: "space-between",
       }}>

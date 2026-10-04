@@ -74,7 +74,7 @@ function useBreakpoint() {
 }
 
 // ── ObserveBlock ──────────────────────────────────────────────────────────────
-function ObserveBlock({ block, isMobile }: { block: Block; isMobile: boolean }) {
+function ObserveBlock({ block, isMobile, colX }: { block: Block; isMobile: boolean; colX: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const [captionVisible, setCaptionVisible] = useState(false);
 
@@ -102,7 +102,7 @@ function ObserveBlock({ block, isMobile }: { block: Block; isMobile: boolean }) 
     : { position: "relative", width: "100%", height: "92vh",       minHeight: 480,     overflow: "hidden", flexShrink: 0 };
 
   // Caption padding: tighter on mobile, more generous on desktop
-  const captionPad = isMobile ? "2rem 1.5rem 2.2rem" : "2.5rem 3rem 3.2rem";
+  const captionPad = isMobile ? `2rem ${colX} 2.2rem` : `2.5rem ${colX} 3.2rem`;
 
   // Caption font size: fixed on mobile, fluid clamp on desktop
   const captionSize = isMobile ? "1.0rem" : "clamp(1rem, 1.4vw, 1.18rem)";
@@ -191,9 +191,14 @@ export function ObserveFeedV2({ content }: { content: ObserveFeedV2Content }) {
 
   const bp       = useBreakpoint();
   const isMobile = bp === "mobile";
+  const isTablet = bp === "tablet";
 
-  // Gap between blocks: tighter on mobile (3.5rem), more breath on desktop (18vh)
-  const blockGap = isMobile ? "3.5rem" : "18vh";
+  // Canon gutters and section spacing. Photos run full-bleed; text is inset to
+  // the wide (1200px) column.
+  const padH     = isMobile ? "1.25rem" : isTablet ? "1.4rem" : "1rem";
+  const SEC      = isMobile ? "3.5rem" : isTablet ? "4.5rem" : "5.5rem";
+  const colX     = isMobile ? padH : `max(${padH}, calc((100% - 1200px) / 2 + ${padH}))`;
+  const blockGap = SEC;
 
   return (
     <div data-scroll="root" style={{ ...SS4_SMOOTHING, background: DARK.bg, minHeight: "100vh", overflowY: "auto", overflowX: "hidden", scrollBehavior: "smooth" }}>
@@ -202,7 +207,7 @@ export function ObserveFeedV2({ content }: { content: ObserveFeedV2Content }) {
       <div style={{ paddingTop: isMobile ? "5rem" : "calc(56px + 6vh)" }}>
         {blocks.map((block, i) => (
           <div key={block.id}>
-            <ObserveBlock block={block} isMobile={isMobile} />
+            <ObserveBlock block={block} isMobile={isMobile} colX={colX} />
             {i < blocks.length - 1 && (
               <div style={{ height: blockGap, background: DARK.bg }} />
             )}
@@ -213,10 +218,10 @@ export function ObserveFeedV2({ content }: { content: ObserveFeedV2Content }) {
       {/* ── Footer ── */}
       <div style={{
         borderTop: `1px solid ${DARK.rule}`,
-        padding: isMobile ? "1.8rem 1.25rem" : "2rem 2.5rem",
+        padding: `1.8rem ${colX}`,
         display: "flex",
         justifyContent: "space-between",
-        marginTop: isMobile ? "3rem" : "6vh",
+        marginTop: SEC,
       }}>
         <p style={{ margin: 0, fontFamily: FONT_MONO, fontSize: "0.54rem", color: DARK.muted, letterSpacing: "0.12em", textTransform: "uppercase" }}>
           Observe

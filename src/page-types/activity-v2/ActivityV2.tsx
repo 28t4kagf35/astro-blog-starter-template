@@ -174,14 +174,16 @@ export function ActivityV2({ content }: { content: ActivityV2Content } & ShellPa
   const isTablet  = width >= 600 && width < 1024;
   const isDesktop = width >= 1024;
 
-  const hPad      = isMobile ? "1.25rem" : isTablet ? "2.5rem" : "3.75rem";
-  const sectionPT = isMobile ? "2rem" : "3rem";
+  // Passes 2/3: canon gutters and section spacing; text sits in the wide
+  // (1200px) column, photos may run full width.
+  const padH      = isMobile ? "1.25rem" : isTablet ? "1.4rem" : "1rem";
+  const hPad      = isMobile ? padH : `max(${padH}, calc((100% - 1200px) / 2))`;
+  const SEC       = isMobile ? "3.5rem" : isTablet ? "4.5rem" : "5.5rem";
+  const sectionPT = SEC;
 
   function Sect({ children, pt, pb }: { children: ReactNode; pt?: string | number; pb?: string | number }) {
     return (
       <div style={{
-        maxWidth: isDesktop ? 1200 : undefined,
-        margin: "0 auto",
         paddingLeft: hPad,
         paddingRight: hPad,
         paddingTop: pt ?? sectionPT,
@@ -193,7 +195,7 @@ export function ActivityV2({ content }: { content: ActivityV2Content } & ShellPa
   }
 
   const HRule = () => (
-    <Sect pt={isMobile ? "2rem" : "2.5rem"} pb={0}>
+    <Sect pt={SEC} pb={0}>
       <div style={{ borderBottom: `1px solid ${tk.rule}` }} />
     </Sect>
   );
@@ -231,7 +233,7 @@ export function ActivityV2({ content }: { content: ActivityV2Content } & ShellPa
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
-            padding: "3.75rem 3.75rem 3.75rem 3rem",
+            padding: `${SEC} ${padH} ${SEC} 3rem`,
           }}>
             <div style={{
               fontFamily: FONT_LBL,
@@ -544,7 +546,7 @@ export function ActivityV2({ content }: { content: ActivityV2Content } & ShellPa
           display: "grid",
           gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(4, 1fr)",
           gap: 0,
-          paddingBottom: "3.5rem",
+          paddingBottom: SEC,
         }}>
           {c.nearby.map((link, i) => (
             <div key={i} style={{ position: "relative",
