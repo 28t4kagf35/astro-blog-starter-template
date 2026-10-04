@@ -16,6 +16,9 @@ import type { HomeContent } from "../page-types/home";
 import { homePages } from "../clusters/home";
 import type { CabinContent } from "../page-types/cabin";
 import type { HomeV2Content } from "../page-types/home-v2";
+import type { CultureFeedV2Content } from "../page-types/culture-feed-v2";
+import type { ObserveFeedV2Content } from "../page-types/observe-feed-v2";
+import type { ActivityV2Content } from "../page-types/activity-v2";
 import type { LearnV2Content } from "../page-types/learn-article-v2";
 import type { ExperienceV2Content } from "../page-types/experience-article-v2";
 import type { CabinV2Content } from "../page-types/cabin-v2";
@@ -39,13 +42,16 @@ export type SitePage =
   | (Base & { type: "cabin"; content: CabinContent })
   | (Base & { type: "homeV2"; content: HomeV2Content })
   | (Base & { type: "learnV2"; content: LearnV2Content })
+  | (Base & { type: "cultureV2"; content: CultureFeedV2Content })
+  | (Base & { type: "observeV2"; content: ObserveFeedV2Content })
+  | (Base & { type: "activityV2"; content: ActivityV2Content })
   | (Base & { type: "experienceV2"; content: ExperienceV2Content })
   | (Base & { type: "cabinV2"; content: CabinV2Content })
   | (Base & { type: "exploreHome"; content: ExploreHomeContent })
   | (Base & { type: "activitiesHome"; content: ActivitiesHomeContent })
   | (Base & { type: "previewIndex"; content: { links: Array<{ href: string; label: string }> } });
 
-export const PAGE_TYPES = ["waterfall", "masterGuide", "learnArticle", "experienceArticle", "cultureFeed", "observeFeed", "activity", "home", "cabin", "homeV2", "cabinV2", "learnV2", "experienceV2", "exploreHome", "activitiesHome", "previewIndex"] as const;
+export const PAGE_TYPES = ["waterfall", "masterGuide", "learnArticle", "experienceArticle", "cultureFeed", "observeFeed", "activity", "home", "cabin", "homeV2", "cabinV2", "learnV2", "experienceV2", "cultureV2", "observeV2", "activityV2", "exploreHome", "activitiesHome", "previewIndex"] as const;
 
 export async function buildSitePages(): Promise<SitePage[]> {
   const pages: SitePage[] = [
@@ -68,6 +74,9 @@ export async function buildSitePages(): Promise<SitePage[]> {
     if (p.type === "home") pages.push({ ...p, path: "home-v2", type: "homeV2", title: `${p.title} (v2)`, listLabel: `${p.listLabel} (v2)`, content: p.content as HomeV2Content });
     if (p.type === "learnArticle" && !pages.some((x) => x.type === "learnV2")) pages.push({ ...p, path: "learn-v2", type: "learnV2", title: `${p.title} (v2)`, listLabel: `${p.listLabel} (v2)`, content: p.content as unknown as LearnV2Content });
     if (p.type === "experienceArticle" && !pages.some((x) => x.type === "experienceV2")) pages.push({ ...p, path: "experience-v2", type: "experienceV2", title: `${p.title} (v2)`, listLabel: `${p.listLabel} (v2)`, content: p.content as unknown as ExperienceV2Content });
+    if (p.type === "cultureFeed" && !pages.some((x) => x.type === "cultureV2")) pages.push({ ...p, path: "culture-v2", type: "cultureV2", title: `${p.title} (v2)`, listLabel: `${p.listLabel} (v2)`, content: p.content as unknown as CultureFeedV2Content });
+    if (p.type === "observeFeed" && !pages.some((x) => x.type === "observeV2")) pages.push({ ...p, path: "observe-v2", type: "observeV2", title: `${p.title} (v2)`, listLabel: `${p.listLabel} (v2)`, content: p.content as unknown as ObserveFeedV2Content });
+    if (p.type === "activity" && !pages.some((x) => x.type === "activityV2")) pages.push({ ...p, path: "activity-v2", type: "activityV2", title: `${p.title} (v2)`, listLabel: `${p.listLabel} (v2)`, content: p.content as unknown as ActivityV2Content });
     if (p.type === "cabin") pages.push({ ...p, path: "cabin-v2", type: "cabinV2", title: `${p.title} (v2)`, listLabel: `${p.listLabel} (v2)`, content: p.content as CabinV2Content });
   }
 
