@@ -15,6 +15,7 @@
  * Slot: learn_20260521_1100
  */
 
+import { Hero } from "../../site/Hero";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 
 // ── Brand constants (inlined) ─────────────────────────────────────────────────
@@ -144,75 +145,8 @@ export function LearnV2({ content, isDark = true }: { content: LearnV2Content; i
       transition: "background 0.35s ease",
     }}>
 
-      {/* ── HERO — full-bleed ── */}
-      <div style={{ position: "relative", width: "100%", height: isMobile ? "80vh" : isTablet ? "88vh" : "100vh", minHeight: isMobile ? "420px" : isTablet ? "540px" : "640px", overflow: "hidden" }}>
-{content.heroImage ? (
-          <img
-            data-bb-field="heroImage"
-            src={content.heroImage}
-            srcSet={heroSrcSet(content.heroImage)}
-            sizes="100vw"
-            fetchPriority="high"
-            alt={content.title}
-            style={{ position: "absolute", top: 0, right: 0, bottom: 0, left: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }}
-          />
-        ) : (
-          <div data-bb-field="heroImage" style={{ position: "absolute", top: 0, right: 0, bottom: 0, left: 0, background: DARK.surface, display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <span style={{ fontFamily: FONT_MONO, fontSize: "0.68rem", letterSpacing: "0.14em", textTransform: "uppercase", color: DARK.muted }}>image unavailable</span>
-          </div>
-        )}
-        <div style={{
-          position:   "absolute",
-          top: 0, right: 0, bottom: 0, left: 0,
-          background: "linear-gradient(to top, rgba(26,23,20,1) 0%, rgba(26,23,20,0.86) 12%, rgba(0,0,0,0.5) 28%, rgba(0,0,0,0.08) 50%, transparent 65%)",
-        }} />
-
-        <div style={{
-          position:      "absolute",
-          bottom:        0,
-          left:          "50%",
-          transform:     "translateX(-50%)",
-          width:         "100%",
-          maxWidth:      PROSE_MAX,
-          padding:       `3rem ${PAD_H} ${heroBot}`,
-          display:       "flex",
-          flexDirection: "column",
-          gap:           "22px",
-        }}>
-          <p style={{
-            margin:        0,
-            fontFamily:    FONT_LBL,
-            fontSize:      lblSz,
-            fontWeight:    400,
-            color:         "rgba(237,233,226,0.72)",
-            letterSpacing: "0.13em",
-            textTransform: "uppercase" as const,
-            lineHeight:    1.4,
-            opacity:       titleVisible ? 1 : 0,
-            transform:     titleVisible ? "translateY(0)" : "translateY(0.8rem)",
-            transition:    "opacity 1.1s ease-in-out, transform 1.1s ease-in-out",
-          }}>
-            {content.clusterLabel}
-          </p>
-          <h1 style={{
-            margin:                0,
-            fontFamily:            FONT_SS4,
-            fontSize:              h1Sz,
-            fontWeight:            300,
-            fontStyle:             "italic",
-            fontVariationSettings: SS4_OPSZ_DISPLAY,
-            color:                 "#EDE9E2",
-            lineHeight:            1.2,
-            letterSpacing:         "-0.01em",
-            maxWidth:              580,
-            opacity:               quoteVisible ? 1 : 0,
-            transform:             quoteVisible ? "translateY(0)" : "translateY(1rem)",
-            transition:            "opacity 1.4s ease-in-out, transform 1.4s ease-in-out",
-          }}>
-            {content.title}
-          </h1>
-        </div>
-      </div>
+      {/* ── HERO — shared with the other v2 pages ── */}
+      <Hero image={content.heroImage} srcSet={heroSrcSet(content.heroImage)} position="center" alt={content.title} title={content.title} tagline={content.clusterLabel} isMobile={isMobile} isTablet={isTablet} isDesktop={!isMobile && !isTablet} />
 
       {/* ── ARTICLE BODY ── */}
       <div

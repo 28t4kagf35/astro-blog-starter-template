@@ -18,6 +18,7 @@
  * Slot: experience_firstlight_20260521_1100
  */
 
+import { Hero } from "../../site/Hero";
 import { useEffect, useState, type CSSProperties } from "react";
 
 // ── Brand constants (inlined) ─────────────────────────────────────────────────
@@ -183,103 +184,8 @@ export function ExperienceV2({ content, isDark = true }: { content: ExperienceV2
   return (
     <div data-scroll="root" style={{ ...SS4_SMOOTHING, background: tk.bg, minHeight: "100vh", transition: "background 0.35s ease" }}>
 
-      {/* ── HERO ── */}
-      <div style={{
-        position:  "relative",
-        width:     "100%",
-        height:    heroH,
-        minHeight: isMobile ? 300 : 380,
-        overflow:  "hidden",
-      }}>
-{content.heroImage ? (
-          <img
-            data-bb-field="heroImage"
-            src={content.heroImage}
-            srcSet={heroSrcSet(content.heroImage)}
-            sizes="100vw"
-            fetchPriority="high"
-            alt={content.title}
-            style={{ position: "absolute", top: 0, right: 0, bottom: 0, left: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 35%" }}
-          />
-        ) : (
-          <div data-bb-field="heroImage" style={{ position: "absolute", top: 0, right: 0, bottom: 0, left: 0, background: tk.surface, display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1 }}>
-            <span style={{ ...T_MONO_CAPTION, color: tk.muted }}>image unavailable</span>
-          </div>
-        )}
-
-        {/* hero gradient overlay */}
-        <div style={{
-          position: "absolute",
-          top:      0,
-          right:    0,
-          bottom:   0,
-          left:     0,
-          background: HERO_GRADIENT,
-          opacity:    0.78,
-        }} />
-
-        {/* blur-clear entrance animation */}
-        <div style={{
-          position:             "absolute",
-          top:                  0,
-          right:                0,
-          bottom:               0,
-          left:                 0,
-          backdropFilter:       cleared ? "blur(0px)" : "blur(12px)",
-          WebkitBackdropFilter: cleared ? "blur(0px)" : "blur(12px)",
-          backgroundColor:      cleared ? "rgba(14,12,10,0)" : "rgba(14,12,10,0.32)",
-          opacity:              cleared ? 0 : 1,
-          transition:           "backdrop-filter 2.4s cubic-bezier(.18,0,.38,1), -webkit-backdrop-filter 2.4s cubic-bezier(.18,0,.38,1), opacity 2.4s ease",
-          pointerEvents:        "none",
-          zIndex:               2,
-        }} />
-
-        {/* hero text block */}
-        <div style={{
-          position:      "absolute",
-          bottom:        heroBot,
-          left:          isDesktop ? "50%" : 0,
-          right:         isDesktop ? "auto" : 0,
-          transform:     isDesktop ? "translateX(-50%)" : "none",
-          width:         isDesktop ? COL : "100%",
-          maxWidth:      isDesktop ? COL : "none",
-          padding:       `0 ${PAD_H}`,
-          display:       "flex",
-          flexDirection: "column",
-          gap:           "0.6rem",
-          opacity:       textVisible ? 1 : 0,
-          transition:    "opacity 1.2s ease",
-          zIndex:        3,
-        }}>
-          <p style={{
-            margin:   0,
-            ...T_TAGLINE,
-            fontSize: lblSz,
-            color:    ON_IMAGE.body,
-          }}>
-            {content.clusterLabel}
-          </p>
-          <h1 style={{
-            margin:                0,
-            fontFamily:            FONT_SS4,
-            fontSize:              h1Sz,
-            fontWeight:            300,
-            fontStyle:             "italic",
-            fontVariationSettings: SS4_OPSZ_DISPLAY,
-            color:                 ON_IMAGE.head,
-            lineHeight:            1.2,
-            letterSpacing:         "-0.01em",
-            maxWidth:              isDesktop ? 580 : "none",
-          }}>
-            {content.title}
-          </h1>
-          {content.subtitle && (
-            <p style={{ margin: 0, fontFamily: FONT_SS4, fontVariationSettings: SS4_OPSZ_TEXT, fontStyle: "italic", fontWeight: 300, fontSize: shortSz, color: ON_IMAGE.body, lineHeight: 1.6 }}>
-              {content.subtitle}
-            </p>
-          )}
-        </div>
-      </div>
+      {/* ── HERO — shared with the other v2 pages ── */}
+      <Hero image={content.heroImage} srcSet={heroSrcSet(content.heroImage)} position="center 35%" alt={content.title} title={content.title} tagline={content.clusterLabel} isMobile={isMobile} isTablet={isTablet} isDesktop={isDesktop} />
 
       {/* ── BODY ── */}
       <div data-bb-field="bodyText" style={{
@@ -289,6 +195,12 @@ export function ExperienceV2({ content, isDark = true }: { content: ExperienceV2
         opacity:    textVisible ? 1 : 0,
         transition: "opacity 1.4s ease 0.2s",
       }}>
+        {content.subtitle && (
+          <p style={{ margin: "0 0 2.8rem", fontFamily: FONT_SS4, fontVariationSettings: SS4_OPSZ_TEXT, fontStyle: "italic", fontWeight: 300, fontSize: shortSz, color: tk.head, lineHeight: 1.6, letterSpacing: "0.01em" }}>
+            {content.subtitle}
+          </p>
+        )}
+
         {content.body.flatMap((block, i) => {
           if (block.kind === "break") {
             return [<div key={i} style={{ width: 48, height: 1, background: tk.rule, margin: "2.8rem 0" }} />];

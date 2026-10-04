@@ -27,6 +27,7 @@
  *   5. CONTENT interface + const added for heroImage (B1_HERO)
  */
 
+import { Hero } from "../../site/Hero";
 import { mediaSrcSet } from "../../site/media";
 import { useEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
@@ -353,79 +354,8 @@ export function CultureFeedV2({ content, isDark = true }: { content: CultureFeed
       transition: "background 0.35s ease",
     }}>
 
-      {/* ── HERO ── */}
-      <div
-        data-bb-field="heroImage"
-        style={{
-          scrollSnapAlign: "start",
-          position: "relative", width: "100%", overflow: "hidden",
-          height: "100vh", minHeight: isMobile ? "420px" : isTablet ? "540px" : "640px",
-        }}
-      >
-{content.heroImage.src ? (
-          <img
-            src={content.heroImage.src}
-            srcSet={mediaSrcSet(content.heroImage.src)}
-            sizes="100vw"
-            fetchPriority="high"
-            alt=""
-            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: content.heroImage.position }}
-          />
-        ) : (
-          <Unavailable tk={DARK} />
-        )}
-        {/* COMPAT-2: backdropFilter stripped — reveal via opacity + backgroundColor only */}
-        <div style={{
-          position:        "absolute",
-          inset:           0,
-          backgroundColor: cleared ? "rgba(14,12,10,0)" : "rgba(14,12,10,0.42)",
-          opacity:         cleared ? 0 : 1,
-          transition:      "background-color 2.6s ease, opacity 2.6s ease",
-          pointerEvents:   "none",
-          zIndex:          2,
-        }} />
-        <div style={{
-          position:      "absolute",
-          inset:         0,
-          background:    "linear-gradient(to top, rgba(26,23,20,1) 0%, rgba(26,23,20,0.88) 10%, rgba(0,0,0,0.5) 28%, rgba(0,0,0,0.08) 50%, transparent 65%)",
-          pointerEvents: "none",
-        }} />
-        <div style={{
-          position:   "absolute",
-          bottom:     "2.4rem",
-          left:       0,
-          right:      0,
-          padding:    `0 ${colX}`,
-          zIndex:     3,
-          opacity:    textVisible ? 1 : 0,
-          transition: "opacity 1.3s ease",
-        }}>
-          <p style={{
-            margin:        "0 0 0.6rem",
-            fontFamily:    FONT_MONO,
-            fontSize:      "0.68rem",
-            letterSpacing: "0.14em",
-            textTransform: "uppercase" as const,
-            color:         ON_IMAGE.muted,
-          }}>
-            Culture · History
-          </p>
-          <h1 style={{
-            margin:                0,
-            fontFamily:            FONT_SS4,
-            fontSize:              h1Sz,
-            fontWeight:            300,
-            fontStyle:             "italic",
-            fontVariationSettings: SS4_OPSZ_DISPLAY,
-            color:                 ON_IMAGE.head,
-            lineHeight:            1.06,
-            letterSpacing:         "-0.015em",
-          }}>
-            Culture
-            <br />& History
-          </h1>
-        </div>
-      </div>
+      {/* ── HERO — shared with the other v2 pages ── */}
+      <Hero image={content.heroImage.src} srcSet={mediaSrcSet(content.heroImage.src)} position={content.heroImage.position} title={<>Culture<br />& History</>} tagline="Voss · Hardanger" isMobile={isMobile} isTablet={isTablet} isDesktop={!isMobile && !isTablet} />
 
       {/* ── ARTICLE GRID ── */}
       <div data-bb-field="entries" style={{ maxWidth: maxW, margin: "0 auto", padding: gridPad }}>

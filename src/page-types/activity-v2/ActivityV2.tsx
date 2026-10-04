@@ -18,6 +18,7 @@
  * Slot: activities_kiellandbu_20260521_1100
  */
 
+import { Hero } from "../../site/Hero";
 import { mediaSrcSet } from "../../site/media";
 import { Stretch } from "../../site/Stretch";
 import { hrefFor } from "../../site/links";
@@ -241,28 +242,30 @@ export function ActivityV2({ content, isDark = true }: { content: ActivityV2Cont
             justifyContent: "center",
             padding: `${SEC} ${padH} ${SEC} 3rem`,
           }}>
-            <div style={{
-              fontFamily: FONT_LBL,
-              fontSize: "0.58rem",
-              letterSpacing: "0.13em",
-              color: tk.muted,
-              textTransform: "uppercase",
-              marginBottom: 16,
-            }}>
-              {c.breadcrumb}
-            </div>
             <h1 style={{
               fontFamily: FONT_SS4,
               fontWeight: 300,
               fontStyle: "italic",
               fontVariationSettings: '"opsz" 48, "wght" 300',
-              fontSize: "3.2rem",
-              lineHeight: 1.08,
+              fontSize: "3.8rem",
+              lineHeight: 1.06,
               color: tk.head,
               margin: "0 0 1.25rem",
             }}>
               {c.title}
             </h1>
+            <div style={{
+              fontFamily: FONT_LBL,
+              fontSize: "1.06rem",
+              fontWeight: 400,
+              letterSpacing: "0.13em",
+              color: tk.muted,
+              textTransform: "uppercase",
+              lineHeight: 1.4,
+              margin: "-0.5rem 0 1.25rem",
+            }}>
+              {c.breadcrumb}
+            </div>
             <p style={{
               fontFamily: FONT_SS3,
               fontSize: "0.95rem",
@@ -285,60 +288,13 @@ export function ActivityV2({ content, isDark = true }: { content: ActivityV2Cont
 
       ) : (
         <>
-          <div style={{
-            position: "relative",
-            height: isMobile ? 520 : 560,
-            overflow: "hidden",
-          }}>
-            <Photo src={c.heroImage} position="center 28%" label="Image unavailable" style={{ alignItems: "flex-start", paddingTop: "30%" }} />
-            <div style={{
-              position: "absolute",
-              top: 0, right: 0, bottom: 0, left: 0,
-              background: "linear-gradient(to bottom, rgba(20,18,14,0.08) 0%, rgba(20,18,14,0.72) 58%, #1A1714 100%)",
-            }} />
-            <div style={{
-              position: "absolute",
-              bottom: 0,
-              left: 0,
-              right: 0,
-              padding: `0 ${hPad} ${isMobile ? "1.75rem" : "2.25rem"}`,
-            }}>
-              <div style={{
-                fontFamily: FONT_LBL,
-                fontSize: "0.58rem",
-                letterSpacing: "0.13em",
-                color: "#EDE9E2",
-                opacity: 0.55,
-                marginBottom: 10,
-                textTransform: "uppercase",
-              }}>
-                {c.breadcrumb}
-              </div>
-              <h1 style={{
-                fontFamily: FONT_SS4,
-                fontWeight: 300,
-                fontStyle: "italic",
-                fontVariationSettings: '"opsz" 34, "wght" 300',
-                fontSize: isMobile ? "2.1rem" : "2.6rem",
-                lineHeight: 1.1,
-                color: "#EDE9E2",
-                margin: `0 0 ${isMobile ? "0.85rem" : "1.1rem"}`,
-              }}>
-                {c.title}
-              </h1>
-              <p style={{
-                fontFamily: FONT_SS3,
-                fontSize: isMobile ? "0.87rem" : "0.95rem",
-                lineHeight: 1.65,
-                color: "#EDE9E2",
-                opacity: 0.85,
-                margin: 0,
-                maxWidth: isMobile ? 300 : 480,
-              }}>
-                {isMobile ? c.ledeMobile : c.ledeTablet}
-              </p>
-            </div>
-          </div>
+          <Hero image={c.heroImage} srcSet={mediaSrcSet(c.heroImage)} position="center 28%" title={c.title} tagline={c.breadcrumb} isMobile={isMobile} isTablet={isTablet} isDesktop={false} />
+
+          <Sect pt={SEC} pb={0}>
+            <p style={{ fontFamily: FONT_SS3, fontSize: isMobile ? "0.95rem" : "1rem", lineHeight: 1.82, color: tk.body, margin: 0, maxWidth: "66ch" }}>
+              {isMobile ? c.ledeMobile : c.ledeTablet}
+            </p>
+          </Sect>
 
           <Sect pt={isMobile ? "1.5rem" : "2rem"} pb={0}>
             <StatsGrid
