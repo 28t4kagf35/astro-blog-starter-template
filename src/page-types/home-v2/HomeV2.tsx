@@ -174,7 +174,10 @@ export function HomeV2({ content, isDark }: { content: HomeV2Content } & ShellPa
   const isDesktop = bp === "desktop";
   const tk: ColorTokens = isDark ? DARK : LIGHT;
 
-  const padH   = isMobile ? "1.4rem" : isTablet ? "2.5rem" : "3.5rem";
+  // v2: gutters and section spacing harmonised with the waterfall canon
+  // (WaterfallDetail PAD / SEC): 1.25 / 1.4 / 1rem side gutter, 3.5 / 4.5 / 5.5rem between sections.
+  const padH   = isMobile ? "1.25rem" : isTablet ? "1.4rem" : "1rem";
+  const SEC    = isMobile ? "3.5rem" : isTablet ? "4.5rem" : "5.5rem";
   // v2: wide column. Content edges sit on a centred 1200px column on tablet and
   // desktop (side padding grows with the window); mobile is unchanged.
   const wideX  = isMobile ? padH : `max(${padH}, calc((100% - 1200px) / 2))`;
@@ -253,7 +256,7 @@ export function HomeV2({ content, isDark }: { content: HomeV2Content } & ShellPa
       </div>
 
       {/* ══ B2 · DEPTH SIGNAL ══ */}
-      <div style={{ background: tk.bg, padding: `4.5rem ${wideX} 3.5rem` }}>
+      <div style={{ background: tk.bg, padding: `${SEC} ${wideX} 3.5rem` }}>
         <p style={{
           margin:        "0 0 2rem",
           fontFamily:    FONT_LBL,
@@ -351,7 +354,7 @@ export function HomeV2({ content, isDark }: { content: HomeV2Content } & ShellPa
       <div style={{ background: tk.bg }}>
         <p style={{
           margin:        0,
-          padding:       `3.5rem ${wideX} 1.4rem`,
+          padding:       `${SEC} ${wideX} 1.4rem`,
           fontFamily:    FONT_LBL,
           fontSize:      "0.72rem",
           fontWeight:    400,
@@ -441,7 +444,7 @@ export function HomeV2({ content, isDark }: { content: HomeV2Content } & ShellPa
       <div style={{
         background: tk.surface,
         borderTop:  `1px solid ${tk.rule}`,
-        padding:    `4.5rem ${wideX}`,
+        padding:    `${SEC} ${wideX}`,
       }}>
         <p style={{
           margin:        "0 0 1.8rem",
@@ -500,7 +503,7 @@ export function HomeV2({ content, isDark }: { content: HomeV2Content } & ShellPa
       <div style={{
         background: tk.bg,
         borderTop:  `1px solid ${tk.rule}`,
-        padding:    `3.5rem ${wideX} 3rem`,
+        padding:    `${SEC} ${wideX} 3rem`,
       }}>
         <div style={{ fontFamily: FONT_MONO, fontSize: "0.82rem", lineHeight: 2.0, letterSpacing: "0.06em", marginBottom: "3rem" }}>
           <div style={{ color: tk.bq }}>{c.seasonLead}</div>
