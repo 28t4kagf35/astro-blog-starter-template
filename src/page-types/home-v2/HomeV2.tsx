@@ -145,20 +145,28 @@ function useBreakpoint() {
   return bp;
 }
 
+// v2: mosaic labels use the Raleway label voice of the door tiles, on a soft
+// scrim so they read on any photo (was tiny mono text at 42% opacity).
 function ImageLabel({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{
-      position:      "absolute",
-      bottom:        "0.65rem",
-      left:          "0.75rem",
-      fontFamily:    FONT_MONO,
-      fontSize:      "0.58rem",
-      letterSpacing: "0.16em",
-      color:         ON_IMAGE.muted,
-      textTransform: "uppercase" as const,
-    }}>
-      {children}
-    </div>
+    <>
+      <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "46%", background: "linear-gradient(to top, rgba(14,12,10,0.66) 0%, rgba(14,12,10,0) 100%)", pointerEvents: "none" }} />
+      <div style={{
+        position:      "absolute",
+        bottom:        "0.9rem",
+        left:          "1rem",
+        right:         "1rem",
+        fontFamily:    FONT_LBL,
+        fontWeight:    400,
+        fontSize:      "0.82rem",
+        letterSpacing: "0.14em",
+        lineHeight:    1.4,
+        color:         ON_IMAGE.head,
+        textTransform: "uppercase" as const,
+      }}>
+        {children}
+      </div>
+    </>
   );
 }
 
@@ -237,21 +245,6 @@ export function HomeV2({ content, isDark }: { content: HomeV2Content } & ShellPa
           >
             {isMobile ? c.heroSubtitleMobile : c.heroSubtitle}
           </p>
-        </div>
-
-        <div style={{
-          position:      "absolute",
-          bottom:        "1.8rem",
-          left:          0,
-          right:         0,
-          textAlign:     "center",
-          fontFamily:    FONT_MONO,
-          fontSize:      "0.58rem",
-          letterSpacing: "0.20em",
-          color:         "rgba(237,233,226,0.28)",
-          textTransform: "uppercase" as const,
-        }}>
-          Scroll
         </div>
       </div>
 
