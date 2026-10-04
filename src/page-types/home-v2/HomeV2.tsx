@@ -199,20 +199,7 @@ export function HomeV2({ content, isDark }: { content: HomeV2Content } & ShellPa
         <Pic slot="hero" abs top="24vh" />
         <div style={{ position: "absolute", top: 0, right: 0, bottom: 0, left: 0, background: OVERLAY_HERO }} />
 
-        <div style={{
-          position:      "absolute",
-          top:           isMobile ? "1.4rem" : "2.2rem",
-          left:          0,
-          right:         0,
-          textAlign:     "center",
-          fontFamily:    FONT_MONO,
-          fontSize:      isMobile ? "0.58rem" : "0.68rem",
-          letterSpacing: "0.20em",
-          color:         ON_IMAGE.muted,
-          textTransform: "uppercase" as const,
-        }}>
-          {c.heroLabel}
-        </div>
+        {/* v2: the "60°N · Voss & Hardanger · Western Norway" label under the navbar is removed (owner, 2026-10-04). */}
 
         <div style={{ position: "relative", textAlign: "center", padding: isMobile ? "0 1.6rem" : "0 3rem" }}>
           <h1
