@@ -42,7 +42,23 @@ const DARK = {
   accent:  "#D43535",
 } as const;
 
-type ColorTokens = typeof DARK;
+// v2: light set, the waterfall canon's values (WaterfallDetail LIGHT).
+const LIGHT = {
+  bg:      "#F4F2EE",
+  surface: "#EBE7DF",
+  rule:    "#D6D2CB",
+  muted:   "#8E8A84",
+  body:    "#201E18",
+  head:    "#111010",
+  bq:      "#A4AE9C",
+  accent:  "#D43535",
+} as const;
+
+type ColorTokens = { [K in keyof typeof DARK]: string };
+
+// v2: canon theme fade. Colours, backgrounds and rules ease over 2.6 s when
+// the navbar switches dark/light (same curve as the waterfall veil).
+const FADE_CSS = `[data-home-v2], [data-home-v2] * { transition: background-color 2.6s cubic-bezier(.18,0,.38,1), color 2.6s cubic-bezier(.18,0,.38,1), border-color 2.6s cubic-bezier(.18,0,.38,1); }`;
 
 const ON_IMAGE = {
   head:  "rgba(237,233,226,0.96)",
@@ -152,7 +168,7 @@ function ImageLabel({ children }: { children: React.ReactNode }) {
 
 // ── Component ────────────────────────────────────────────────────────────────
 
-export function HomeV2({ content }: { content: HomeV2Content } & ShellPageProps) {
+export function HomeV2({ content, isDark }: { content: HomeV2Content } & ShellPageProps) {
   const c = content;
   const oneLine = (t: string) => t.replace(/\n/g, " ");
   const [doorW, doorL, doorC] = [c.doors[0], c.doors[1], c.doors[2]];
@@ -160,7 +176,7 @@ export function HomeV2({ content }: { content: HomeV2Content } & ShellPageProps)
   const isMobile  = bp === "mobile";
   const isTablet  = bp === "tablet";
   const isDesktop = bp === "desktop";
-  const tk: ColorTokens = DARK;
+  const tk: ColorTokens = isDark ? DARK : LIGHT;
 
   const padH   = isMobile ? "1.4rem" : isTablet ? "2.5rem" : "3.5rem";
   const h1Hero = isMobile ? "2.2rem" : isTablet ? "3rem"   : "3.8rem";
@@ -168,7 +184,8 @@ export function HomeV2({ content }: { content: HomeV2Content } & ShellPageProps)
 
   return (
     <ImgCtx.Provider value={c.images}>
-    <div data-scroll style={{ ...SS4_SMOOTHING, background: tk.bg, minHeight: "100vh", color: tk.body, overflowX: "hidden" }}>
+    <style>{FADE_CSS}</style>
+    <div data-scroll data-home-v2="" style={{ ...SS4_SMOOTHING, background: tk.bg, minHeight: "100vh", color: tk.body, overflowX: "hidden" }}>
 
       {/* ══ B1 · WORLD ══ */}
       <div style={{
