@@ -355,7 +355,7 @@ export function CultureFeedV2({ content, isDark = true }: { content: CultureFeed
     }}>
 
       {/* ── HERO — shared with the other v2 pages ── */}
-      <Hero image={content.heroImage.src} srcSet={mediaSrcSet(content.heroImage.src)} position={content.heroImage.position} title={<>Culture<br />& History</>} tagline="Voss · Hardanger" isMobile={isMobile} isTablet={isTablet} isDesktop={!isMobile && !isTablet} />
+      <Hero image={content.heroImage.src} srcSet={mediaSrcSet(content.heroImage.src)} position={content.heroImage.position} title="Culture & History" tagline="Voss · Hardanger" isMobile={isMobile} isTablet={isTablet} isDesktop={!isMobile && !isTablet} />
 
       {/* ── ARTICLE GRID ── */}
       <div data-bb-field="entries" style={{ maxWidth: maxW, margin: "0 auto", padding: gridPad }}>
