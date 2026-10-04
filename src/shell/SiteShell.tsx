@@ -11,6 +11,7 @@
  */
 import { useCallback, useEffect, useRef, useState, type ComponentType } from "react";
 import { SiteNav, useNavBehavior } from "../globals/navbar";
+import { SiteNavNext } from "../globals/navbar-next";
 
 /** What every page type receives from the shell. */
 export interface ShellPageProps {
@@ -25,6 +26,10 @@ export function withShell<C>(Page: ComponentType<{ content: C } & ShellPageProps
   return function ShellPage({ content }: { content: C }) {
     const [isDark, setIsDark] = useState(true);
     const [audioPlaying, setAudioPlaying] = useState(false);
+    // The experimental navbar is shown only on the -v2 sandbox pages.
+    const [path, setPath] = useState("");
+    useEffect(() => { setPath(window.location.pathname); }, []);
+    const useNext = path.replace(/\/+$/, "").endsWith("-v2");
     const audioToggleRef = useRef<(() => void) | null>(null);
     const audioPlayingRef = useRef(false);
 
@@ -58,7 +63,19 @@ export function withShell<C>(Page: ComponentType<{ content: C } & ShellPageProps
 
     return (
       <>
-        <SiteNav
+        {useNext ? (
+          <SiteNavNext
+            isDark={isDark}
+            onIsDarkChange={setIsDark}
+            audioPlaying={audioPlaying}
+            onAudioToggle={() => audioToggleRef.current?.()}
+            scrollState={scrollState}
+            isMobile={isMobile}
+            hidden={navHidden}
+            currentPath={path}
+          />
+        ) : (
+          <SiteNav
           isDark={isDark}
           onIsDarkChange={setIsDark}
           audioPlaying={audioPlaying}
@@ -67,6 +84,7 @@ export function withShell<C>(Page: ComponentType<{ content: C } & ShellPageProps
           isMobile={isMobile}
           hidden={navHidden}
         />
+        )}
         <Page
           content={content}
           isDark={isDark}

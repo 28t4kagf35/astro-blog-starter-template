@@ -1,0 +1,10 @@
+{
+  "name": "navbar-next",
+  "version": "0.1.0",
+  "status": "experiment (shown only on the -v2 sandbox pages; not canon)",
+  "source": {
+    "repo": "this repo",
+    "note": "Based on navbar 1.2.0. Drawer on desktop, slide-up menu on mobile, quicker hover, current-section marker. See CHANGELOG."
+  },
+  "basedOn": "navbar 1.2.0 (draft)"
+}
