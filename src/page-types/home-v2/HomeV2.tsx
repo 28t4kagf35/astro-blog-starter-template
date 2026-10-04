@@ -56,10 +56,6 @@ const LIGHT = {
 
 type ColorTokens = { [K in keyof typeof DARK]: string };
 
-// v2: canon theme fade. Colours, backgrounds and rules ease over 2.6 s when
-// the navbar switches dark/light (same curve as the waterfall veil).
-const FADE_CSS = `[data-home-v2], [data-home-v2] * { transition: background-color 2.6s cubic-bezier(.18,0,.38,1), color 2.6s cubic-bezier(.18,0,.38,1), border-color 2.6s cubic-bezier(.18,0,.38,1); }`;
-
 const ON_IMAGE = {
   head:  "rgba(237,233,226,0.96)",
   body:  "rgba(196,190,180,0.82)",
@@ -184,8 +180,7 @@ export function HomeV2({ content, isDark }: { content: HomeV2Content } & ShellPa
 
   return (
     <ImgCtx.Provider value={c.images}>
-    <style>{FADE_CSS}</style>
-    <div data-scroll data-home-v2="" style={{ ...SS4_SMOOTHING, background: tk.bg, minHeight: "100vh", color: tk.body, overflowX: "hidden" }}>
+    <div data-scroll style={{ ...SS4_SMOOTHING, background: tk.bg, transition: "background 0.35s ease", minHeight: "100vh", color: tk.body, overflowX: "hidden" }}>
 
       {/* ══ B1 · WORLD ══ */}
       <div style={{
