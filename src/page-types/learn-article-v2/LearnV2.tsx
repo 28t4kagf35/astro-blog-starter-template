@@ -15,6 +15,7 @@
  * Slot: learn_20260521_1100
  */
 
+import { PLACEMENT } from "../../site/placement";
 import { Hero } from "../../site/Hero";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 
@@ -146,7 +147,7 @@ export function LearnV2({ content, isDark = true }: { content: LearnV2Content; i
     }}>
 
       {/* ── HERO — shared with the other v2 pages ── */}
-      <Hero image={content.heroImage} srcSet={heroSrcSet(content.heroImage)} position="center" alt={content.title} title={content.title} placement={content.clusterLabel} isMobile={isMobile} isTablet={isTablet} isDesktop={!isMobile && !isTablet} />
+      <Hero image={content.heroImage} srcSet={heroSrcSet(content.heroImage)} position="center" alt={content.title} title={content.title} placement={PLACEMENT.learn} isMobile={isMobile} isTablet={isTablet} isDesktop={!isMobile && !isTablet} />
 
       {/* ── ARTICLE BODY ── */}
       <div

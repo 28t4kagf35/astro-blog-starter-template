@@ -18,6 +18,7 @@
  * Slot: experience_firstlight_20260521_1100
  */
 
+import { PLACEMENT } from "../../site/placement";
 import { Hero } from "../../site/Hero";
 import { useEffect, useState, type CSSProperties } from "react";
 
@@ -185,7 +186,7 @@ export function ExperienceV2({ content, isDark = true }: { content: ExperienceV2
     <div data-scroll="root" style={{ ...SS4_SMOOTHING, background: tk.bg, minHeight: "100vh", transition: "background 0.35s ease" }}>
 
       {/* ── HERO — shared with the other v2 pages ── */}
-      <Hero image={content.heroImage} srcSet={heroSrcSet(content.heroImage)} position="center 35%" alt={content.title} title={content.title} placement={content.clusterLabel} isMobile={isMobile} isTablet={isTablet} isDesktop={isDesktop} />
+      <Hero image={content.heroImage} srcSet={heroSrcSet(content.heroImage)} position="center 35%" alt={content.title} title={content.title} placement={PLACEMENT.experience} isMobile={isMobile} isTablet={isTablet} isDesktop={isDesktop} />
 
       {/* ── BODY ── */}
       <div data-bb-field="bodyText" style={{

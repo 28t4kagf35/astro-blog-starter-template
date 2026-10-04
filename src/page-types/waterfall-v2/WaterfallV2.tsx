@@ -16,6 +16,7 @@
  *   8. interface CONTENT retained verbatim from canvas source
  */
 
+import { PLACEMENT } from "../../site/placement";
 import { Stretch } from "../../site/Stretch";
 import React, { useEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
@@ -437,7 +438,7 @@ export function WaterfallV2({
         <div style={{ position: "absolute", top:0, right:0, bottom:0, left:0,   backgroundColor: cleared ? "rgba(14,12,10,0)" : "rgba(14,12,10,0.42)", opacity: cleared ? 0 : 1, transition: "background-color 2.6s cubic-bezier(.18,0,.38,1), opacity 2.6s cubic-bezier(.18,0,.38,1)", pointerEvents: "none", zIndex: 2 }} />
 
         <div style={{ position: "absolute", bottom: isMobile ? "2.4rem" : isTablet ? "3rem" : "3.8rem", left: isDesktop ? "50%" : 0, transform: isDesktop ? "translateX(-50%)" : "none", width: "100%", maxWidth: isDesktop ? COL : "none", zIndex: 3, padding: PAD, boxSizing: "border-box", opacity: textVisible ? 1 : 0, transition: "opacity 1.3s ease-in-out" }}>
-          <p style={{ margin: "0 0 1rem", fontFamily: MONO, fontSize: isMobile ? "0.68rem" : "0.74rem", fontWeight: 400, letterSpacing: "0.16em", textTransform: "uppercase", lineHeight: 1.4, color: "#EDE9E2", opacity: 0.7 }}>Explore · Waterfalls</p>
+          <p style={{ margin: "0 0 1rem", fontFamily: MONO, fontSize: isMobile ? "0.68rem" : "0.74rem", fontWeight: 400, letterSpacing: "0.16em", textTransform: "uppercase", lineHeight: 1.4, color: "#EDE9E2", opacity: 0.7 }}>{PLACEMENT.waterfall}</p>
           <h1 data-bb-field="name" style={{ margin: 0, ...T_PAGE_TITLE, fontSize: h1Size, color: "#EDE9E2" }}>{content.name}</h1>
           <p data-bb-field="tagline" style={{ margin: "0.8rem 0 0", ...T_TAGLINE, color: "#EDE9E2", opacity: 0.78 }}>{content.tagline}</p>
         </div>
