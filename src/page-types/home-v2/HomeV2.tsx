@@ -175,6 +175,9 @@ export function HomeV2({ content, isDark }: { content: HomeV2Content } & ShellPa
   const tk: ColorTokens = isDark ? DARK : LIGHT;
 
   const padH   = isMobile ? "1.4rem" : isTablet ? "2.5rem" : "3.5rem";
+  // v2: wide column. Content edges sit on a centred 1200px column on tablet and
+  // desktop (side padding grows with the window); mobile is unchanged.
+  const wideX  = isMobile ? padH : `max(${padH}, calc((100% - 1200px) / 2))`;
   const h1Hero = isMobile ? "2.2rem" : isTablet ? "3rem"   : "3.8rem";
   const subHero = isMobile ? "0.88rem" : isTablet ? "0.95rem" : "1rem";
 
@@ -263,7 +266,7 @@ export function HomeV2({ content, isDark }: { content: HomeV2Content } & ShellPa
       </div>
 
       {/* ══ B2 · DEPTH SIGNAL ══ */}
-      <div style={{ background: tk.bg, padding: `4.5rem ${padH} 3.5rem` }}>
+      <div style={{ background: tk.bg, padding: `4.5rem ${wideX} 3.5rem` }}>
         <p style={{
           margin:        "0 0 2rem",
           fontFamily:    FONT_LBL,
@@ -361,7 +364,7 @@ export function HomeV2({ content, isDark }: { content: HomeV2Content } & ShellPa
       <div style={{ background: tk.bg }}>
         <p style={{
           margin:        0,
-          padding:       `3.5rem ${padH} 1.4rem`,
+          padding:       `3.5rem ${wideX} 1.4rem`,
           fontFamily:    FONT_LBL,
           fontSize:      "0.72rem",
           fontWeight:    400,
@@ -396,7 +399,7 @@ export function HomeV2({ content, isDark }: { content: HomeV2Content } & ShellPa
 
         {/* Tablet: 1 wide + 2 stacked */}
         {isTablet && (
-          <div style={{ display: "grid", gridTemplateColumns: "1.6fr 1fr", gap: "3px", minHeight: "560px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1.6fr 1fr", gap: "3px", minHeight: "560px", padding: `0 ${wideX}` }}>
             <div style={{ position: "relative", overflow: "hidden" }}>
               <Pic slot="waterfalls" abs />
               <Stretch href={doorHref("waterfalls")} label={doorW?.label ?? ""} />
@@ -426,7 +429,7 @@ export function HomeV2({ content, isDark }: { content: HomeV2Content } & ShellPa
 
         {/* Desktop: original 3-col proportional flex */}
         {isDesktop && (
-          <div style={{ display: "flex", gap: "3px" }}>
+          <div style={{ display: "flex", gap: "3px", padding: `0 ${wideX}` }}>
             {[
               { d: doorW, flex: 2.6 },
               { d: doorL, flex: 1.4 },
@@ -451,7 +454,7 @@ export function HomeV2({ content, isDark }: { content: HomeV2Content } & ShellPa
       <div style={{
         background: tk.surface,
         borderTop:  `1px solid ${tk.rule}`,
-        padding:    `4.5rem ${padH}`,
+        padding:    `4.5rem ${wideX}`,
       }}>
         <p style={{
           margin:        "0 0 1.8rem",
@@ -510,7 +513,7 @@ export function HomeV2({ content, isDark }: { content: HomeV2Content } & ShellPa
       <div style={{
         background: tk.bg,
         borderTop:  `1px solid ${tk.rule}`,
-        padding:    `3.5rem ${padH} 3rem`,
+        padding:    `3.5rem ${wideX} 3rem`,
       }}>
         <div style={{ fontFamily: FONT_MONO, fontSize: "0.82rem", lineHeight: 2.0, letterSpacing: "0.06em", marginBottom: "3rem" }}>
           <div style={{ color: tk.bq }}>{c.seasonLead}</div>
