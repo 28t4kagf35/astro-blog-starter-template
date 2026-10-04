@@ -19,6 +19,8 @@ import HomePage from "../page-types/home/index.tsx";
 import CabinPage from "../page-types/cabin/index.tsx";
 import HomeV2Page from "../page-types/home-v2/index.tsx";
 import CabinV2Page from "../page-types/cabin-v2/index.tsx";
+import LearnV2Page from "../page-types/learn-article-v2/index.tsx";
+import ExperienceV2Page from "../page-types/experience-article-v2/index.tsx";
 import ExploreHomePage from "../page-types/explore-home/index.tsx";
 import ActivitiesHomePage from "../page-types/activities-home/index.tsx";
 import PreviewIndex from "../page-types/preview-index/PreviewIndex.astro";
@@ -50,6 +52,8 @@ if (!(PAGE_TYPES as readonly string[]).includes(page.type)) {
 	{page.type === "cabin" && <CabinPage client:load content={page.content} />}
 	{page.type === "homeV2" && <HomeV2Page client:load content={page.content} />}
 	{page.type === "cabinV2" && <CabinV2Page client:load content={page.content} />}
+	{page.type === "learnV2" && <LearnV2Page client:load content={page.content} />}
+	{page.type === "experienceV2" && <ExperienceV2Page client:load content={page.content} />}
 	{page.type === "exploreHome" && <ExploreHomePage client:load content={page.content} />}
 	{page.type === "activitiesHome" && <ActivitiesHomePage client:load content={page.content} />}
 	{page.type === "previewIndex" && <PreviewIndex links={page.content.links} />}
