@@ -15,6 +15,8 @@ import { activityPages } from "../clusters/activities";
 import type { HomeContent } from "../page-types/home";
 import { homePages } from "../clusters/home";
 import type { CabinContent } from "../page-types/cabin";
+import type { HomeV2Content } from "../page-types/home-v2";
+import type { CabinV2Content } from "../page-types/cabin-v2";
 import { cabinPages } from "../clusters/cabin";
 import type { ExploreHomeContent } from "../page-types/explore-home";
 import { explorePages } from "../clusters/explore";
@@ -33,11 +35,13 @@ export type SitePage =
   | (Base & { type: "activity"; content: ActivityContent })
   | (Base & { type: "home"; content: HomeContent })
   | (Base & { type: "cabin"; content: CabinContent })
+  | (Base & { type: "homeV2"; content: HomeV2Content })
+  | (Base & { type: "cabinV2"; content: CabinV2Content })
   | (Base & { type: "exploreHome"; content: ExploreHomeContent })
   | (Base & { type: "activitiesHome"; content: ActivitiesHomeContent })
   | (Base & { type: "previewIndex"; content: { links: Array<{ href: string; label: string }> } });
 
-export const PAGE_TYPES = ["waterfall", "masterGuide", "learnArticle", "experienceArticle", "cultureFeed", "observeFeed", "activity", "home", "cabin", "exploreHome", "activitiesHome", "previewIndex"] as const;
+export const PAGE_TYPES = ["waterfall", "masterGuide", "learnArticle", "experienceArticle", "cultureFeed", "observeFeed", "activity", "home", "cabin", "homeV2", "cabinV2", "exploreHome", "activitiesHome", "previewIndex"] as const;
 
 export async function buildSitePages(): Promise<SitePage[]> {
   const pages: SitePage[] = [
@@ -52,6 +56,14 @@ export async function buildSitePages(): Promise<SitePage[]> {
     ...(await explorePages()),
     ...(await activitiesHomePages()),
   ];
+
+  // Working copies for side-by-side comparison (/home-v2, /cabin-v2): same
+  // content as the originals, own page type. Remove when a v2 is approved
+  // and swapped in.
+  for (const p of [...pages]) {
+    if (p.type === "home") pages.push({ ...p, path: "home-v2", type: "homeV2", title: `${p.title} (v2)`, listLabel: `${p.listLabel} (v2)`, content: p.content as HomeV2Content });
+    if (p.type === "cabin") pages.push({ ...p, path: "cabin-v2", type: "cabinV2", title: `${p.title} (v2)`, listLabel: `${p.listLabel} (v2)`, content: p.content as CabinV2Content });
+  }
 
   // "/preview": a plain list of every page, for walking the site before the
   // menu and the links between pages exist.
