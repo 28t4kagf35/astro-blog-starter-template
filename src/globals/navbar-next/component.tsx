@@ -128,22 +128,22 @@ export function SiteNavNext({
   const section = sectionOf(currentPath);
   const sub = subOf(currentPath);
 
+  const openedBefore = useRef(false);
   useEffect(() => {
-    // On a page inside Explore, the open menu shows where you are: Explore is
-    // opened (and Nature, for Observe / Learn / Experience) as the menu appears.
-    if (menuOpen) {
-      if (isMobile && section === "EXPLORE") {
-        setExploreOpen(true);
-        if (sub === "OBSERVE" || sub === "LEARN" || sub === "EXPERIENCE") setNatureOpen(true);
-      }
-      return;
-    }
-    // On close, nothing moves: the whole menu fades out as one, and the folded
-    // state is restored only once it is fully invisible.
-    const t = setTimeout(() => { setExploreOpen(false); setNatureOpen(false); }, 650);
+    // The menu's resting shape for this page: on a page inside Explore, Explore is
+    // already open (and Nature, for Observe / Learn / Experience), so the menu
+    // appears in place with nothing animating.
+    const inExplore = isMobile && section === "EXPLORE";
+    const restExplore = inExplore;
+    const restNature = inExplore && (sub === "OBSERVE" || sub === "LEARN" || sub === "EXPERIENCE");
+    if (menuOpen) { openedBefore.current = true; return; }
+    // Closed: the shape is set while the menu is invisible. Straight away before
+    // the first opening; after a closing, only once the fade-out is finished.
+    if (!openedBefore.current) { setExploreOpen(restExplore); setNatureOpen(restNature); return; }
+    const t = setTimeout(() => { setExploreOpen(restExplore); setNatureOpen(restNature); }, 650);
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [menuOpen]);
+  }, [menuOpen, isMobile, section, sub]);
   useEffect(() => { if (!isMobile) setMenuOpen(false); }, [isMobile]);
   useEffect(() => {
     const measure = () => { if (exploreRef.current) setExploreLeft(exploreRef.current.getBoundingClientRect().left); };
@@ -395,7 +395,7 @@ export function SiteNavNext({
             })}
           </div>
 
-          <div style={{ flexGrow: 0, flexShrink: 1, flexBasis: "26dvh" }} />
+          <div style={{ flexGrow: 0, flexShrink: 0, flexBasis: "7dvh" }} />
           <div style={{ paddingBottom: "2.4rem", paddingTop: "1rem" }}>
             <span style={{ fontFamily: FONT_LBL, fontSize: "0.92rem", fontWeight: 300, letterSpacing: "0.30em", color: DARK.head, opacity: 0.30, textTransform: "uppercase" }}>
               vosswaterfalls.no

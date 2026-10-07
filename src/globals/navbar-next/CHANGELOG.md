@@ -1,5 +1,14 @@
 # navbar-next: changelog
 
+## 0.9.4 (builds on 0.9.3)
+
+- Mobile menu: the bottom line sits much lower (7% of the screen height above the
+  footer) and the gap never shrinks, so opening Explore only moves the lines above
+  it upward; The Cabin and Activities stay put. A very tall list scrolls.
+- Mobile menu: on a page inside Explore (Tvindefossen, etc.) the menu opens already
+  expanded, with nothing animating. On other pages, the first tap on Explore
+  expands it (animated) and the second goes to the Explore home page.
+
 ## 0.9.3 (builds on 0.9.2)
 
 - Mobile menu: the bottom of the list is fixed. Opening Explore (or Nature) animates
