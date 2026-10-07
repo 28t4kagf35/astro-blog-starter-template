@@ -1,5 +1,13 @@
 # navbar-next: changelog
 
+## 0.9.1 (builds on 0.9.0)
+
+- Mobile menu: reveal back to the 0.8.0 behaviour (the menu fades in while Explore
+  and Nature open into place), 50% slower: fade 0.48s (was 0.32s), slide 0.57s
+  (was 0.38s).
+- Mobile menu: on hide only the whole menu fades out (0.48s); the text does not
+  animate. The folded state is restored after the menu is fully invisible.
+
 ## 0.9.0 (builds on 0.8.0)
 
 - Mobile menu: slower reveal (0.7s fade-in, was 0.32s).

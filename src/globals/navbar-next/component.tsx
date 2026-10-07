@@ -129,15 +129,18 @@ export function SiteNavNext({
   const sub = subOf(currentPath);
 
   useEffect(() => {
-    // The menu's resting shape for this page: on a page inside Explore, Explore is
-    // already open (and Nature, for Observe / Learn / Experience).
-    const inExplore = isMobile && section === "EXPLORE";
-    const restExplore = inExplore;
-    const restNature = inExplore && (sub === "OBSERVE" || sub === "LEARN" || sub === "EXPERIENCE");
-    if (menuOpen) { setExploreOpen(restExplore); setNatureOpen(restNature); return; }
-    // On close, wait until the menu is fully faded out before resetting, so the
-    // text never moves while the menu is disappearing.
-    const t = setTimeout(() => { setExploreOpen(restExplore); setNatureOpen(restNature); }, 650);
+    // On a page inside Explore, the open menu shows where you are: Explore is
+    // opened (and Nature, for Observe / Learn / Experience) as the menu appears.
+    if (menuOpen) {
+      if (isMobile && section === "EXPLORE") {
+        setExploreOpen(true);
+        if (sub === "OBSERVE" || sub === "LEARN" || sub === "EXPERIENCE") setNatureOpen(true);
+      }
+      return;
+    }
+    // On close, nothing moves: the whole menu fades out as one, and the folded
+    // state is restored only once it is fully invisible.
+    const t = setTimeout(() => { setExploreOpen(false); setNatureOpen(false); }, 650);
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [menuOpen]);
@@ -339,11 +342,11 @@ export function SiteNavNext({
           backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)",
           display: "flex", flexDirection: "column", padding: `${MOBILE_BAR_H}px 2rem 0 3.1rem`,
           overflowY: "auto", opacity: menuOpen ? 1 : 0, pointerEvents: menuOpen ? "all" : "none",
-          transition: menuOpen ? "opacity 700ms ease-out" : "opacity 500ms ease-in-out",
+          transition: "opacity 480ms ease-out",
         }}>
-          <div style={{ flexGrow: exploreOpen ? 0.2 : 1, flexShrink: 1, flexBasis: 0, transition: `flex-grow 380ms ${EASE}` }} />
+          <div style={{ flexGrow: exploreOpen ? 0.2 : 1, flexShrink: 1, flexBasis: 0, transition: `flex-grow 570ms ${EASE}` }} />
 
-          <div style={{ display: "flex", flexDirection: "column", gap: exploreOpen ? "1.7rem" : "2.4rem", transition: `gap 380ms ${EASE}` }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: exploreOpen ? "1.7rem" : "2.4rem", transition: `gap 570ms ${EASE}` }}>
             {TOP.map((t) => {
               const isExplore = t.label === "EXPLORE";
               const active = section === t.label;

@@ -9,10 +9,10 @@
       "basedOn": "1.0.0 (canon/navbar-v1)"
     },
     "navbar-next": {
-      "version": "0.9.0",
+      "version": "0.9.1",
       "status": "experiment",
       "source": "this repo; shown only on -v2 sandbox pages",
-      "fingerprint": "0ed39a4a802906ad26647aa9b01841dcc4cc9a96ce1c498fe428e69b80459f0f",
+      "fingerprint": "c4246f2bbb1d029a1c39ad307b1b9c2b287cbed1e265275d85720750de299e77",
       "basedOn": "navbar 1.2.0 (draft)"
     }
   }
