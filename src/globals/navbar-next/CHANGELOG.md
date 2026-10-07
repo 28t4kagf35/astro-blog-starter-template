@@ -1,5 +1,10 @@
 # navbar-next: changelog
 
+## 0.9.2 (builds on 0.9.1)
+
+- Mobile menu: the text lines expand a little slower: main words slide 0.72s (was 0.57s),
+  sub-items open 0.42s (was 0.32s). Desktop unchanged. Fades stay 0.48s.
+
 ## 0.9.1 (builds on 0.9.0)
 
 - Mobile menu: reveal back to the 0.8.0 behaviour (the menu fades in while Explore

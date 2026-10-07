@@ -98,9 +98,9 @@ function Mark({ on, size = 7 }: { on: boolean; size?: number }) {
 }
 
 /** Animates between zero height and the content's own height. */
-function Collapse({ open, children }: { open: boolean; children: ReactNode }) {
+function Collapse({ open, children, slow }: { open: boolean; children: ReactNode; slow?: boolean }) {
   return (
-    <div style={{ display: "grid", gridTemplateRows: open ? "1fr" : "0fr", opacity: open ? 1 : 0, transition: `grid-template-rows 320ms ${EASE}, opacity 240ms ease-out` }}>
+    <div style={{ display: "grid", gridTemplateRows: open ? "1fr" : "0fr", opacity: open ? 1 : 0, transition: slow ? `grid-template-rows 420ms ${EASE}, opacity 310ms ease-out` : `grid-template-rows 320ms ${EASE}, opacity 240ms ease-out` }}>
       <div style={{ overflow: "hidden", minHeight: 0 }}>{children}</div>
     </div>
   );
@@ -344,9 +344,9 @@ export function SiteNavNext({
           overflowY: "auto", opacity: menuOpen ? 1 : 0, pointerEvents: menuOpen ? "all" : "none",
           transition: "opacity 480ms ease-out",
         }}>
-          <div style={{ flexGrow: exploreOpen ? 0.2 : 1, flexShrink: 1, flexBasis: 0, transition: `flex-grow 570ms ${EASE}` }} />
+          <div style={{ flexGrow: exploreOpen ? 0.2 : 1, flexShrink: 1, flexBasis: 0, transition: `flex-grow 720ms ${EASE}` }} />
 
-          <div style={{ display: "flex", flexDirection: "column", gap: exploreOpen ? "1.7rem" : "2.4rem", transition: `gap 570ms ${EASE}` }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: exploreOpen ? "1.7rem" : "2.4rem", transition: `gap 720ms ${EASE}` }}>
             {TOP.map((t) => {
               const isExplore = t.label === "EXPLORE";
               const active = section === t.label;
@@ -364,7 +364,7 @@ export function SiteNavNext({
                     <Mark on={active} size={8} />{t.label}
                   </a>
                   {isExplore && (
-                    <Collapse open={exploreOpen}>
+                    <Collapse slow open={exploreOpen}>
                       <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", paddingTop: "1rem", paddingLeft: "1.1rem" }}>
                         {EXPLORE.map((c) => (
                           <div key={c.label} style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
@@ -379,7 +379,7 @@ export function SiteNavNext({
                               </span>
                             )}
                             {c.children && (
-                              <Collapse open={natureOpen}>
+                              <Collapse slow open={natureOpen}>
                                 <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", paddingLeft: "1.1rem" }}>
                                   {c.children.map((ch) => mobileSub(ch, 2))}
                                 </div>
