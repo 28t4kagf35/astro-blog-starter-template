@@ -1,5 +1,10 @@
 # navbar-next: changelog
 
+## 2.0.0 (canon: Navbar v2, approved 2026-10-07, supersedes navbar v1)
+
+Same code as 0.9.5, promoted to canon after review on desktop, mobile and
+tablet portrait. Shown on every page. Tag: `canon/navbar-v2`.
+
 ## 0.9.5 (builds on 0.9.4)
 
 - Tablet held upright (up to 1023px wide) now gets the mobile menu on the -v2 pages
@@ -56,10 +61,6 @@
   pressed is full white (#EDE9E2). Sub-items keep the two-colour rule of 0.7.0.
 
 ## 0.7.0 (experiment, 2026-10-07)
-
-> **Note, 2026-10-07: this is the new canon navbar.** Still to do for it to apply site-wide: swap it in for the current
-> navbar in the shell, and register it in CANON.md with a canon tag. Neither is done
-> yet; for now it is shown only on the -v2 pages.
 
 - No transparency on nav text: two solid colours for every item, main or sub:
   resting #A8A49E, lit (hover or current) #EDE9E2. The colour of an item no longer

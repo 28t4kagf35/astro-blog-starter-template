@@ -7,7 +7,8 @@ version goes through the same gate again.
 
 | Piece | Version | Tag | Approved |
 |---|---|---|---|
-| Navbar | v1 | `canon/navbar-v1` | 2026-10-01 19:29 (+02:00) |
+| Navbar | v1 (superseded by v2) | `canon/navbar-v1` | 2026-10-01 19:29 (+02:00) |
+| Navbar | v2 | `canon/navbar-v2` | 2026-10-07 16:37 (+02:00) |
 
 ## Navbar v1
 
@@ -36,3 +37,25 @@ files in `src/globals/navbar/` differ from the lock.
 
 **Where it applies:** every page. The shell (`src/shell/SiteShell.tsx`) is the
 only place the navbar is mounted, and every page type goes through the shell.
+
+## Navbar v2
+
+**Approved:** 2026-10-07, by the owner, with a GO, after review on the live
+preview (desktop, mobile, tablet portrait). Supersedes Navbar v1.
+
+**What is canon**
+- One shell surface: bar and drawer are the same surface (no seam); the drawer
+  opens on hover (120 ms), with a 200 ms close grace; it slides open under Explore.
+- Items: rest and lit colours are fixed (no transparency), the same rule for main
+  and sub-items. Current section is marked with a red square before the item.
+- Mobile and tablet portrait (up to 1023 px wide, upright): slide-up full-screen
+  menu. Veil with blur; fade in 0.48 s, whole menu fades out together on hide
+  (text does not animate). Bottom of the list is fixed, 7% of the screen height
+  above the footer; opening Explore moves only the lines above it upward. On a
+  page inside Explore the menu opens already expanded. Two taps on Explore from
+  outside it (expand, then go).
+- Hide and reveal on scroll: unchanged from v1 (`behavior.ts`).
+- Component: `src/globals/navbar-next/` (version 2.0.0). The v1 files stay in
+  `src/globals/navbar/` unused, apart from `behavior.ts`, which the shell still uses.
+
+**Where it applies:** every page, mounted only by the shell.

@@ -1,10 +1,10 @@
 {
   "name": "navbar-next",
-  "version": "0.9.5",
-  "status": "experiment (shown only on the -v2 sandbox pages; not canon)",
+  "version": "2.0.0",
+  "status": "canon (Navbar v2, supersedes v1)",
   "source": {
     "repo": "this repo",
-    "note": "Based on navbar 1.2.0. Drawer on desktop, slide-up menu on mobile, quicker hover, current-section marker. See CHANGELOG."
+    "note": "Canon navbar v2. Drawer on desktop, slide-up menu on mobile and tablet portrait, current-section marker. Based on navbar 1.2.0. See CHANGELOG."
   },
   "basedOn": "navbar 1.2.0 (draft)"
 }

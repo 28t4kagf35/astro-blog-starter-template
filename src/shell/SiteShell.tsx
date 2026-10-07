@@ -10,7 +10,7 @@
  * check in scripts/check-architecture.mjs).
  */
 import { useCallback, useEffect, useRef, useState, type ComponentType } from "react";
-import { SiteNav, useNavBehavior } from "../globals/navbar";
+import { useNavBehavior } from "../globals/navbar";
 import { SiteNavNext } from "../globals/navbar-next";
 
 /** What every page type receives from the shell. */
@@ -26,11 +26,10 @@ export function withShell<C>(Page: ComponentType<{ content: C } & ShellPageProps
   return function ShellPage({ content }: { content: C }) {
     const [isDark, setIsDark] = useState(true);
     const [audioPlaying, setAudioPlaying] = useState(false);
-    // The experimental navbar is shown only on the -v2 sandbox pages.
+    // The canon navbar (v2) is shown on every page.
     const [path, setPath] = useState("");
     useEffect(() => { setPath(window.location.pathname); }, []);
-    const useNext = path.replace(/\/+$/, "").endsWith("-v2");
-    // Tablet held upright (up to 1023px wide): the experimental navbar uses its
+    // Tablet held upright (up to 1023px wide): the navbar uses its
     // mobile menu there. The canon navbar's own 767px rule is left untouched.
     const [tabletPortrait, setTabletPortrait] = useState(false);
     useEffect(() => {
@@ -73,28 +72,16 @@ export function withShell<C>(Page: ComponentType<{ content: C } & ShellPageProps
 
     return (
       <>
-        {useNext ? (
-          <SiteNavNext
-            isDark={isDark}
-            onIsDarkChange={setIsDark}
-            audioPlaying={audioPlaying}
-            onAudioToggle={() => audioToggleRef.current?.()}
-            scrollState={scrollState}
-            isMobile={isMobile || tabletPortrait}
-            hidden={navHidden}
-            currentPath={path}
-          />
-        ) : (
-          <SiteNav
+        <SiteNavNext
           isDark={isDark}
           onIsDarkChange={setIsDark}
           audioPlaying={audioPlaying}
           onAudioToggle={() => audioToggleRef.current?.()}
           scrollState={scrollState}
-          isMobile={isMobile}
+          isMobile={isMobile || tabletPortrait}
           hidden={navHidden}
+          currentPath={path}
         />
-        )}
         <Page
           content={content}
           isDark={isDark}
