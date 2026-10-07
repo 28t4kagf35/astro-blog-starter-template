@@ -1,5 +1,14 @@
 # navbar-next: changelog
 
+## 0.2.0 (experiment, 2026-10-07)
+
+- Expanded menu (desktop drawer and mobile overlay): more transparent, still dark
+  (74% and 80%, was 88% and 93%).
+- Every nav item lights up on hover, including the sub-items, the not-yet-links
+  and the audio and light/dark buttons.
+- Current item: a 2px red line on its left edge (as the green line on Tvindefossen's
+  indented titles), replacing the underline.
+
 ## 0.1.0 (experiment, 2026-10-04)
 
 Shown only on the `-v2` sandbox pages. The real navbar (1.2.0) is untouched.

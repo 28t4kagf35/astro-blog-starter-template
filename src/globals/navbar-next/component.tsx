@@ -63,8 +63,8 @@ function subOf(path: string): string | null {
 }
 
 const GLASS_BG = "rgba(19,20,22,0.48)";
-const OPEN_BG = "rgba(19,20,22,0.88)";
-const OVERLAY_BG = "rgba(19,20,22,0.93)";
+const OPEN_BG = "rgba(19,20,22,0.74)";
+const OVERLAY_BG = "rgba(19,20,22,0.80)";
 const BAR_H = 56;
 const MOBILE_BAR_H = 68;
 const EASE = "cubic-bezier(0.4, 0, 0.2, 1)";
@@ -78,17 +78,6 @@ interface Props {
   onAudioToggle?: () => void;
   audioPlaying?: boolean;
   currentPath?: string;
-}
-
-/** Thin line under an item: red when current, faint on hover. */
-function Line({ active, hover }: { active: boolean; hover: boolean }) {
-  return (
-    <span aria-hidden="true" style={{
-      position: "absolute", left: 0, right: 0, bottom: 0, height: 1,
-      background: active ? DARK.accent : DARK.head, opacity: active ? 1 : hover ? 0.4 : 0,
-      transition: "opacity 200ms ease-out",
-    }} />
-  );
 }
 
 /** Animates between zero height and the content's own height. */
@@ -174,47 +163,56 @@ export function SiteNavNext({
     fontFamily: FONT_LBL, fontSize: "0.76rem", fontWeight: 400, letterSpacing: "0.14em",
     textTransform: "uppercase", lineHeight: 1, color: DARK.head, userSelect: "none",
     textDecoration: "none", position: "relative", display: "inline-block", paddingBlock: "6px",
+    borderLeft: "2px solid transparent", paddingLeft: "0.8rem",
   };
   const overlayNavItem: CSSProperties = {
     ...SS4_SMOOTHING, fontFamily: FONT_SS4, fontSize: "1.85rem", fontWeight: 300, fontStyle: "italic",
     fontVariationSettings: SS4_OPSZ_DISPLAY, letterSpacing: "-0.01em", textTransform: "none",
     color: DARK.head, lineHeight: 1.15, textDecoration: "none", position: "relative", display: "inline-block",
+    borderLeft: "2px solid transparent", paddingLeft: "0.9rem", marginLeft: "calc(-0.9rem - 2px)", transition: "opacity 200ms ease-out, border-color 200ms ease-out",
   };
 
   /** One link in the desktop drawer. */
   const panelLink = (item: Leaf, small?: boolean) => {
     const key = "p:" + item.label;
     const active = sub === item.label;
-    const hover = hoverKey === key && !!item.href;
+    const hover = hoverKey === key;
     const style: CSSProperties = {
       ...navItem, fontSize: small ? "0.7rem" : "0.76rem", paddingBlock: small ? "0.28rem" : "0.5rem",
-      opacity: !item.href ? 0.32 : active || hover ? 1 : small ? 0.6 : 0.78,
-      transition: "opacity 200ms ease-out", cursor: item.href ? "pointer" : "default",
+      borderLeftColor: active ? DARK.accent : "transparent",
+      opacity: active || hover ? 1 : !item.href ? 0.4 : small ? 0.62 : 0.78,
+      transition: "opacity 200ms ease-out, border-color 200ms ease-out", cursor: item.href ? "pointer" : "default",
     };
-    const inner = (<>{item.label}<Line active={active} hover={hover} /></>);
     return item.href ? (
       <a key={item.label} href={item.href} style={style} aria-current={active ? "page" : undefined}
-         onMouseEnter={() => setHoverKey(key)} onMouseLeave={() => setHoverKey("EXPLORE")}>{inner}</a>
+         onMouseEnter={() => setHoverKey(key)} onMouseLeave={() => setHoverKey("EXPLORE")}>{item.label}</a>
     ) : (
-      <span key={item.label} style={style} title="Coming">{item.label}</span>
+      <span key={item.label} style={style} title="Coming"
+        onMouseEnter={() => setHoverKey(key)} onMouseLeave={() => setHoverKey("EXPLORE")}>{item.label}</span>
     );
   };
 
   /** One row in the mobile sub-list. */
   const mobileSub = (item: Leaf, level: 1 | 2) => {
+    const key = "m:" + item.label;
     const active = sub === item.label;
+    const hover = hoverKey === key;
     const style: CSSProperties = {
       fontFamily: FONT_LBL, fontSize: level === 1 ? "0.86rem" : "0.76rem", fontWeight: 400,
       letterSpacing: "0.14em", textTransform: "uppercase", color: DARK.head, textDecoration: "none",
       display: "inline-block", position: "relative", paddingBlock: "0.45rem",
-      opacity: !item.href ? 0.32 : level === 1 ? 0.9 : 0.7,
+      borderLeft: `2px solid ${active ? DARK.accent : "transparent"}`, paddingLeft: "0.7rem", marginLeft: "calc(-0.7rem - 2px)",
+      opacity: active || hover ? 1 : !item.href ? 0.4 : level === 1 ? 0.88 : 0.68,
+      transition: "opacity 200ms ease-out, border-color 200ms ease-out",
     };
+    const enter = () => setHoverKey(key);
+    const leave = () => setHoverKey(null);
     return item.href ? (
-      <a key={item.label} href={item.href} style={style} aria-current={active ? "page" : undefined}>
-        {item.label}<Line active={active} hover={false} />
+      <a key={item.label} href={item.href} style={style} aria-current={active ? "page" : undefined} onMouseEnter={enter} onMouseLeave={leave}>
+        {item.label}
       </a>
     ) : (
-      <span key={item.label} style={style}>{item.label}</span>
+      <span key={item.label} style={style} onMouseEnter={enter} onMouseLeave={leave}>{item.label}</span>
     );
   };
 
@@ -242,12 +240,11 @@ export function SiteNavNext({
                     href={t.href}
                     ref={isExplore ? exploreRef : undefined}
                     aria-current={active ? "page" : undefined}
-                    style={{ ...navItem, opacity, transition: "opacity 200ms ease-out" }}
+                    style={{ ...navItem, opacity, borderLeftColor: active ? DARK.accent : "transparent", transition: "opacity 200ms ease-out, border-color 200ms ease-out" }}
                     onMouseEnter={isExplore ? onExploreEnter : () => onOtherEnter(t.label)}
                     onClick={isExplore ? (e) => { if (touchOnly() && !exploreOpen) { e.preventDefault(); setExploreOpen(true); } } : undefined}
                   >
                     {t.label}
-                    <Line active={active} hover={hover} />
                   </a>
                 );
               })}
@@ -257,14 +254,16 @@ export function SiteNavNext({
           <div style={{ display: "flex", alignItems: "center", gap: isMobile ? 0 : "1.4rem" }}>
             {(!isMobile || overlayOpen) && (
               <button onClick={() => { setAudioOn((v) => !v); onAudioToggle?.(); }}
-                style={{ background: "none", border: "none", cursor: "pointer", padding: 0, lineHeight: 0, width: isMobile ? 44 : "auto", height: isMobile ? 44 : "auto", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}
+                onMouseEnter={() => setHoverKey("c:audio")} onMouseLeave={() => setHoverKey(null)}
+                style={{ opacity: hoverKey === "c:audio" ? 1 : 0.78, transition: "opacity 200ms ease-out", background: "none", border: "none", cursor: "pointer", padding: 0, lineHeight: 0, width: isMobile ? 44 : "auto", height: isMobile ? 44 : "auto", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}
                 title={audioOn ? "Mute ambient audio" : "Play ambient audio"}>
                 <AudioIcon color={DARK.head} on={audioPlaying !== undefined ? audioPlaying : audioOn} />
               </button>
             )}
             {(overlayOpen || !isMobile) && (
               <button onClick={toggleDark}
-                style={{ background: "none", border: "none", cursor: "pointer", padding: 0, lineHeight: 0, width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, opacity: 0.72 }}
+                onMouseEnter={() => setHoverKey("c:dark")} onMouseLeave={() => setHoverKey(null)}
+                style={{ background: "none", border: "none", cursor: "pointer", padding: 0, lineHeight: 0, width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, opacity: hoverKey === "c:dark" ? 1 : 0.72, transition: "opacity 200ms ease-out" }}
                 title={isDark ? "Switch to light mode" : "Switch to dark mode"}>
                 <DarkLightIcon color={DARK.head} isDark={isDark} />
               </button>
@@ -318,11 +317,12 @@ export function SiteNavNext({
                   <a
                     href={t.href}
                     aria-current={active ? "page" : undefined}
-                    style={overlayNavItem}
+                    style={{ ...overlayNavItem, borderLeftColor: active ? DARK.accent : "transparent", opacity: active || hoverKey === "m:" + t.label ? 1 : 0.84 }}
+                    onMouseEnter={() => setHoverKey("m:" + t.label)}
+                    onMouseLeave={() => setHoverKey(null)}
                     onClick={isExplore ? (e) => { if (!exploreOpen) { e.preventDefault(); setExploreOpen(true); } } : undefined}
                   >
                     {t.label}
-                    <Line active={active} hover={false} />
                   </a>
                   {isExplore && (
                     <Collapse open={exploreOpen}>
@@ -333,7 +333,8 @@ export function SiteNavNext({
                               <span
                                 role="button" tabIndex={0}
                                 onClick={() => setNatureOpen((v) => !v)}
-                                style={{ fontFamily: FONT_LBL, fontSize: "0.86rem", fontWeight: 400, letterSpacing: "0.14em", textTransform: "uppercase", color: DARK.head, paddingBlock: "0.45rem", opacity: natureOpen ? 1 : 0.9, cursor: "pointer", userSelect: "none" }}
+                                onMouseEnter={() => setHoverKey("m:NATURE")} onMouseLeave={() => setHoverKey(null)}
+                                style={{ fontFamily: FONT_LBL, fontSize: "0.86rem", fontWeight: 400, letterSpacing: "0.14em", textTransform: "uppercase", color: DARK.head, paddingBlock: "0.45rem", opacity: natureOpen || hoverKey === "m:NATURE" ? 1 : 0.88, transition: "opacity 200ms ease-out", cursor: "pointer", userSelect: "none", display: "inline-block", borderLeft: "2px solid transparent", paddingLeft: "0.7rem", marginLeft: "calc(-0.7rem - 2px)" }}
                               >
                                 {c.label}
                               </span>
