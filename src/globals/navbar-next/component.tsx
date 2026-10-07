@@ -80,12 +80,12 @@ interface Props {
   currentPath?: string;
 }
 
-/** Small red square in front of the current item (a mark, never a fill). */
+/** Small red dot in front of the current item (a mark, never a fill). Square: remove borderRadius. */
 function Mark({ on, size = 8 }: { on: boolean; size?: number }) {
   return (
     <span aria-hidden="true" style={{
       position: "absolute", left: 0, top: "50%", width: size, height: size, marginTop: -size / 2,
-      background: DARK.accent, opacity: on ? 1 : 0, transition: "opacity 200ms ease-out",
+      background: DARK.accent, borderRadius: "50%", opacity: on ? 1 : 0, transition: "opacity 200ms ease-out",
     }} />
   );
 }

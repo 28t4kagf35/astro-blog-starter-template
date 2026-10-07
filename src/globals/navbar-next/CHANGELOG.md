@@ -1,5 +1,9 @@
 # navbar-next: changelog
 
+## 0.5.0 (experiment, 2026-10-07)
+
+- The current-item mark is a round dot, same size as the square was (try-out; 0.4.0 has the square).
+
 ## 0.4.0 (experiment, 2026-10-07)
 
 - Expanded menu lighter again: desktop drawer 50% dark, mobile overlay 56%.
