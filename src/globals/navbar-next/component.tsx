@@ -80,12 +80,12 @@ interface Props {
   currentPath?: string;
 }
 
-/** Small red dot in front of the current item (a mark, never a fill). Square: remove borderRadius. */
-function Mark({ on, size = 8 }: { on: boolean; size?: number }) {
+/** Small red square in front of the current item (a mark, never a fill). */
+function Mark({ on, size = 7 }: { on: boolean; size?: number }) {
   return (
     <span aria-hidden="true" style={{
       position: "absolute", left: 0, top: "50%", width: size, height: size, marginTop: -size / 2,
-      background: DARK.accent, borderRadius: "50%", opacity: on ? 1 : 0, transition: "opacity 200ms ease-out",
+      background: DARK.accent, opacity: on ? 1 : 0, transition: "opacity 200ms ease-out",
     }} />
   );
 }
@@ -194,7 +194,7 @@ export function SiteNavNext({
     };
     return item.href ? (
       <a key={item.label} href={item.href} style={style} aria-current={active ? "page" : undefined}
-         onMouseEnter={() => setHoverKey(key)} onMouseLeave={() => setHoverKey("EXPLORE")}><Mark on={active} size={small ? 6 : 7} />{item.label}</a>
+         onMouseEnter={() => setHoverKey(key)} onMouseLeave={() => setHoverKey("EXPLORE")}><Mark on={active} size={small ? 5 : 6} />{item.label}</a>
     ) : (
       <span key={item.label} style={style} title="Coming"
         onMouseEnter={() => setHoverKey(key)} onMouseLeave={() => setHoverKey("EXPLORE")}>{item.label}</span>
@@ -218,7 +218,7 @@ export function SiteNavNext({
     const leave = () => setHoverKey(null);
     return item.href ? (
       <a key={item.label} href={item.href} style={style} aria-current={active ? "page" : undefined} onMouseEnter={enter} onMouseLeave={leave}>
-        <Mark on={active} size={level === 1 ? 7 : 6} />{item.label}
+        <Mark on={active} size={level === 1 ? 6 : 5} />{item.label}
       </a>
     ) : (
       <span key={item.label} style={style} onMouseEnter={enter} onMouseLeave={leave}>{item.label}</span>
@@ -331,7 +331,7 @@ export function SiteNavNext({
                     onMouseLeave={() => setHoverKey(null)}
                     onClick={isExplore ? (e) => { if (!exploreOpen) { e.preventDefault(); setExploreOpen(true); } } : undefined}
                   >
-                    <Mark on={active} size={9} />{t.label}
+                    <Mark on={active} size={8} />{t.label}
                   </a>
                   {isExplore && (
                     <Collapse open={exploreOpen}>

@@ -1,5 +1,10 @@
 # navbar-next: changelog
 
+## 0.6.0 (experiment, 2026-10-07)
+
+- Back to a square (the dot read as a bullet point), slightly smaller than 0.4.0:
+  7 px top level, 8 px large mobile items, 5-6 px sub-items.
+
 ## 0.5.0 (experiment, 2026-10-07)
 
 - The current-item mark is a round dot, same size as the square was (try-out; 0.4.0 has the square).
