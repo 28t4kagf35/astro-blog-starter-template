@@ -12,7 +12,7 @@
       "version": "0.7.0",
       "status": "experiment",
       "source": "this repo; shown only on -v2 sandbox pages",
-      "fingerprint": "6a84b2e5adb3143e5da725a0d06f93881649da8ea5e08fc24079e3eaf6c1ab56",
+      "fingerprint": "a27b427cc5d0bf6cccfaa11660204d0c27ebe85f07013b0ff0e9fe2023f56aeb",
       "basedOn": "navbar 1.2.0 (draft)"
     }
   }

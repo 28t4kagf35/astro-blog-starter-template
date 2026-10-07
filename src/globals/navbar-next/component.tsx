@@ -213,7 +213,7 @@ export function SiteNavNext({
     const hover = hoverKey === key;
     const style: CSSProperties = {
       fontFamily: FONT_LBL, fontSize: level === 1 ? "0.86rem" : "0.76rem", fontWeight: 400,
-      letterSpacing: "0.14em", textTransform: "uppercase", color: DARK.head, textDecoration: "none",
+      letterSpacing: "0.14em", textTransform: "uppercase", textDecoration: "none",
       display: "inline-block", position: "relative", paddingBlock: level === 1 ? "0.8rem" : "0.7rem",
       paddingLeft: "1.1rem", marginLeft: "-1.1rem",
       color: active || hover ? LIT : REST,
