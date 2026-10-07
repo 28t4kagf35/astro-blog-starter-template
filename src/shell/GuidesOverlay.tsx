@@ -24,7 +24,7 @@ function read(): boolean {
   }
 }
 
-const COLORS = { read: "rgba(64,200,220,0.85)", wide: "rgba(230,90,200,0.85)", gutter: "rgba(240,200,60,0.9)", centre: "rgba(120,230,120,0.85)" };
+const COLORS = { read: "rgba(64,200,220,0.85)", wide: "rgba(230,90,200,0.85)", gutter: "rgba(240,200,60,0.9)", centre: "rgba(120,230,120,0.85)", prose: "rgba(255,150,60,0.9)" };
 
 export function GuidesOverlay({ eligible }: { eligible: boolean }) {
   const [on, setOn] = useState(false);
@@ -62,6 +62,11 @@ export function GuidesOverlay({ eligible }: { eligible: boolean }) {
         {line("calc(50% - 600px)", COLORS.wide, "1200", 0)}
         {line("calc(50% + 600px)", COLORS.wide, "1200", 1)}
         {line("50%", COLORS.centre, "centre", 0)}
+        {/* TEMPORARY: prose measures under review (680 desktop, 600 tablet). Remove when settled. */}
+        {line("calc(50% - 340px)", COLORS.prose, "680", 0)}
+        {line("calc(50% + 340px)", COLORS.prose, "680", 1)}
+        {line("calc(50% - 300px)", COLORS.prose, "600", 0)}
+        {line("calc(50% + 300px)", COLORS.prose, "600", 1)}
       </div>
     </div>
   );
