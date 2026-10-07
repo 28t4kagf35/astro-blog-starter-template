@@ -1,4 +1,6 @@
 // V2 WORKING COPY of ../experience-article/ExperienceArticle.tsx, for side-by-side comparison at /experience-v2. Design changes go here only.
+// Pass 5 ("a walk, in chapters"): lede, chapters with a margin rail (148 + 680 = the 860 column), alternating surfaces,
+// sensory lines as sub-quotes, Source Serif 4 body (?body=spectral shows the old Spectral body for comparison).
 /**
  * Page type: Experience article (Sanity type `experienceArticle`).
  * Ported from the design export below; its built-in article is replaced by the
@@ -20,7 +22,7 @@
 
 import { PLACEMENT } from "../../site/placement";
 import { Hero } from "../../site/Hero";
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
 
 // ── Brand constants (inlined) ─────────────────────────────────────────────────
 const FONT_SS4  = "'Source Serif 4', Georgia, serif";
@@ -134,16 +136,34 @@ const HERO_WIDTHS = [640, 1080, 1600, 2400];
 const heroSrcSet = (src: string): string | undefined =>
   src.endsWith("-1600.webp") ? HERO_WIDTHS.map((w) => `${src.replace("-1600.webp", `-${w}.webp`)} ${w}w`).join(", ") : undefined;
 
+// One closing card (the export's "Continue" labels are not links yet). Own hover state, so the page does not re-render on hover.
+function NextCard({ label, tk, bg }: { label: string; tk: typeof DARK | typeof LIGHT; bg: string }) {
+  const [on, setOn] = useState(false);
+  const [name, sub] = label.split(" · ");
+  return (
+    <div
+      onMouseEnter={() => setOn(true)}
+      onMouseLeave={() => setOn(false)}
+      style={{ position: "relative", padding: "1.3rem 1.4rem 1.4rem", border: `1px solid ${on ? tk.muted : tk.rule}`, background: on ? (bg === tk.surface ? tk.bg : tk.surface) : "transparent", transition: "border-color 0.25s ease, background 0.25s ease", cursor: "pointer" }}
+    >
+      <span style={{ position: "absolute", top: "1.3rem", right: "1.3rem", width: 7, height: 7, background: tk.accent, opacity: on ? 1 : 0, transition: "opacity 0.25s ease" }} />
+      <div style={{ ...T_CARD_LABEL, color: on ? tk.head : tk.body, transition: "color 0.25s ease" }}>{name}</div>
+      <div style={{ marginTop: "0.6rem", fontFamily: FONT_SS4, fontVariationSettings: '"opsz" 16', fontStyle: "italic", fontWeight: 400, fontSize: "1.05rem", lineHeight: 1.45, color: tk.body }}>{sub}</div>
+    </div>
+  );
+}
+
+
 export function ExperienceV2({ content, isDark = true }: { content: ExperienceV2Content; isDark?: boolean }) {
   // Font loading — display=block (FONT-6)
   useEffect(() => {
-    const id = "brand-fonts-experience";
+    const id = "brand-fonts-experience-v2";
     if (document.getElementById(id)) return;
     const link = document.createElement("link");
     link.id   = id;
     link.rel  = "stylesheet";
     link.href =
-      "https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;1,8..60,300" +
+      "https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300..500;1,8..60,300..500" +
       "&family=Spectral:ital,wght@0,300;1,300" +
       "&family=IBM+Plex+Mono:wght@400" +
       "&family=Raleway:wght@400" +
@@ -156,133 +176,133 @@ export function ExperienceV2({ content, isDark = true }: { content: ExperienceV2
   const isTablet  = bp === "tablet";
   const isDesktop = bp === "desktop";
 
-  // Pass 4: light mode from the shell (hero overlay stays dark)
+  // Comparison switch: ?body=spectral shows the earlier Spectral body.
+  const [spectral, setSpectral] = useState(false);
+  useEffect(() => { setSpectral(new URLSearchParams(window.location.search).get("body") === "spectral"); }, []);
+
   const tk = isDark ? DARK : LIGHT;
 
-  // Pass 2/3: canon gutters and section spacing
-  const PAD_H   = isMobile ? "1.25rem" : isTablet ? "1.4rem" : "1rem";
-  const SEC = isMobile ? "3.5rem" : isTablet ? "4.5rem" : "5.5rem";
-  const COL     = isDesktop ? "680px"  : isTablet ? "600px"  : "100%";
-  const heroH   = isMobile ? "52vh"    : isTablet ? "58vh"   : "62vh";
-  const heroBot = SEC;
-  const h1Sz    = isMobile ? "1.5rem"  : isTablet ? "1.9rem" : "2.4rem";
-  const lblSz   = isMobile ? "0.82rem" : isTablet ? "0.94rem" : "1.06rem";
-  const bodySz  = isMobile ? "0.95rem" : isTablet ? "1.0rem"  : "1.05rem";
-  const shortSz = isMobile ? "0.95rem" : isTablet ? "1.05rem" : "1.1rem";
-  const bodyPad = `${SEC} ${PAD_H} 0`;
+  // Canon gutters and section spacing
+  const PAD_H = isMobile ? "1.25rem" : isTablet ? "1.4rem" : "1rem";
+  const SEC   = isMobile ? "3.5rem" : isTablet ? "4.5rem" : "5.5rem";
+  const bodyMax = isDesktop ? "680px" : isTablet ? "600px" : "100%";
+  const bodySz  = isMobile ? "1.05rem" : isTablet ? "1.1rem" : "1.15rem";
+  const lineSz  = isMobile ? "1.12rem" : isTablet ? "1.2rem" : "1.25rem";
+  const ledeSz  = isMobile ? "1.3rem"  : isTablet ? "1.45rem" : "1.6rem";
+  const titleSz = isMobile ? "1.65rem" : isTablet ? "1.95rem" : "2.25rem";
 
-  const [cleared,     setCleared]     = useState(false);
-  const [textVisible, setTextVisible] = useState(false);
+  const bodyFont: CSSProperties = spectral
+    ? { fontFamily: FONT_SPEC, fontWeight: 300, fontSize: bodySz, lineHeight: 2.05, letterSpacing: "0.01em" }
+    : { fontFamily: FONT_SS4, fontWeight: 400, fontVariationSettings: '"opsz" 14', fontSize: bodySz, lineHeight: 1.8, letterSpacing: "0.003em" };
 
-  useEffect(() => {
-    requestAnimationFrame(() => requestAnimationFrame(() => setCleared(true)));
-  }, []);
-  useEffect(() => {
-    const t = setTimeout(() => setTextVisible(true), 350);
-    return () => clearTimeout(t);
-  }, []);
+  // ── Split the body into chapters: a "heading" block starts a new chapter ──
+  type Chapter = { title?: string; blocks: ExperienceV2Block[] };
+  const chapters: Chapter[] = [];
+  let cur: Chapter = { blocks: [] };
+  for (const b of content.body) {
+    if (b.kind === "heading") {
+      if (cur.title !== undefined || cur.blocks.length) chapters.push(cur);
+      cur = { title: b.text ?? "", blocks: [] };
+    } else {
+      cur.blocks.push(b);
+    }
+  }
+  if (cur.title !== undefined || cur.blocks.length) chapters.push(cur);
+  const total = chapters.filter((c) => c.title !== undefined).length;
+
+  const renderBlocks = (blocks: ExperienceV2Block[], key: string) =>
+    blocks.flatMap((block, i) => {
+      if (block.kind === "break") {
+        return [<div key={`${key}-${i}`} style={{ width: 48, height: 1, background: tk.rule, margin: "2.4rem 0" }} />];
+      }
+      const text = block.text ?? "";
+      // A paragraph stored with line breaks = the short sensory "lines": one quiet sequence.
+      if (text.includes("\n")) {
+        return [
+          <div key={`${key}-${i}`} style={{ margin: "2.6rem 0", paddingLeft: isMobile ? "1.1rem" : "1.5rem", borderLeft: `2px solid ${tk.bq}` }}>
+            {text.split("\n").filter(Boolean).map((line, j) => (
+              <p key={j} style={{ margin: j === 0 ? 0 : "0.8rem 0 0", fontFamily: FONT_SS4, fontVariationSettings: '"opsz" 16', fontStyle: "italic", fontWeight: 400, fontSize: lineSz, lineHeight: 1.55, color: tk.head }}>{line}</p>
+            ))}
+          </div>,
+        ];
+      }
+      return [<p key={`${key}-${i}`} style={{ margin: "0 0 1.6rem", ...bodyFont, color: tk.body }}>{text}</p>];
+    });
+
+  // A section is full-bleed (its own background) with the 860 column inside it.
+  const Section = ({ bg, children }: { bg: string; children: ReactNode }) => (
+    <div style={{ background: bg, padding: `${SEC} 0`, transition: "background 0.35s ease" }}>
+      <div style={{ maxWidth: isDesktop ? "860px" : "none", margin: "0 auto", padding: `0 ${PAD_H}`, boxSizing: "border-box" }}>{children}</div>
+    </div>
+  );
+  // Rail (148px) + body (680px) = the 860 column, less its two 1rem gutters.
+  const Grid = ({ rail, children }: { rail: ReactNode; children: ReactNode }) => (
+    <div style={isDesktop ? { display: "grid", gridTemplateColumns: "148px minmax(0, 680px)", alignItems: "start" } : {}}>
+      <div style={isDesktop ? { position: "sticky", top: "6rem", alignSelf: "start" } : { marginBottom: "1.1rem" }}>{rail}</div>
+      <div style={{ maxWidth: bodyMax }}>{children}</div>
+    </div>
+  );
+
+  let titled = 0;
+  let lastBg: string = tk.bg;
+  const sections = chapters.map((ch, ci) => {
+    const isTitled = ch.title !== undefined;
+    const n = isTitled ? titled++ : -1;
+    const bg = isTitled ? (n % 2 === 0 ? tk.surface : tk.bg) : tk.bg;
+    lastBg = bg;
+    const intro = ci === 0 && !isTitled;
+    return (
+      <Section key={ci} bg={bg}>
+        {intro && content.subtitle && (
+          <div style={{ marginBottom: ch.blocks.length ? (isMobile ? "2.4rem" : "3.2rem") : 0 }}>
+            <div style={{ width: 28, height: 2, background: tk.accent, marginBottom: "1.4rem" }} />
+            <p style={{ margin: 0, maxWidth: "760px", fontFamily: FONT_SS4, fontVariationSettings: '"opsz" 28', fontStyle: "italic", fontWeight: 300, fontSize: ledeSz, lineHeight: 1.45, letterSpacing: "-0.003em", color: tk.head }}>{content.subtitle}</p>
+          </div>
+        )}
+        {isTitled ? (
+          <Grid rail={<span style={{ ...T_MONO_CAPTION, color: tk.muted }}>{String(n + 1).padStart(2, "0")}<span style={{ opacity: 0.6 }}> / {String(total).padStart(2, "0")}</span></span>}>
+            <h2 style={{ margin: "0 0 2rem", fontFamily: FONT_SS4, fontVariationSettings: '"opsz" 36, "wght" 300', fontStyle: "italic", fontWeight: 300, fontSize: titleSz, lineHeight: 1.15, letterSpacing: "-0.005em", color: tk.head }}>{ch.title}</h2>
+            {renderBlocks(ch.blocks, `c${ci}`)}
+          </Grid>
+        ) : ch.blocks.length ? (
+          <Grid rail={null}>{renderBlocks(ch.blocks, `c${ci}`)}</Grid>
+        ) : null}
+      </Section>
+    );
+  });
+  // A page with no chapters still shows its lede.
+  if (!chapters.length && content.subtitle) {
+    sections.push(
+      <Section key="lede" bg={tk.bg}>
+        <div style={{ width: 28, height: 2, background: tk.accent, marginBottom: "1.4rem" }} />
+        <p style={{ margin: 0, maxWidth: "760px", fontFamily: FONT_SS4, fontVariationSettings: '"opsz" 28', fontStyle: "italic", fontWeight: 300, fontSize: ledeSz, lineHeight: 1.45, color: tk.head }}>{content.subtitle}</p>
+      </Section>
+    );
+  }
+
+  // ── Closing block: the export's two "Continue" labels (not links yet) ──
+  const closingBg = lastBg === tk.surface ? tk.bg : tk.surface;
+  const NEXT = ["Observe · the land up close", "Cabin · where calm has a place"];
 
   return (
     <div data-scroll="root" style={{ ...SS4_SMOOTHING, background: tk.bg, minHeight: "100vh", transition: "background 0.35s ease" }}>
 
-      {/* ── HERO — shared with the other v2 pages ── */}
-      <Hero image={content.heroImage} srcSet={heroSrcSet(content.heroImage)} position="center 35%" alt={content.title} title={content.title} placement={PLACEMENT.experience} isMobile={isMobile} isTablet={isTablet} isDesktop={isDesktop} />
+      {/* ── HERO — shared with the other v2 pages, a calmer height for an article ── */}
+      <Hero compact image={content.heroImage} srcSet={heroSrcSet(content.heroImage)} position="center 35%" alt={content.title} title={content.title} placement={PLACEMENT.experience} isMobile={isMobile} isTablet={isTablet} isDesktop={isDesktop} />
 
       {/* ── BODY ── */}
-      <div data-bb-field="bodyText" style={{
-        maxWidth:   isDesktop ? COL : "none",
-        margin:     "0 auto",
-        padding:    bodyPad,
-        opacity:    textVisible ? 1 : 0,
-        transition: "opacity 1.4s ease 0.2s",
-      }}>
-        {content.subtitle && (
-          <p style={{ margin: "0 0 2.8rem", fontFamily: FONT_SS4, fontVariationSettings: SS4_OPSZ_TEXT, fontStyle: "italic", fontWeight: 300, fontSize: shortSz, color: tk.head, lineHeight: 1.6, letterSpacing: "0.01em" }}>
-            {content.subtitle}
-          </p>
-        )}
-
-        {content.body.flatMap((block, i) => {
-          if (block.kind === "break") {
-            return [<div key={i} style={{ width: 48, height: 1, background: tk.rule, margin: "2.8rem 0" }} />];
-          }
-          const text = block.text ?? "";
-          const lineStyle: CSSProperties = {
-            margin:                "2.8rem 0",
-            fontFamily:            FONT_SS4,
-            fontVariationSettings: SS4_OPSZ_TEXT,
-            fontSize:              shortSz,
-            fontStyle:             "italic",
-            fontWeight:            300,
-            color:                 tk.head,
-            lineHeight:            1.6,
-            letterSpacing:         "0.01em",
-          };
-          if (block.kind === "heading") {
-            return [<p key={i} style={lineStyle}>{text}</p>];
-          }
-          // A paragraph stored with line breaks = the export's short "lines".
-          if (text.includes("\n")) {
-            return text.split("\n").filter(Boolean).map((line, j) => (
-              <p key={`${i}-${j}`} style={lineStyle}>{line}</p>
-            ));
-          }
-          return [
-            <p key={i} style={{
-              margin:        "0 0 2.2rem",
-              fontFamily:    FONT_SPEC,
-              fontSize:      bodySz,
-              fontWeight:    300,
-              color:         tk.body,
-              lineHeight:    2.05,
-              letterSpacing: "0.01em",
-            }}>
-              {text}
-            </p>,
-          ];
-        })}
-
-        {/* ── WORMHOLE ── */}
-        <div style={{
-          marginTop:  "4.5rem",
-          paddingTop: "2.4rem",
-          borderTop:  `1px solid ${tk.rule}`,
-        }}>
-          <p style={{
-            margin:   "0 0 1.1rem",
-            ...T_SECTION_LABEL,
-            fontSize: "0.82rem",
-            color:    tk.body,
-          }}>
-            Continue
-          </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: "0.55rem" }}>
-            {[
-              "Observe · the land up close",
-              "Cabin · where calm has a place",
-            ].map((label, i) => (
-              <span
-                key={i}
-                style={{
-                  ...T_CARD_LABEL,
-                  color:               tk.body,
-                  cursor:              "pointer",
-                  textDecoration:      "underline",
-                  textUnderlineOffset: "3px",
-                  textDecorationColor: "#4D4A47",
-                  transition:          "text-decoration-color 0.2s ease",
-                }}
-                onMouseEnter={e => (e.currentTarget.style.textDecorationColor = "transparent")}
-                onMouseLeave={e => (e.currentTarget.style.textDecorationColor = "#4D4A47")}
-              >
-                {label}
-              </span>
-            ))}
-          </div>
-        </div>
+      <div data-bb-field="bodyText">
+        {sections}
       </div>
 
-      <div style={{ height: SEC }} />
+      {/* ── CLOSING ── */}
+      <Section bg={closingBg}>
+        <Grid rail={<span style={{ ...T_SECTION_LABEL, color: tk.muted }}>Continue</span>}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: "1rem" }}>
+            {NEXT.map((label, i) => <NextCard key={i} label={label} tk={tk} bg={closingBg} />)}
+          </div>
+        </Grid>
+      </Section>
     </div>
   );
 }
