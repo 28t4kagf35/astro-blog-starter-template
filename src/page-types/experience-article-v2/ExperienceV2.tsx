@@ -165,6 +165,7 @@ export function ExperienceV2({ content, isDark = true }: { content: ExperienceV2
     link.href =
       "https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300..500;1,8..60,300..500" +
       "&family=Spectral:ital,wght@0,300;1,300" +
+      "&family=Source+Sans+3:wght@300;400" +
       "&family=IBM+Plex+Mono:wght@400" +
       "&family=Raleway:wght@400" +
       "&display=block";
@@ -176,7 +177,7 @@ export function ExperienceV2({ content, isDark = true }: { content: ExperienceV2
   const isTablet  = bp === "tablet";
   const isDesktop = bp === "desktop";
 
-  // Comparison switch for the body face: ?body=spectral | sleek | sturdy (default: a middle optical size).
+  // Comparison switch for the body face: ?body=sleeker is the default (opsz 48) | sleek | mid | sturdy | sans | spectral.
   const [bodyVariant, setBodyVariant] = useState("default");
   useEffect(() => { setBodyVariant(new URLSearchParams(window.location.search).get("body") ?? "default"); }, []);
 
@@ -191,10 +192,12 @@ export function ExperienceV2({ content, isDark = true }: { content: ExperienceV2
   const ledeSz  = isMobile ? "1.3rem"  : isTablet ? "1.45rem" : "1.6rem";
   const titleSz = isMobile ? "1.65rem" : isTablet ? "1.95rem" : "2.25rem";
 
-  const SS_BODY: Record<string, { opsz: number; wght: number }> = { default: { opsz: 22, wght: 360 }, sleek: { opsz: 32, wght: 320 }, sturdy: { opsz: 14, wght: 400 } };
+  const SS_BODY: Record<string, { opsz: number; wght: number }> = { default: { opsz: 48, wght: 300 }, sleek: { opsz: 32, wght: 320 }, mid: { opsz: 22, wght: 360 }, sturdy: { opsz: 14, wght: 400 } };
   const ss = SS_BODY[bodyVariant] ?? SS_BODY.default;
   const bodyFont: CSSProperties = bodyVariant === "spectral"
     ? { fontFamily: FONT_SPEC, fontWeight: 300, fontSize: bodySz, lineHeight: 2.05, letterSpacing: "0.01em" }
+    : bodyVariant === "sans"
+    ? { fontFamily: "'Source Sans 3', system-ui, sans-serif", fontWeight: 300, fontSize: bodySz, lineHeight: 1.75, letterSpacing: "0.012em" }
     : { fontFamily: FONT_SS4, fontWeight: ss.wght, fontVariationSettings: `"opsz" ${ss.opsz}`, fontSize: bodySz, lineHeight: 1.8, letterSpacing: "0.003em" };
 
   // ── Split the body into chapters: a "heading" block starts a new chapter ──
@@ -234,7 +237,7 @@ export function ExperienceV2({ content, isDark = true }: { content: ExperienceV2
   // A section is full-bleed (its own background); everything inside shares ONE left edge,
   // the hero text's (the 860 column plus the canon gutter).
   const Section = ({ bg, children, first }: { bg: string; children: ReactNode; first?: boolean }) => (
-    <div style={{ background: bg, padding: `${first ? (isMobile ? "2.8rem" : isTablet ? "3.4rem" : "4rem") : SEC} 0 ${SEC}`, transition: "background 0.35s ease" }}>
+    <div style={{ background: bg, padding: `${first ? (isMobile ? "2.2rem" : isTablet ? "2.6rem" : "2.8rem") : SEC} 0 ${SEC}`, transition: "background 0.35s ease" }}>
       <div style={{ maxWidth: isDesktop ? "860px" : "none", margin: "0 auto", padding: `0 ${PAD_H}`, boxSizing: "border-box" }}>{children}</div>
     </div>
   );
