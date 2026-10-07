@@ -1,5 +1,13 @@
 # navbar-next: changelog
 
+## 0.7.0 (experiment, 2026-10-07)
+
+- No transparency on nav text: two solid colours for every item, main or sub:
+  resting #A8A49E, lit (hover or current) #EDE9E2. The colour of an item no longer
+  changes when the submenu opens, and Culture & History matches the rest.
+- The audio and light/dark buttons use the same two colours.
+- Learn and Experience (not links yet) use the same colours; their cursor stays a plain arrow.
+
 ## 0.6.0 (experiment, 2026-10-07)
 
 - Back to a square (the dot read as a bullet point), slightly smaller than 0.4.0:

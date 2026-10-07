@@ -62,6 +62,11 @@ function subOf(path: string): string | null {
   return null;
 }
 
+// Two solid colours for every nav item, main or sub (no transparency, so the
+// colour does not shift with what is behind it): resting, and lit (hover/current).
+const REST = "#A8A49E";
+const LIT = DARK.head;
+
 const GLASS_BG = "rgba(19,20,22,0.48)";
 const OPEN_BG = "rgba(19,20,22,0.50)";
 const OVERLAY_BG = "rgba(19,20,22,0.56)";
@@ -179,7 +184,7 @@ export function SiteNavNext({
     ...SS4_SMOOTHING, fontFamily: FONT_SS4, fontSize: "1.85rem", fontWeight: 300, fontStyle: "italic",
     fontVariationSettings: SS4_OPSZ_DISPLAY, letterSpacing: "-0.01em", textTransform: "none",
     color: DARK.head, lineHeight: 1.15, textDecoration: "none", position: "relative", display: "inline-block",
-    paddingLeft: "1.4rem", marginLeft: "-1.4rem", transition: "opacity 200ms ease-out",
+    paddingLeft: "1.4rem", marginLeft: "-1.4rem", transition: "color 200ms ease-out",
   };
 
   /** One link in the desktop drawer. */
@@ -189,8 +194,8 @@ export function SiteNavNext({
     const hover = hoverKey === key;
     const style: CSSProperties = {
       ...navItem, fontSize: small ? "0.7rem" : "0.76rem", paddingBlock: small ? "0.55rem" : "0.85rem",
-      opacity: active || hover ? 1 : !item.href ? 0.4 : small ? 0.62 : 0.78,
-      transition: "opacity 200ms ease-out", cursor: item.href ? "pointer" : "default",
+      color: active || hover ? LIT : REST,
+      transition: "color 200ms ease-out", cursor: item.href ? "pointer" : "default",
     };
     return item.href ? (
       <a key={item.label} href={item.href} style={style} aria-current={active ? "page" : undefined}
@@ -211,8 +216,8 @@ export function SiteNavNext({
       letterSpacing: "0.14em", textTransform: "uppercase", color: DARK.head, textDecoration: "none",
       display: "inline-block", position: "relative", paddingBlock: level === 1 ? "0.8rem" : "0.7rem",
       paddingLeft: "1.1rem", marginLeft: "-1.1rem",
-      opacity: active || hover ? 1 : !item.href ? 0.4 : level === 1 ? 0.88 : 0.68,
-      transition: "opacity 200ms ease-out",
+      color: active || hover ? LIT : REST,
+      transition: "color 200ms ease-out",
     };
     const enter = () => setHoverKey(key);
     const leave = () => setHoverKey(null);
@@ -242,14 +247,14 @@ export function SiteNavNext({
                 const isExplore = t.label === "EXPLORE";
                 const active = section === t.label;
                 const hover = hoverKey === t.label;
-                const opacity = active || hover || (isExplore && exploreOpen) ? 1 : exploreOpen ? 0.5 : 0.78;
+                const color = active || hover || (isExplore && exploreOpen) ? LIT : REST;
                 return (
                   <a
                     key={t.label}
                     href={t.href}
                     ref={isExplore ? exploreRef : undefined}
                     aria-current={active ? "page" : undefined}
-                    style={{ ...navItem, opacity, transition: "opacity 200ms ease-out" }}
+                    style={{ ...navItem, color, transition: "color 200ms ease-out" }}
                     onMouseEnter={isExplore ? onExploreEnter : () => onOtherEnter(t.label)}
                     onClick={isExplore ? (e) => { if (touchOnly() && !exploreOpen) { e.preventDefault(); setExploreOpen(true); } } : undefined}
                   >
@@ -264,17 +269,17 @@ export function SiteNavNext({
             {(!isMobile || overlayOpen) && (
               <button onClick={() => { setAudioOn((v) => !v); onAudioToggle?.(); }}
                 onMouseEnter={() => setHoverKey("c:audio")} onMouseLeave={() => setHoverKey(null)}
-                style={{ opacity: hoverKey === "c:audio" ? 1 : 0.78, transition: "opacity 200ms ease-out", background: "none", border: "none", cursor: "pointer", padding: 0, lineHeight: 0, width: isMobile ? 44 : "auto", height: isMobile ? 44 : "auto", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}
+                style={{ background: "none", border: "none", cursor: "pointer", padding: 0, lineHeight: 0, width: isMobile ? 44 : "auto", height: isMobile ? 44 : "auto", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}
                 title={audioOn ? "Mute ambient audio" : "Play ambient audio"}>
-                <AudioIcon color={DARK.head} on={audioPlaying !== undefined ? audioPlaying : audioOn} />
+                <AudioIcon color={hoverKey === "c:audio" ? LIT : REST} on={audioPlaying !== undefined ? audioPlaying : audioOn} />
               </button>
             )}
             {(overlayOpen || !isMobile) && (
               <button onClick={toggleDark}
                 onMouseEnter={() => setHoverKey("c:dark")} onMouseLeave={() => setHoverKey(null)}
-                style={{ background: "none", border: "none", cursor: "pointer", padding: 0, lineHeight: 0, width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, opacity: hoverKey === "c:dark" ? 1 : 0.72, transition: "opacity 200ms ease-out" }}
+                style={{ background: "none", border: "none", cursor: "pointer", padding: 0, lineHeight: 0, width: 44, height: 44, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}
                 title={isDark ? "Switch to light mode" : "Switch to dark mode"}>
-                <DarkLightIcon color={DARK.head} isDark={isDark} />
+                <DarkLightIcon color={hoverKey === "c:dark" ? LIT : REST} isDark={isDark} />
               </button>
             )}
             {isMobile && (
@@ -326,7 +331,7 @@ export function SiteNavNext({
                   <a
                     href={t.href}
                     aria-current={active ? "page" : undefined}
-                    style={{ ...overlayNavItem, opacity: active || hoverKey === "m:" + t.label ? 1 : 0.84 }}
+                    style={{ ...overlayNavItem, color: active || (isExplore && exploreOpen) || hoverKey === "m:" + t.label ? LIT : REST }}
                     onMouseEnter={() => setHoverKey("m:" + t.label)}
                     onMouseLeave={() => setHoverKey(null)}
                     onClick={isExplore ? (e) => { if (!exploreOpen) { e.preventDefault(); setExploreOpen(true); } } : undefined}
@@ -343,7 +348,7 @@ export function SiteNavNext({
                                 role="button" tabIndex={0}
                                 onClick={() => setNatureOpen((v) => !v)}
                                 onMouseEnter={() => setHoverKey("m:NATURE")} onMouseLeave={() => setHoverKey(null)}
-                                style={{ fontFamily: FONT_LBL, fontSize: "0.86rem", fontWeight: 400, letterSpacing: "0.14em", textTransform: "uppercase", color: DARK.head, paddingBlock: "0.8rem", opacity: natureOpen || hoverKey === "m:NATURE" ? 1 : 0.88, transition: "opacity 200ms ease-out", cursor: "pointer", userSelect: "none", display: "inline-block", paddingLeft: "1.1rem", marginLeft: "-1.1rem" }}
+                                style={{ fontFamily: FONT_LBL, fontSize: "0.86rem", fontWeight: 400, letterSpacing: "0.14em", textTransform: "uppercase", color: natureOpen || hoverKey === "m:NATURE" ? LIT : REST, paddingBlock: "0.8rem", transition: "color 200ms ease-out", cursor: "pointer", userSelect: "none", display: "inline-block", paddingLeft: "1.1rem", marginLeft: "-1.1rem" }}
                               >
                                 {c.label}
                               </span>
