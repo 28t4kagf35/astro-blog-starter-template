@@ -1,5 +1,13 @@
 # navbar-next: changelog
 
+## 0.9.0 (builds on 0.8.0)
+
+- Mobile menu: slower reveal (0.7s fade-in, was 0.32s).
+- Mobile menu: on hide, the whole menu (veil, blur and text) fades out together
+  (0.5s); the text no longer moves while it disappears. The menu's shape is reset
+  only after it is fully invisible, and a page inside Explore opens with Explore
+  already in place.
+
 ## 0.8.0 (builds on the canon 0.7.0)
 
 - Mobile menu: pressing an item lights it, the touch equivalent of hover.

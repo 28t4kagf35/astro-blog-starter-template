@@ -129,13 +129,16 @@ export function SiteNavNext({
   const sub = subOf(currentPath);
 
   useEffect(() => {
-    if (!menuOpen) { setExploreOpen(false); setNatureOpen(false); return; }
-    // On a page inside Explore, the open menu shows where you are: Explore is
+    // The menu's resting shape for this page: on a page inside Explore, Explore is
     // already open (and Nature, for Observe / Learn / Experience).
-    if (isMobile && section === "EXPLORE") {
-      setExploreOpen(true);
-      if (sub === "OBSERVE" || sub === "LEARN" || sub === "EXPERIENCE") setNatureOpen(true);
-    }
+    const inExplore = isMobile && section === "EXPLORE";
+    const restExplore = inExplore;
+    const restNature = inExplore && (sub === "OBSERVE" || sub === "LEARN" || sub === "EXPERIENCE");
+    if (menuOpen) { setExploreOpen(restExplore); setNatureOpen(restNature); return; }
+    // On close, wait until the menu is fully faded out before resetting, so the
+    // text never moves while the menu is disappearing.
+    const t = setTimeout(() => { setExploreOpen(restExplore); setNatureOpen(restNature); }, 650);
+    return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [menuOpen]);
   useEffect(() => { if (!isMobile) setMenuOpen(false); }, [isMobile]);
@@ -336,7 +339,7 @@ export function SiteNavNext({
           backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)",
           display: "flex", flexDirection: "column", padding: `${MOBILE_BAR_H}px 2rem 0 3.1rem`,
           overflowY: "auto", opacity: menuOpen ? 1 : 0, pointerEvents: menuOpen ? "all" : "none",
-          transition: "opacity 320ms ease-out",
+          transition: menuOpen ? "opacity 700ms ease-out" : "opacity 500ms ease-in-out",
         }}>
           <div style={{ flexGrow: exploreOpen ? 0.2 : 1, flexShrink: 1, flexBasis: 0, transition: `flex-grow 380ms ${EASE}` }} />
 
