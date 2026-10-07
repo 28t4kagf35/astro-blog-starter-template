@@ -2,8 +2,7 @@
 
 ## 0.7.0 (experiment, 2026-10-07)
 
-> **Note, 2026-10-07: the owner has approved this as the new canon navbar** ("beautiful,
-> clean, locked"). Still to do for it to apply site-wide: swap it in for the current
+> **Note, 2026-10-07: this is the new canon navbar.** Still to do for it to apply site-wide: swap it in for the current
 > navbar in the shell, and register it in CANON.md with a canon tag. Neither is done
 > yet; for now it is shown only on the -v2 pages.
 
