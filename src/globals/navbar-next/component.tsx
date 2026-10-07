@@ -63,8 +63,8 @@ function subOf(path: string): string | null {
 }
 
 const GLASS_BG = "rgba(19,20,22,0.48)";
-const OPEN_BG = "rgba(19,20,22,0.74)";
-const OVERLAY_BG = "rgba(19,20,22,0.80)";
+const OPEN_BG = "rgba(19,20,22,0.60)";
+const OVERLAY_BG = "rgba(19,20,22,0.66)";
 const BAR_H = 56;
 const MOBILE_BAR_H = 68;
 const EASE = "cubic-bezier(0.4, 0, 0.2, 1)";
@@ -78,6 +78,16 @@ interface Props {
   onAudioToggle?: () => void;
   audioPlaying?: boolean;
   currentPath?: string;
+}
+
+/** Small red square in front of the current item (a mark, never a fill). */
+function Mark({ on, size = 6 }: { on: boolean; size?: number }) {
+  return (
+    <span aria-hidden="true" style={{
+      position: "absolute", left: 0, top: "50%", width: size, height: size, marginTop: -size / 2,
+      background: DARK.accent, opacity: on ? 1 : 0, transition: "opacity 200ms ease-out",
+    }} />
+  );
 }
 
 /** Animates between zero height and the content's own height. */
@@ -163,13 +173,13 @@ export function SiteNavNext({
     fontFamily: FONT_LBL, fontSize: "0.76rem", fontWeight: 400, letterSpacing: "0.14em",
     textTransform: "uppercase", lineHeight: 1, color: DARK.head, userSelect: "none",
     textDecoration: "none", position: "relative", display: "inline-block", paddingBlock: "6px",
-    borderLeft: "2px solid transparent", paddingLeft: "0.8rem",
+    paddingLeft: "0.8rem",
   };
   const overlayNavItem: CSSProperties = {
     ...SS4_SMOOTHING, fontFamily: FONT_SS4, fontSize: "1.85rem", fontWeight: 300, fontStyle: "italic",
     fontVariationSettings: SS4_OPSZ_DISPLAY, letterSpacing: "-0.01em", textTransform: "none",
     color: DARK.head, lineHeight: 1.15, textDecoration: "none", position: "relative", display: "inline-block",
-    borderLeft: "2px solid transparent", paddingLeft: "0.9rem", marginLeft: "calc(-0.9rem - 2px)", transition: "opacity 200ms ease-out, border-color 200ms ease-out",
+    paddingLeft: "0.9rem", marginLeft: "-0.9rem", transition: "opacity 200ms ease-out",
   };
 
   /** One link in the desktop drawer. */
@@ -178,14 +188,13 @@ export function SiteNavNext({
     const active = sub === item.label;
     const hover = hoverKey === key;
     const style: CSSProperties = {
-      ...navItem, fontSize: small ? "0.7rem" : "0.76rem", paddingBlock: small ? "0.28rem" : "0.5rem",
-      borderLeftColor: active ? DARK.accent : "transparent",
+      ...navItem, fontSize: small ? "0.7rem" : "0.76rem", paddingBlock: small ? "0.55rem" : "0.85rem",
       opacity: active || hover ? 1 : !item.href ? 0.4 : small ? 0.62 : 0.78,
-      transition: "opacity 200ms ease-out, border-color 200ms ease-out", cursor: item.href ? "pointer" : "default",
+      transition: "opacity 200ms ease-out", cursor: item.href ? "pointer" : "default",
     };
     return item.href ? (
       <a key={item.label} href={item.href} style={style} aria-current={active ? "page" : undefined}
-         onMouseEnter={() => setHoverKey(key)} onMouseLeave={() => setHoverKey("EXPLORE")}>{item.label}</a>
+         onMouseEnter={() => setHoverKey(key)} onMouseLeave={() => setHoverKey("EXPLORE")}><Mark on={active} size={small ? 5 : 6} />{item.label}</a>
     ) : (
       <span key={item.label} style={style} title="Coming"
         onMouseEnter={() => setHoverKey(key)} onMouseLeave={() => setHoverKey("EXPLORE")}>{item.label}</span>
@@ -200,16 +209,16 @@ export function SiteNavNext({
     const style: CSSProperties = {
       fontFamily: FONT_LBL, fontSize: level === 1 ? "0.86rem" : "0.76rem", fontWeight: 400,
       letterSpacing: "0.14em", textTransform: "uppercase", color: DARK.head, textDecoration: "none",
-      display: "inline-block", position: "relative", paddingBlock: "0.45rem",
-      borderLeft: `2px solid ${active ? DARK.accent : "transparent"}`, paddingLeft: "0.7rem", marginLeft: "calc(-0.7rem - 2px)",
+      display: "inline-block", position: "relative", paddingBlock: level === 1 ? "0.8rem" : "0.7rem",
+      paddingLeft: "0.7rem", marginLeft: "-0.7rem",
       opacity: active || hover ? 1 : !item.href ? 0.4 : level === 1 ? 0.88 : 0.68,
-      transition: "opacity 200ms ease-out, border-color 200ms ease-out",
+      transition: "opacity 200ms ease-out",
     };
     const enter = () => setHoverKey(key);
     const leave = () => setHoverKey(null);
     return item.href ? (
       <a key={item.label} href={item.href} style={style} aria-current={active ? "page" : undefined} onMouseEnter={enter} onMouseLeave={leave}>
-        {item.label}
+        <Mark on={active} size={level === 1 ? 6 : 5} />{item.label}
       </a>
     ) : (
       <span key={item.label} style={style} onMouseEnter={enter} onMouseLeave={leave}>{item.label}</span>
@@ -240,11 +249,11 @@ export function SiteNavNext({
                     href={t.href}
                     ref={isExplore ? exploreRef : undefined}
                     aria-current={active ? "page" : undefined}
-                    style={{ ...navItem, opacity, borderLeftColor: active ? DARK.accent : "transparent", transition: "opacity 200ms ease-out, border-color 200ms ease-out" }}
+                    style={{ ...navItem, opacity, transition: "opacity 200ms ease-out" }}
                     onMouseEnter={isExplore ? onExploreEnter : () => onOtherEnter(t.label)}
                     onClick={isExplore ? (e) => { if (touchOnly() && !exploreOpen) { e.preventDefault(); setExploreOpen(true); } } : undefined}
                   >
-                    {t.label}
+                    <Mark on={active} />{t.label}
                   </a>
                 );
               })}
@@ -317,12 +326,12 @@ export function SiteNavNext({
                   <a
                     href={t.href}
                     aria-current={active ? "page" : undefined}
-                    style={{ ...overlayNavItem, borderLeftColor: active ? DARK.accent : "transparent", opacity: active || hoverKey === "m:" + t.label ? 1 : 0.84 }}
+                    style={{ ...overlayNavItem, opacity: active || hoverKey === "m:" + t.label ? 1 : 0.84 }}
                     onMouseEnter={() => setHoverKey("m:" + t.label)}
                     onMouseLeave={() => setHoverKey(null)}
                     onClick={isExplore ? (e) => { if (!exploreOpen) { e.preventDefault(); setExploreOpen(true); } } : undefined}
                   >
-                    {t.label}
+                    <Mark on={active} size={7} />{t.label}
                   </a>
                   {isExplore && (
                     <Collapse open={exploreOpen}>
@@ -334,7 +343,7 @@ export function SiteNavNext({
                                 role="button" tabIndex={0}
                                 onClick={() => setNatureOpen((v) => !v)}
                                 onMouseEnter={() => setHoverKey("m:NATURE")} onMouseLeave={() => setHoverKey(null)}
-                                style={{ fontFamily: FONT_LBL, fontSize: "0.86rem", fontWeight: 400, letterSpacing: "0.14em", textTransform: "uppercase", color: DARK.head, paddingBlock: "0.45rem", opacity: natureOpen || hoverKey === "m:NATURE" ? 1 : 0.88, transition: "opacity 200ms ease-out", cursor: "pointer", userSelect: "none", display: "inline-block", borderLeft: "2px solid transparent", paddingLeft: "0.7rem", marginLeft: "calc(-0.7rem - 2px)" }}
+                                style={{ fontFamily: FONT_LBL, fontSize: "0.86rem", fontWeight: 400, letterSpacing: "0.14em", textTransform: "uppercase", color: DARK.head, paddingBlock: "0.8rem", opacity: natureOpen || hoverKey === "m:NATURE" ? 1 : 0.88, transition: "opacity 200ms ease-out", cursor: "pointer", userSelect: "none", display: "inline-block", paddingLeft: "0.7rem", marginLeft: "-0.7rem" }}
                               >
                                 {c.label}
                               </span>

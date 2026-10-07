@@ -1,5 +1,11 @@
 # navbar-next: changelog
 
+## 0.3.0 (experiment, 2026-10-07)
+
+- Expanded menu lighter still: desktop drawer 60% dark, mobile overlay 66% (blur keeps text legible).
+- Current item: a small red square in front of it (6 px) instead of the left line.
+- More air between sub-menu items (desktop and mobile).
+
 ## 0.2.0 (experiment, 2026-10-07)
 
 - Expanded menu (desktop drawer and mobile overlay): more transparent, still dark
