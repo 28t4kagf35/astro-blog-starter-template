@@ -1,5 +1,5 @@
 // V2 WORKING COPY of ../experience-article/ExperienceArticle.tsx, for side-by-side comparison at /experience-v2. Design changes go here only.
-// Pass 5 ("a walk, in chapters"): lede, chapters on ONE left edge (the hero's), 600px body, alternating surfaces,
+// Pass 5 ("a walk, in chapters"): lede, chapters in a centred 600px column (desktop; tablet and mobile share the hero's left edge), alternating surfaces,
 // sensory lines as sub-quotes, Source Serif 4 body (?body=spectral shows the old Spectral body for comparison).
 /**
  * Page type: Experience article (Sanity type `experienceArticle`).
@@ -238,7 +238,7 @@ export function ExperienceV2({ content, isDark = true }: { content: ExperienceV2
   // the hero text's (the 860 column plus the canon gutter).
   const Section = ({ bg, children, first }: { bg: string; children: ReactNode; first?: boolean }) => (
     <div style={{ background: bg, padding: `${first ? (isMobile ? "2.2rem" : isTablet ? "2.6rem" : "2.8rem") : SEC} 0 ${SEC}`, transition: "background 0.35s ease" }}>
-      <div style={{ maxWidth: isDesktop ? "860px" : "none", margin: "0 auto", padding: `0 ${PAD_H}`, boxSizing: "border-box" }}>{children}</div>
+      <div style={{ maxWidth: isDesktop ? "calc(600px + 2rem)" : "none", margin: "0 auto", padding: `0 ${PAD_H}`, boxSizing: "border-box" }}>{children}</div>
     </div>
   );
 
@@ -255,13 +255,13 @@ export function ExperienceV2({ content, isDark = true }: { content: ExperienceV2
         {intro && content.subtitle && (
           <div style={{ marginBottom: ch.blocks.length ? (isMobile ? "2.4rem" : "3.2rem") : 0 }}>
             <div style={{ width: 28, height: 2, background: tk.accent, marginBottom: "1.4rem" }} />
-            <p style={{ margin: 0, maxWidth: "760px", fontFamily: FONT_SS4, fontVariationSettings: '"opsz" 28', fontStyle: "italic", fontWeight: 300, fontSize: ledeSz, lineHeight: 1.45, letterSpacing: "-0.003em", color: tk.head }}>{content.subtitle}</p>
+            <p style={{ margin: 0, maxWidth: "none", fontFamily: FONT_SS4, fontVariationSettings: '"opsz" 28', fontStyle: "italic", fontWeight: 300, fontSize: ledeSz, lineHeight: 1.45, letterSpacing: "-0.003em", color: tk.head }}>{content.subtitle}</p>
           </div>
         )}
         {isTitled ? (
           <div>
             <p style={{ margin: "0 0 1rem", ...T_MONO_CAPTION, color: tk.muted }}>{String(n + 1).padStart(2, "0")}<span style={{ opacity: 0.6 }}> / {String(total).padStart(2, "0")}</span></p>
-            <h2 style={{ margin: "0 0 2rem", maxWidth: bodyMax === "100%" ? "none" : "760px", fontFamily: FONT_SS4, fontVariationSettings: '"opsz" 36, "wght" 300', fontStyle: "italic", fontWeight: 300, fontSize: titleSz, lineHeight: 1.15, letterSpacing: "-0.005em", color: tk.head }}>{ch.title}</h2>
+            <h2 style={{ margin: "0 0 2rem", maxWidth: "none", fontFamily: FONT_SS4, fontVariationSettings: '"opsz" 36, "wght" 300', fontStyle: "italic", fontWeight: 300, fontSize: titleSz, lineHeight: 1.15, letterSpacing: "-0.005em", color: tk.head }}>{ch.title}</h2>
             <div style={{ maxWidth: bodyMax }}>{renderBlocks(ch.blocks, `c${ci}`)}</div>
           </div>
         ) : ch.blocks.length ? (
@@ -275,7 +275,7 @@ export function ExperienceV2({ content, isDark = true }: { content: ExperienceV2
     sections.push(
       <Section key="lede" bg={tk.bg} first>
         <div style={{ width: 28, height: 2, background: tk.accent, marginBottom: "1.4rem" }} />
-        <p style={{ margin: 0, maxWidth: "760px", fontFamily: FONT_SS4, fontVariationSettings: '"opsz" 28', fontStyle: "italic", fontWeight: 300, fontSize: ledeSz, lineHeight: 1.45, color: tk.head }}>{content.subtitle}</p>
+        <p style={{ margin: 0, maxWidth: "none", fontFamily: FONT_SS4, fontVariationSettings: '"opsz" 28', fontStyle: "italic", fontWeight: 300, fontSize: ledeSz, lineHeight: 1.45, color: tk.head }}>{content.subtitle}</p>
       </Section>
     );
   }
@@ -298,7 +298,7 @@ export function ExperienceV2({ content, isDark = true }: { content: ExperienceV2
       {/* ── CLOSING ── */}
       <Section bg={closingBg}>
         <p style={{ margin: "0 0 1.2rem", ...T_SECTION_LABEL, color: tk.muted }}>Continue</p>
-        <div style={{ maxWidth: isMobile ? "none" : "760px", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: "1rem" }}>
+        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: "1rem" }}>
           {NEXT.map((label, i) => <NextCard key={i} label={label} tk={tk} bg={closingBg} />)}
         </div>
       </Section>
