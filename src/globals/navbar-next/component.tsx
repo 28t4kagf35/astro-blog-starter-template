@@ -335,7 +335,7 @@ export function SiteNavNext({
         )}
       </div>
 
-      {/* Mobile overlay: the main items slide up when Explore opens */}
+      {/* Mobile overlay: the bottom of the list is fixed; opening Explore only pushes the lines above it upward */}
       {isMobile && (
         <div style={{
           position: "fixed", inset: 0, zIndex: 999, background: OVERLAY_BG,
@@ -344,9 +344,9 @@ export function SiteNavNext({
           overflowY: "auto", opacity: menuOpen ? 1 : 0, pointerEvents: menuOpen ? "all" : "none",
           transition: "opacity 480ms ease-out",
         }}>
-          <div style={{ flexGrow: exploreOpen ? 0.2 : 1, flexShrink: 1, flexBasis: 0, transition: `flex-grow 720ms ${EASE}` }} />
+          <div style={{ flexGrow: 1, flexShrink: 1, flexBasis: 0 }} />
 
-          <div style={{ display: "flex", flexDirection: "column", gap: exploreOpen ? "1.7rem" : "2.4rem", transition: `gap 720ms ${EASE}` }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
             {TOP.map((t) => {
               const isExplore = t.label === "EXPLORE";
               const active = section === t.label;
@@ -395,7 +395,7 @@ export function SiteNavNext({
             })}
           </div>
 
-          <div style={{ flexGrow: 1, flexShrink: 1, flexBasis: 0 }} />
+          <div style={{ flexGrow: 0, flexShrink: 1, flexBasis: "26dvh" }} />
           <div style={{ paddingBottom: "2.4rem", paddingTop: "1rem" }}>
             <span style={{ fontFamily: FONT_LBL, fontSize: "0.92rem", fontWeight: 300, letterSpacing: "0.30em", color: DARK.head, opacity: 0.30, textTransform: "uppercase" }}>
               vosswaterfalls.no

@@ -1,5 +1,12 @@
 # navbar-next: changelog
 
+## 0.9.3 (builds on 0.9.2)
+
+- Mobile menu: the bottom of the list is fixed. Opening Explore (or Nature) animates
+  only the submenu growing open; the lines above are pushed upward by it, and
+  nothing moves downward or bounces. The shrinking top spacer and the changing gap
+  between the main words are gone (one fixed gap, 2rem).
+
 ## 0.9.2 (builds on 0.9.1)
 
 - Mobile menu: the text lines expand a little slower: main words slide 0.72s (was 0.57s),
