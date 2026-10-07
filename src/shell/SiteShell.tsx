@@ -12,6 +12,7 @@
 import { useCallback, useEffect, useRef, useState, type ComponentType } from "react";
 import { useNavBehavior } from "../globals/navbar";
 import { SiteNavNext } from "../globals/navbar-next";
+import { GuidesOverlay } from "./GuidesOverlay";
 
 /** What every page type receives from the shell. */
 export interface ShellPageProps {
@@ -82,6 +83,7 @@ export function withShell<C>(Page: ComponentType<{ content: C } & ShellPageProps
           hidden={navHidden}
           currentPath={path}
         />
+        <GuidesOverlay eligible={path.replace(/\/+$/, "").endsWith("-v2")} />
         <Page
           content={content}
           isDark={isDark}
