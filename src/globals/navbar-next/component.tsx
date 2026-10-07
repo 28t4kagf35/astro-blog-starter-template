@@ -66,6 +66,8 @@ function subOf(path: string): string | null {
 // colour does not shift with what is behind it): resting, and lit (hover/current).
 const REST = "#A8A49E";
 const LIT = DARK.head;
+// Mobile main words (large italic) rest at a softer white; lit = full.
+const MAIN_REST = "#CFCBC5";
 
 const GLASS_BG = "rgba(19,20,22,0.48)";
 const OPEN_BG = "rgba(19,20,22,0.50)";
@@ -126,7 +128,16 @@ export function SiteNavNext({
   const section = sectionOf(currentPath);
   const sub = subOf(currentPath);
 
-  useEffect(() => { if (!menuOpen) { setExploreOpen(false); setNatureOpen(false); } }, [menuOpen]);
+  useEffect(() => {
+    if (!menuOpen) { setExploreOpen(false); setNatureOpen(false); return; }
+    // On a page inside Explore, the open menu shows where you are: Explore is
+    // already open (and Nature, for Observe / Learn / Experience).
+    if (isMobile && section === "EXPLORE") {
+      setExploreOpen(true);
+      if (sub === "OBSERVE" || sub === "LEARN" || sub === "EXPERIENCE") setNatureOpen(true);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [menuOpen]);
   useEffect(() => { if (!isMobile) setMenuOpen(false); }, [isMobile]);
   useEffect(() => {
     const measure = () => { if (exploreRef.current) setExploreLeft(exploreRef.current.getBoundingClientRect().left); };
@@ -144,6 +155,12 @@ export function SiteNavNext({
   const onOtherEnter = (k: string) => { clear(); setExploreOpen(false); setHoverKey(k); };
   const onShellLeave = () => { clear(); setHoverKey(null); closeTimer.current = setTimeout(() => setExploreOpen(false), 200); };
   const onShellEnter = () => { if (closeTimer.current) { clearTimeout(closeTimer.current); closeTimer.current = null; } };
+  // Touch: pressing an item lights it, as hover does for a pointer.
+  const press = (k: string) => ({
+    onTouchStart: () => setHoverKey(k),
+    onTouchEnd: () => { setTimeout(() => setHoverKey(null), 280); },
+    onTouchCancel: () => setHoverKey(null),
+  });
   const touchOnly = () => typeof window !== "undefined" && window.matchMedia("(hover: none)").matches;
 
   const BAR_LOOK = {
@@ -220,18 +237,19 @@ export function SiteNavNext({
       transition: "color 200ms ease-out",
     };
     const enter = () => setHoverKey(key);
+    const touch = press(key);
     const leave = () => setHoverKey(null);
     return item.href ? (
-      <a key={item.label} href={item.href} style={style} aria-current={active ? "page" : undefined} onMouseEnter={enter} onMouseLeave={leave}>
+      <a key={item.label} href={item.href} style={style} aria-current={active ? "page" : undefined} onMouseEnter={enter} onMouseLeave={leave} {...touch}>
         <Mark on={active} size={level === 1 ? 6 : 5} />{item.label}
       </a>
     ) : (
-      <span key={item.label} style={style} onMouseEnter={enter} onMouseLeave={leave}>{item.label}</span>
+      <span key={item.label} style={style} onMouseEnter={enter} onMouseLeave={leave} {...touch}>{item.label}</span>
     );
   };
 
   return (
-    <div data-scroll style={SS4_SMOOTHING}>
+    <div data-scroll style={{ ...SS4_SMOOTHING, WebkitTapHighlightColor: "transparent" }}>
       {/* click-away layer behind the open drawer */}
       {!isMobile && exploreOpen && (
         <div onClick={() => setExploreOpen(false)} style={{ position: "fixed", inset: 0, zIndex: 998 }} aria-hidden="true" />
@@ -316,7 +334,7 @@ export function SiteNavNext({
         <div style={{
           position: "fixed", inset: 0, zIndex: 999, background: OVERLAY_BG,
           backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)",
-          display: "flex", flexDirection: "column", padding: `${MOBILE_BAR_H}px 2rem 0`,
+          display: "flex", flexDirection: "column", padding: `${MOBILE_BAR_H}px 2rem 0 3.1rem`,
           overflowY: "auto", opacity: menuOpen ? 1 : 0, pointerEvents: menuOpen ? "all" : "none",
           transition: "opacity 320ms ease-out",
         }}>
@@ -331,9 +349,10 @@ export function SiteNavNext({
                   <a
                     href={t.href}
                     aria-current={active ? "page" : undefined}
-                    style={{ ...overlayNavItem, color: active || (isExplore && exploreOpen) || hoverKey === "m:" + t.label ? LIT : REST }}
+                    style={{ ...overlayNavItem, color: active || (isExplore && exploreOpen) || hoverKey === "m:" + t.label ? LIT : MAIN_REST }}
                     onMouseEnter={() => setHoverKey("m:" + t.label)}
                     onMouseLeave={() => setHoverKey(null)}
+                    {...press("m:" + t.label)}
                     onClick={isExplore ? (e) => { if (!exploreOpen) { e.preventDefault(); setExploreOpen(true); } } : undefined}
                   >
                     <Mark on={active} size={8} />{t.label}
@@ -347,7 +366,7 @@ export function SiteNavNext({
                               <span
                                 role="button" tabIndex={0}
                                 onClick={() => setNatureOpen((v) => !v)}
-                                onMouseEnter={() => setHoverKey("m:NATURE")} onMouseLeave={() => setHoverKey(null)}
+                                onMouseEnter={() => setHoverKey("m:NATURE")} onMouseLeave={() => setHoverKey(null)} {...press("m:NATURE")}
                                 style={{ fontFamily: FONT_LBL, fontSize: "0.86rem", fontWeight: 400, letterSpacing: "0.14em", textTransform: "uppercase", color: natureOpen || hoverKey === "m:NATURE" ? LIT : REST, paddingBlock: "0.8rem", transition: "color 200ms ease-out", cursor: "pointer", userSelect: "none", display: "inline-block", paddingLeft: "1.1rem", marginLeft: "-1.1rem" }}
                               >
                                 {c.label}

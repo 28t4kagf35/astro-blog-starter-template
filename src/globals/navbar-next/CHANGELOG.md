@@ -1,5 +1,17 @@
 # navbar-next: changelog
 
+## 0.8.0 (builds on the canon 0.7.0)
+
+- Mobile menu: pressing an item lights it, the touch equivalent of hover.
+- Mobile menu: opened on a page inside Explore, it opens with Explore already
+  expanded (and Nature, for Observe / Learn / Experience), so the current page
+  shows its red square at once (on Tvindefossen: Explore, then Waterfalls).
+- No grey tap flash on touch.
+- Mobile menu: the whole column sits further in from the left edge (3.1rem, was 2rem),
+  so the red square has room (about 1.7rem from the edge).
+- Mobile menu: the large main words rest at a softer white (#CFCBC5); current or
+  pressed is full white (#EDE9E2). Sub-items keep the two-colour rule of 0.7.0.
+
 ## 0.7.0 (experiment, 2026-10-07)
 
 > **Note, 2026-10-07: this is the new canon navbar.** Still to do for it to apply site-wide: swap it in for the current
