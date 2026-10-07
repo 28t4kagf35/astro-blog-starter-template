@@ -53,7 +53,7 @@ export function Hero({ image, srcSet, position = "center", alt = "", title, plac
           <span style={{ fontFamily: FONT_MONO, fontSize: "0.68rem", letterSpacing: "0.14em", textTransform: "uppercase", color: "#6E6A65" }}>image unavailable</span>
         </div>
       )}
-      <div style={{ position: "absolute", top: 0, right: 0, bottom: 0, left: 0, background: "linear-gradient(to top,rgba(26,23,20,1) 0%,rgba(26,23,20,0.88) 10%,rgba(0,0,0,.5) 24%,rgba(0,0,0,.1) 40%,transparent 52%)", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", top: 0, right: 0, bottom: 0, left: 0, background: compact ? "linear-gradient(to top,rgba(26,23,20,1) 0%,rgba(26,23,20,0.88) 7%,rgba(0,0,0,.5) 17%,rgba(0,0,0,.1) 28%,transparent 36%)" : "linear-gradient(to top,rgba(26,23,20,1) 0%,rgba(26,23,20,0.88) 10%,rgba(0,0,0,.5) 24%,rgba(0,0,0,.1) 40%,transparent 52%)", pointerEvents: "none" }} />
       <div style={{ position: "absolute", top: 0, right: 0, bottom: 0, left: 0, backgroundColor: cleared ? "rgba(14,12,10,0)" : "rgba(14,12,10,0.42)", opacity: cleared ? 0 : 1, transition: compact ? "background-color 1.8s cubic-bezier(.18,0,.38,1), opacity 1.8s cubic-bezier(.18,0,.38,1)" : "background-color 2.6s cubic-bezier(.18,0,.38,1), opacity 2.6s cubic-bezier(.18,0,.38,1)", pointerEvents: "none", zIndex: 2 }} />
       <div style={{ position: "absolute", bottom: isMobile ? "2.4rem" : isTablet ? "3rem" : "3.8rem", left: isDesktop ? "50%" : 0, transform: isDesktop ? "translateX(-50%)" : "none", width: "100%", maxWidth: isDesktop ? "860px" : "none", zIndex: 3, padding: pad, boxSizing: "border-box", opacity: textVisible ? 1 : 0, transition: "opacity 1.3s ease-in-out" }}>
         {placement ? (

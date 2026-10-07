@@ -251,7 +251,7 @@ export function ActivityV2({ content, isDark = true }: { content: ActivityV2Cont
               lineHeight: 1.4,
               marginBottom: "1rem",
             }}>
-              {c.breadcrumb}
+              {c.breadcrumb.replace(/^Explore\s*·\s*/, "")}
             </div>
             <h1 style={{
               fontFamily: FONT_SS4,
@@ -287,7 +287,7 @@ export function ActivityV2({ content, isDark = true }: { content: ActivityV2Cont
 
       ) : (
         <>
-          <Hero image={c.heroImage} srcSet={mediaSrcSet(c.heroImage)} position="center 28%" title={c.title} placement={c.breadcrumb} isMobile={isMobile} isTablet={isTablet} isDesktop={false} />
+          <Hero image={c.heroImage} srcSet={mediaSrcSet(c.heroImage)} position="center 28%" title={c.title} placement={c.breadcrumb.replace(/^Explore\s*·\s*/, "")} isMobile={isMobile} isTablet={isTablet} isDesktop={false} />
 
           <Sect pt={SEC} pb={0}>
             <p style={{ fontFamily: FONT_SS3, fontSize: isMobile ? "0.95rem" : "1rem", lineHeight: 1.82, color: tk.body, margin: 0, maxWidth: "66ch" }}>

@@ -62,9 +62,7 @@ export function GuidesOverlay({ eligible }: { eligible: boolean }) {
         {line("calc(50% - 600px)", COLORS.wide, "1200", 0)}
         {line("calc(50% + 600px)", COLORS.wide, "1200", 1)}
         {line("50%", COLORS.centre, "centre", 0)}
-        {/* TEMPORARY: prose measures under review (680 desktop, 600 tablet). Remove when settled. */}
-        {line("calc(50% - 340px)", COLORS.prose, "680", 0)}
-        {line("calc(50% + 340px)", COLORS.prose, "680", 1)}
+        {/* TEMPORARY: prose measures under review (600). Remove when settled. */}
         {line("calc(50% - 300px)", COLORS.prose, "600", 0)}
         {line("calc(50% + 300px)", COLORS.prose, "600", 1)}
       </div>

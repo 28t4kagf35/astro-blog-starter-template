@@ -1,5 +1,5 @@
 // V2 WORKING COPY of ../experience-article/ExperienceArticle.tsx, for side-by-side comparison at /experience-v2. Design changes go here only.
-// Pass 5 ("a walk, in chapters"): lede, chapters with a margin rail (148 + 680 = the 860 column), alternating surfaces,
+// Pass 5 ("a walk, in chapters"): lede, chapters on ONE left edge (the hero's), 600px body, alternating surfaces,
 // sensory lines as sub-quotes, Source Serif 4 body (?body=spectral shows the old Spectral body for comparison).
 /**
  * Page type: Experience article (Sanity type `experienceArticle`).
@@ -176,24 +176,26 @@ export function ExperienceV2({ content, isDark = true }: { content: ExperienceV2
   const isTablet  = bp === "tablet";
   const isDesktop = bp === "desktop";
 
-  // Comparison switch: ?body=spectral shows the earlier Spectral body.
-  const [spectral, setSpectral] = useState(false);
-  useEffect(() => { setSpectral(new URLSearchParams(window.location.search).get("body") === "spectral"); }, []);
+  // Comparison switch for the body face: ?body=spectral | sleek | sturdy (default: a middle optical size).
+  const [bodyVariant, setBodyVariant] = useState("default");
+  useEffect(() => { setBodyVariant(new URLSearchParams(window.location.search).get("body") ?? "default"); }, []);
 
   const tk = isDark ? DARK : LIGHT;
 
   // Canon gutters and section spacing
   const PAD_H = isMobile ? "1.25rem" : isTablet ? "1.4rem" : "1rem";
   const SEC   = isMobile ? "3.5rem" : isTablet ? "4.5rem" : "5.5rem";
-  const bodyMax = isDesktop ? "680px" : isTablet ? "600px" : "100%";
+  const bodyMax = isMobile ? "100%" : "600px";
   const bodySz  = isMobile ? "1.05rem" : isTablet ? "1.1rem" : "1.15rem";
   const lineSz  = isMobile ? "1.12rem" : isTablet ? "1.2rem" : "1.25rem";
   const ledeSz  = isMobile ? "1.3rem"  : isTablet ? "1.45rem" : "1.6rem";
   const titleSz = isMobile ? "1.65rem" : isTablet ? "1.95rem" : "2.25rem";
 
-  const bodyFont: CSSProperties = spectral
+  const SS_BODY: Record<string, { opsz: number; wght: number }> = { default: { opsz: 22, wght: 360 }, sleek: { opsz: 32, wght: 320 }, sturdy: { opsz: 14, wght: 400 } };
+  const ss = SS_BODY[bodyVariant] ?? SS_BODY.default;
+  const bodyFont: CSSProperties = bodyVariant === "spectral"
     ? { fontFamily: FONT_SPEC, fontWeight: 300, fontSize: bodySz, lineHeight: 2.05, letterSpacing: "0.01em" }
-    : { fontFamily: FONT_SS4, fontWeight: 400, fontVariationSettings: '"opsz" 14', fontSize: bodySz, lineHeight: 1.8, letterSpacing: "0.003em" };
+    : { fontFamily: FONT_SS4, fontWeight: ss.wght, fontVariationSettings: `"opsz" ${ss.opsz}`, fontSize: bodySz, lineHeight: 1.8, letterSpacing: "0.003em" };
 
   // ── Split the body into chapters: a "heading" block starts a new chapter ──
   type Chapter = { title?: string; blocks: ExperienceV2Block[] };
@@ -229,17 +231,11 @@ export function ExperienceV2({ content, isDark = true }: { content: ExperienceV2
       return [<p key={`${key}-${i}`} style={{ margin: "0 0 1.6rem", ...bodyFont, color: tk.body }}>{text}</p>];
     });
 
-  // A section is full-bleed (its own background) with the 860 column inside it.
-  const Section = ({ bg, children }: { bg: string; children: ReactNode }) => (
-    <div style={{ background: bg, padding: `${SEC} 0`, transition: "background 0.35s ease" }}>
+  // A section is full-bleed (its own background); everything inside shares ONE left edge,
+  // the hero text's (the 860 column plus the canon gutter).
+  const Section = ({ bg, children, first }: { bg: string; children: ReactNode; first?: boolean }) => (
+    <div style={{ background: bg, padding: `${first ? (isMobile ? "2.8rem" : isTablet ? "3.4rem" : "4rem") : SEC} 0 ${SEC}`, transition: "background 0.35s ease" }}>
       <div style={{ maxWidth: isDesktop ? "860px" : "none", margin: "0 auto", padding: `0 ${PAD_H}`, boxSizing: "border-box" }}>{children}</div>
-    </div>
-  );
-  // Rail (148px) + body (680px) = the 860 column, less its two 1rem gutters.
-  const Grid = ({ rail, children }: { rail: ReactNode; children: ReactNode }) => (
-    <div style={isDesktop ? { display: "grid", gridTemplateColumns: "148px minmax(0, 680px)", alignItems: "start" } : {}}>
-      <div style={isDesktop ? { position: "sticky", top: "6rem", alignSelf: "start" } : { marginBottom: "1.1rem" }}>{rail}</div>
-      <div style={{ maxWidth: bodyMax }}>{children}</div>
     </div>
   );
 
@@ -252,7 +248,7 @@ export function ExperienceV2({ content, isDark = true }: { content: ExperienceV2
     lastBg = bg;
     const intro = ci === 0 && !isTitled;
     return (
-      <Section key={ci} bg={bg}>
+      <Section key={ci} bg={bg} first={ci === 0}>
         {intro && content.subtitle && (
           <div style={{ marginBottom: ch.blocks.length ? (isMobile ? "2.4rem" : "3.2rem") : 0 }}>
             <div style={{ width: 28, height: 2, background: tk.accent, marginBottom: "1.4rem" }} />
@@ -260,12 +256,13 @@ export function ExperienceV2({ content, isDark = true }: { content: ExperienceV2
           </div>
         )}
         {isTitled ? (
-          <Grid rail={<span style={{ ...T_MONO_CAPTION, color: tk.muted }}>{String(n + 1).padStart(2, "0")}<span style={{ opacity: 0.6 }}> / {String(total).padStart(2, "0")}</span></span>}>
-            <h2 style={{ margin: "0 0 2rem", fontFamily: FONT_SS4, fontVariationSettings: '"opsz" 36, "wght" 300', fontStyle: "italic", fontWeight: 300, fontSize: titleSz, lineHeight: 1.15, letterSpacing: "-0.005em", color: tk.head }}>{ch.title}</h2>
-            {renderBlocks(ch.blocks, `c${ci}`)}
-          </Grid>
+          <div>
+            <p style={{ margin: "0 0 1rem", ...T_MONO_CAPTION, color: tk.muted }}>{String(n + 1).padStart(2, "0")}<span style={{ opacity: 0.6 }}> / {String(total).padStart(2, "0")}</span></p>
+            <h2 style={{ margin: "0 0 2rem", maxWidth: bodyMax === "100%" ? "none" : "760px", fontFamily: FONT_SS4, fontVariationSettings: '"opsz" 36, "wght" 300', fontStyle: "italic", fontWeight: 300, fontSize: titleSz, lineHeight: 1.15, letterSpacing: "-0.005em", color: tk.head }}>{ch.title}</h2>
+            <div style={{ maxWidth: bodyMax }}>{renderBlocks(ch.blocks, `c${ci}`)}</div>
+          </div>
         ) : ch.blocks.length ? (
-          <Grid rail={null}>{renderBlocks(ch.blocks, `c${ci}`)}</Grid>
+          <div style={{ maxWidth: bodyMax }}>{renderBlocks(ch.blocks, `c${ci}`)}</div>
         ) : null}
       </Section>
     );
@@ -273,7 +270,7 @@ export function ExperienceV2({ content, isDark = true }: { content: ExperienceV2
   // A page with no chapters still shows its lede.
   if (!chapters.length && content.subtitle) {
     sections.push(
-      <Section key="lede" bg={tk.bg}>
+      <Section key="lede" bg={tk.bg} first>
         <div style={{ width: 28, height: 2, background: tk.accent, marginBottom: "1.4rem" }} />
         <p style={{ margin: 0, maxWidth: "760px", fontFamily: FONT_SS4, fontVariationSettings: '"opsz" 28', fontStyle: "italic", fontWeight: 300, fontSize: ledeSz, lineHeight: 1.45, color: tk.head }}>{content.subtitle}</p>
       </Section>
@@ -297,11 +294,10 @@ export function ExperienceV2({ content, isDark = true }: { content: ExperienceV2
 
       {/* ── CLOSING ── */}
       <Section bg={closingBg}>
-        <Grid rail={<span style={{ ...T_SECTION_LABEL, color: tk.muted }}>Continue</span>}>
-          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: "1rem" }}>
-            {NEXT.map((label, i) => <NextCard key={i} label={label} tk={tk} bg={closingBg} />)}
-          </div>
-        </Grid>
+        <p style={{ margin: "0 0 1.2rem", ...T_SECTION_LABEL, color: tk.muted }}>Continue</p>
+        <div style={{ maxWidth: isMobile ? "none" : "760px", display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: "1rem" }}>
+          {NEXT.map((label, i) => <NextCard key={i} label={label} tk={tk} bg={closingBg} />)}
+        </div>
       </Section>
     </div>
   );
