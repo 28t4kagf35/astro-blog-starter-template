@@ -30,6 +30,16 @@ export function withShell<C>(Page: ComponentType<{ content: C } & ShellPageProps
     const [path, setPath] = useState("");
     useEffect(() => { setPath(window.location.pathname); }, []);
     const useNext = path.replace(/\/+$/, "").endsWith("-v2");
+    // Tablet held upright (up to 1023px wide): the experimental navbar uses its
+    // mobile menu there. The canon navbar's own 767px rule is left untouched.
+    const [tabletPortrait, setTabletPortrait] = useState(false);
+    useEffect(() => {
+      const mq = window.matchMedia("(max-width: 1023px) and (orientation: portrait)");
+      const update = () => setTabletPortrait(mq.matches);
+      update();
+      mq.addEventListener("change", update);
+      return () => mq.removeEventListener("change", update);
+    }, []);
     const audioToggleRef = useRef<(() => void) | null>(null);
     const audioPlayingRef = useRef(false);
 
@@ -70,7 +80,7 @@ export function withShell<C>(Page: ComponentType<{ content: C } & ShellPageProps
             audioPlaying={audioPlaying}
             onAudioToggle={() => audioToggleRef.current?.()}
             scrollState={scrollState}
-            isMobile={isMobile}
+            isMobile={isMobile || tabletPortrait}
             hidden={navHidden}
             currentPath={path}
           />

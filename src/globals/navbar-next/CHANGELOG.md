@@ -1,5 +1,11 @@
 # navbar-next: changelog
 
+## 0.9.5 (builds on 0.9.4)
+
+- Tablet held upright (up to 1023px wide) now gets the mobile menu on the -v2 pages
+  (chosen in the shell; the component is unchanged). Landscape and desktop keep the
+  hover drawer. The canon navbar's own 767px rule is untouched.
+
 ## 0.9.4 (builds on 0.9.3)
 
 - Mobile menu: the bottom line sits much lower (7% of the screen height above the
