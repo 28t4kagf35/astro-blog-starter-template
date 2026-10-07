@@ -63,8 +63,8 @@ function subOf(path: string): string | null {
 }
 
 const GLASS_BG = "rgba(19,20,22,0.48)";
-const OPEN_BG = "rgba(19,20,22,0.60)";
-const OVERLAY_BG = "rgba(19,20,22,0.66)";
+const OPEN_BG = "rgba(19,20,22,0.50)";
+const OVERLAY_BG = "rgba(19,20,22,0.56)";
 const BAR_H = 56;
 const MOBILE_BAR_H = 68;
 const EASE = "cubic-bezier(0.4, 0, 0.2, 1)";
@@ -81,7 +81,7 @@ interface Props {
 }
 
 /** Small red square in front of the current item (a mark, never a fill). */
-function Mark({ on, size = 6 }: { on: boolean; size?: number }) {
+function Mark({ on, size = 8 }: { on: boolean; size?: number }) {
   return (
     <span aria-hidden="true" style={{
       position: "absolute", left: 0, top: "50%", width: size, height: size, marginTop: -size / 2,
@@ -173,13 +173,13 @@ export function SiteNavNext({
     fontFamily: FONT_LBL, fontSize: "0.76rem", fontWeight: 400, letterSpacing: "0.14em",
     textTransform: "uppercase", lineHeight: 1, color: DARK.head, userSelect: "none",
     textDecoration: "none", position: "relative", display: "inline-block", paddingBlock: "6px",
-    paddingLeft: "0.8rem",
+    paddingLeft: "1.3rem",
   };
   const overlayNavItem: CSSProperties = {
     ...SS4_SMOOTHING, fontFamily: FONT_SS4, fontSize: "1.85rem", fontWeight: 300, fontStyle: "italic",
     fontVariationSettings: SS4_OPSZ_DISPLAY, letterSpacing: "-0.01em", textTransform: "none",
     color: DARK.head, lineHeight: 1.15, textDecoration: "none", position: "relative", display: "inline-block",
-    paddingLeft: "0.9rem", marginLeft: "-0.9rem", transition: "opacity 200ms ease-out",
+    paddingLeft: "1.4rem", marginLeft: "-1.4rem", transition: "opacity 200ms ease-out",
   };
 
   /** One link in the desktop drawer. */
@@ -194,7 +194,7 @@ export function SiteNavNext({
     };
     return item.href ? (
       <a key={item.label} href={item.href} style={style} aria-current={active ? "page" : undefined}
-         onMouseEnter={() => setHoverKey(key)} onMouseLeave={() => setHoverKey("EXPLORE")}><Mark on={active} size={small ? 5 : 6} />{item.label}</a>
+         onMouseEnter={() => setHoverKey(key)} onMouseLeave={() => setHoverKey("EXPLORE")}><Mark on={active} size={small ? 6 : 7} />{item.label}</a>
     ) : (
       <span key={item.label} style={style} title="Coming"
         onMouseEnter={() => setHoverKey(key)} onMouseLeave={() => setHoverKey("EXPLORE")}>{item.label}</span>
@@ -210,7 +210,7 @@ export function SiteNavNext({
       fontFamily: FONT_LBL, fontSize: level === 1 ? "0.86rem" : "0.76rem", fontWeight: 400,
       letterSpacing: "0.14em", textTransform: "uppercase", color: DARK.head, textDecoration: "none",
       display: "inline-block", position: "relative", paddingBlock: level === 1 ? "0.8rem" : "0.7rem",
-      paddingLeft: "0.7rem", marginLeft: "-0.7rem",
+      paddingLeft: "1.1rem", marginLeft: "-1.1rem",
       opacity: active || hover ? 1 : !item.href ? 0.4 : level === 1 ? 0.88 : 0.68,
       transition: "opacity 200ms ease-out",
     };
@@ -218,7 +218,7 @@ export function SiteNavNext({
     const leave = () => setHoverKey(null);
     return item.href ? (
       <a key={item.label} href={item.href} style={style} aria-current={active ? "page" : undefined} onMouseEnter={enter} onMouseLeave={leave}>
-        <Mark on={active} size={level === 1 ? 6 : 5} />{item.label}
+        <Mark on={active} size={level === 1 ? 7 : 6} />{item.label}
       </a>
     ) : (
       <span key={item.label} style={style} onMouseEnter={enter} onMouseLeave={leave}>{item.label}</span>
@@ -331,7 +331,7 @@ export function SiteNavNext({
                     onMouseLeave={() => setHoverKey(null)}
                     onClick={isExplore ? (e) => { if (!exploreOpen) { e.preventDefault(); setExploreOpen(true); } } : undefined}
                   >
-                    <Mark on={active} size={7} />{t.label}
+                    <Mark on={active} size={9} />{t.label}
                   </a>
                   {isExplore && (
                     <Collapse open={exploreOpen}>
@@ -343,7 +343,7 @@ export function SiteNavNext({
                                 role="button" tabIndex={0}
                                 onClick={() => setNatureOpen((v) => !v)}
                                 onMouseEnter={() => setHoverKey("m:NATURE")} onMouseLeave={() => setHoverKey(null)}
-                                style={{ fontFamily: FONT_LBL, fontSize: "0.86rem", fontWeight: 400, letterSpacing: "0.14em", textTransform: "uppercase", color: DARK.head, paddingBlock: "0.8rem", opacity: natureOpen || hoverKey === "m:NATURE" ? 1 : 0.88, transition: "opacity 200ms ease-out", cursor: "pointer", userSelect: "none", display: "inline-block", paddingLeft: "0.7rem", marginLeft: "-0.7rem" }}
+                                style={{ fontFamily: FONT_LBL, fontSize: "0.86rem", fontWeight: 400, letterSpacing: "0.14em", textTransform: "uppercase", color: DARK.head, paddingBlock: "0.8rem", opacity: natureOpen || hoverKey === "m:NATURE" ? 1 : 0.88, transition: "opacity 200ms ease-out", cursor: "pointer", userSelect: "none", display: "inline-block", paddingLeft: "1.1rem", marginLeft: "-1.1rem" }}
                               >
                                 {c.label}
                               </span>

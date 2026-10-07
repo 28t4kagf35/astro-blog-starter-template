@@ -1,5 +1,11 @@
 # navbar-next: changelog
 
+## 0.4.0 (experiment, 2026-10-07)
+
+- Expanded menu lighter again: desktop drawer 50% dark, mobile overlay 56%.
+- Red square a little bigger (8 px top level, 9 px large mobile items, 6-7 px sub-items)
+  and set further from the text.
+
 ## 0.3.0 (experiment, 2026-10-07)
 
 - Expanded menu lighter still: desktop drawer 60% dark, mobile overlay 66% (blur keeps text legible).
