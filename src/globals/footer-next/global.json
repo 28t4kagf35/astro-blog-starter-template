@@ -1,0 +1,9 @@
+{
+  "name": "footer-next",
+  "version": "0.1.0",
+  "status": "draft",
+  "source": {
+    "repo": "this repo",
+    "note": "First footer, dark only. Shown on the -v2 pages. See CHANGELOG."
+  }
+}

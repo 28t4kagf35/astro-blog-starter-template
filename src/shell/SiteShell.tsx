@@ -12,6 +12,7 @@
 import { useCallback, useEffect, useRef, useState, type ComponentType } from "react";
 import { useNavBehavior } from "../globals/navbar";
 import { SiteNavNext } from "../globals/navbar-next";
+import { SiteFooterNext } from "../globals/footer-next";
 import { GuidesOverlay } from "./GuidesOverlay";
 
 /** What every page type receives from the shell. */
@@ -90,6 +91,8 @@ export function withShell<C>(Page: ComponentType<{ content: C } & ShellPageProps
           registerAudioToggle={registerAudioToggle}
           onAudioStateChange={onAudioStateChange}
         />
+        {/* First footer (draft): shown on the -v2 sandbox pages only. */}
+        {path.replace(/\/+$/, "").endsWith("-v2") && <SiteFooterNext />}
       </>
     );
   };

@@ -15,6 +15,12 @@
       "fingerprint": "76dd1c9fd37a87115d2e77cb0442f0514e164b9ccff34d15f7d004c6cb582dcf",
       "basedOn": "navbar 1.2.0 (draft)",
       "canonTag": "canon/navbar-v2.1"
+    },
+    "footer-next": {
+      "version": "0.1.0",
+      "status": "draft",
+      "source": "this repo; first footer, draft, -v2 pages only",
+      "fingerprint": "f9850a00c7987209dda79b66bce59e29ea919c0725a1afcacd1fb519ac0ebb4d"
     }
   }
 }
