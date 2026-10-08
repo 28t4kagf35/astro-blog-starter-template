@@ -48,19 +48,36 @@ export function bodyFontStyle(variant: string, fontSize: string): CSSProperties 
   return { fontFamily: FONT_SS4, fontWeight: ss.wght, fontVariationSettings: `"opsz" ${ss.opsz}`, fontSize, lineHeight: 1.8, letterSpacing: "0.003em" };
 }
 
-/** A closing card (not a link yet). Own hover state, so the page does not re-render on hover. */
-export function NextCard({ label, tk, bg }: { label: string; tk: ArticleTokens; bg: string }) {
-  const [on, setOn] = useState(false);
-  const [name, sub] = label.split(" · ");
+const FONT_SS3 = "'Source Sans 3', system-ui, sans-serif";
+export type ContinueCard = { label: string; body: string; href?: string };
+
+/**
+ * The "Continue" block, styled as on the Tvindefossen page: a rule, a small label,
+ * and bordered cards on the surface tone (label + short text). Two cards.
+ * On desktop it breaks out of the 600 text column to the 860 column.
+ * A card is a link only when it has an href (Stretch-style cover link, no hover effect, as on Tvindefossen).
+ */
+export function ContinueBlock({ cards, tk, isMobile, isTablet, isDesktop, sec, ruled = true }: {
+  cards: ContinueCard[]; tk: ArticleTokens; isMobile: boolean; isTablet: boolean; isDesktop: boolean; sec: string; ruled?: boolean;
+}) {
+  const wrap: CSSProperties = isDesktop
+    ? { width: "min(860px, 100vw - 2rem)", position: "relative", left: "50%", transform: "translateX(-50%)" }
+    : {};
+  const pad = isMobile || isTablet ? "1.3rem" : "1.6rem";
   return (
-    <div
-      onMouseEnter={() => setOn(true)}
-      onMouseLeave={() => setOn(false)}
-      style={{ position: "relative", padding: "1.3rem 1.4rem 1.4rem", border: `1px solid ${on ? tk.muted : tk.rule}`, background: on ? (bg === tk.surface ? tk.bg : tk.surface) : "transparent", transition: "border-color 0.25s ease, background 0.25s ease", cursor: "pointer" }}
-    >
-      <span style={{ position: "absolute", top: "1.3rem", right: "1.3rem", width: 7, height: 7, background: tk.accent, opacity: on ? 1 : 0, transition: "opacity 0.25s ease" }} />
-      <div style={{ fontFamily: FONT_LBL, fontSize: "0.72rem", letterSpacing: "0.14em", textTransform: "uppercase", lineHeight: 1.6, color: on ? tk.head : tk.body, transition: "color 0.25s ease" }}>{name}</div>
-      <div style={{ marginTop: "0.6rem", fontFamily: FONT_SS4, fontVariationSettings: '"opsz" 16', fontStyle: "italic", fontWeight: 400, fontSize: "1.05rem", lineHeight: 1.45, color: tk.body }}>{sub}</div>
+    <div style={wrap}>
+      <div style={{ borderTop: ruled ? `1px solid ${tk.rule}` : "none", paddingTop: ruled ? sec : 0 }}>
+        <p style={{ margin: "0 0 1.6rem", fontFamily: FONT_LBL, fontSize: "0.76rem", fontWeight: 400, letterSpacing: "0.14em", textTransform: "uppercase", lineHeight: 1.6, color: tk.body }}>Continue</p>
+        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: isDesktop ? "1.4rem" : "1.1rem" }}>
+          {cards.map((c) => (
+            <div key={c.label} style={{ position: "relative", border: `1px solid ${tk.rule}`, borderRadius: "0.35rem", padding: pad, display: "flex", flexDirection: "column", background: tk.surface }}>
+              {c.href ? <a href={c.href} aria-label={c.label} style={{ position: "absolute", top: 0, right: 0, bottom: 0, left: 0, zIndex: 4 }} /> : null}
+              <span style={{ display: "block", marginBottom: "0.7rem", fontFamily: FONT_LBL, fontSize: "0.76rem", fontWeight: 400, letterSpacing: "0.14em", textTransform: "uppercase", lineHeight: 1.6, color: tk.head }}>{c.label}</span>
+              <p style={{ margin: 0, fontFamily: FONT_SS3, fontSize: isMobile ? "0.95rem" : "1rem", fontWeight: 300, lineHeight: 1.82, letterSpacing: "0.02em", color: tk.body }}>{c.body}</p>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

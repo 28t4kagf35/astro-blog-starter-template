@@ -1,5 +1,14 @@
 # footer-next: changelog
 
+## 0.3.0 (draft, builds on 0.2.0)
+
+- A mood line is back (sage left border, no red). It matches the cluster the visitor is in
+  (nature, waterfalls, culture, cabin, activities, home) and one of three lines is picked at
+  random per visit. Placeholder wording.
+- The footer links now follow the main menu order: Culture & History, Observe, Learn,
+  Experience, Waterfalls, The Cabin, Activities.
+- The shell passes the current address to the footer so it knows the cluster.
+
 ## 0.2.0 (draft, builds on 0.1.0)
 
 - Red line and the placeholder quote removed. No red in the footer for now.

@@ -20,7 +20,7 @@
 import { PLACEMENT } from "../../site/placement";
 import { Hero } from "../../site/Hero";
 import { useEffect, useState, type CSSProperties } from "react";
-import { useArticleFonts, useBodyVariant, bodyFontStyle, NextCard } from "../../site/article";
+import { useArticleFonts, useBodyVariant, bodyFontStyle, ContinueBlock } from "../../site/article";
 
 // ── Brand constants (inlined) ─────────────────────────────────────────────────
 const FONT_SS4  = "'Source Serif 4', Georgia, serif";
@@ -181,12 +181,12 @@ export function LearnV2({ content, isDark = true }: { content: LearnV2Content; i
             })}
           </div>
 
-          {/* ── Closing ── */}
-          <div style={{ marginTop: SEC, paddingTop: "2.2rem", borderTop: `1px solid ${tk.rule}` }}>
-            <p style={{ margin: "0 0 1.2rem", fontFamily: FONT_LBL, fontSize: "0.76rem", letterSpacing: "0.14em", textTransform: "uppercase", lineHeight: 1.6, color: tk.muted }}>Keep looking</p>
-            <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: "1rem" }}>
-              {["Observe · see it closer", "Experience · go and feel it"].map((label, i) => <NextCard key={i} label={label} tk={tk} bg={tk.bg} />)}
-            </div>
+          {/* ── Continue: as on Tvindefossen, two blocks (placeholder wording) ── */}
+          <div style={{ marginTop: SEC }}>
+            <ContinueBlock tk={tk} isMobile={isMobile} isTablet={isTablet} isDesktop={isDesktop} sec={SEC} cards={[
+              { label: "Observe", body: "See it closer.", href: "/explore/nature/observe" },
+              { label: "Experience", body: "Go and feel it." },
+            ]} />
           </div>
         </div>
       </div>

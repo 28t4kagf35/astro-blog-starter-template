@@ -22,6 +22,7 @@
 
 import { PLACEMENT } from "../../site/placement";
 import { Hero } from "../../site/Hero";
+import { ContinueBlock } from "../../site/article";
 import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
 
 // ── Brand constants (inlined) ─────────────────────────────────────────────────
@@ -135,24 +136,6 @@ function useBreakpoint() {
 const HERO_WIDTHS = [640, 1080, 1600, 2400];
 const heroSrcSet = (src: string): string | undefined =>
   src.endsWith("-1600.webp") ? HERO_WIDTHS.map((w) => `${src.replace("-1600.webp", `-${w}.webp`)} ${w}w`).join(", ") : undefined;
-
-// One closing card (the export's "Continue" labels are not links yet). Own hover state, so the page does not re-render on hover.
-function NextCard({ label, tk, bg }: { label: string; tk: typeof DARK | typeof LIGHT; bg: string }) {
-  const [on, setOn] = useState(false);
-  const [name, sub] = label.split(" · ");
-  return (
-    <div
-      onMouseEnter={() => setOn(true)}
-      onMouseLeave={() => setOn(false)}
-      style={{ position: "relative", padding: "1.3rem 1.4rem 1.4rem", border: `1px solid ${on ? tk.muted : tk.rule}`, background: on ? (bg === tk.surface ? tk.bg : tk.surface) : "transparent", transition: "border-color 0.25s ease, background 0.25s ease", cursor: "pointer" }}
-    >
-      <span style={{ position: "absolute", top: "1.3rem", right: "1.3rem", width: 7, height: 7, background: tk.accent, opacity: on ? 1 : 0, transition: "opacity 0.25s ease" }} />
-      <div style={{ ...T_CARD_LABEL, color: on ? tk.head : tk.body, transition: "color 0.25s ease" }}>{name}</div>
-      <div style={{ marginTop: "0.6rem", fontFamily: FONT_SS4, fontVariationSettings: '"opsz" 16', fontStyle: "italic", fontWeight: 400, fontSize: "1.05rem", lineHeight: 1.45, color: tk.body }}>{sub}</div>
-    </div>
-  );
-}
-
 
 export function ExperienceV2({ content, isDark = true }: { content: ExperienceV2Content; isDark?: boolean }) {
   // Font loading — display=block (FONT-6)
@@ -281,8 +264,8 @@ export function ExperienceV2({ content, isDark = true }: { content: ExperienceV2
   }
 
   // ── Closing block: the export's two "Continue" labels (not links yet) ──
-  const closingBg = lastBg === tk.surface ? tk.bg : tk.surface;
-  const NEXT = ["Observe · the land up close", "Cabin · where calm has a place"];
+  // The closing area always sits on the plain page background (no light band before the footer);
+  // a rule separates it only when the last chapter was also on the page background.
 
   return (
     <div data-scroll="root" style={{ ...SS4_SMOOTHING, background: tk.bg, minHeight: "100vh", transition: "background 0.35s ease" }}>
@@ -296,11 +279,11 @@ export function ExperienceV2({ content, isDark = true }: { content: ExperienceV2
       </div>
 
       {/* ── CLOSING ── */}
-      <Section bg={closingBg}>
-        <p style={{ margin: "0 0 1.2rem", ...T_SECTION_LABEL, color: tk.muted }}>Continue</p>
-        <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: "1rem" }}>
-          {NEXT.map((label, i) => <NextCard key={i} label={label} tk={tk} bg={closingBg} />)}
-        </div>
+      <Section bg={tk.bg}>
+        <ContinueBlock tk={tk} isMobile={isMobile} isTablet={isTablet} isDesktop={isDesktop} sec={SEC} ruled={lastBg !== tk.surface} cards={[
+          { label: "Observe", body: "The land up close.", href: "/explore/nature/observe" },
+          { label: "The Cabin", body: "Where calm has a place.", href: "/cabin" },
+        ]} />
       </Section>
     </div>
   );
