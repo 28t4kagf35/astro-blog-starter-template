@@ -9,12 +9,12 @@
       "basedOn": "1.0.0 (canon/navbar-v1)"
     },
     "navbar-next": {
-      "version": "2.0.0",
+      "version": "2.0.1",
       "status": "canon",
       "source": "this repo; canon Navbar v2, approved 2026-10-07",
-      "fingerprint": "fbd91024ed493e21905418c67e3c0f79dcfba46fe2df599551d3ef8d80ddff58",
+      "fingerprint": "76dd1c9fd37a87115d2e77cb0442f0514e164b9ccff34d15f7d004c6cb582dcf",
       "basedOn": "navbar 1.2.0 (draft)",
-      "canonTag": "canon/navbar-v2"
+      "canonTag": "canon/navbar-v2.1"
     }
   }
 }

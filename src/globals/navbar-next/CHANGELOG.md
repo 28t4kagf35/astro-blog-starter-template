@@ -1,5 +1,11 @@
 # navbar-next: changelog
 
+## 2.0.1 (canon fix: Navbar v2.1, approved 2026-10-08)
+
+- The red current-page marker is now drawn on items that are not links yet (Learn and
+  Experience), on both the desktop drawer and the mobile menu. Before, they lit up as
+  active but had no marker. Nothing else changes. Tag: `canon/navbar-v2.1`.
+
 ## 2.0.0 (canon: Navbar v2, approved 2026-10-07, supersedes navbar v1)
 
 Same code as 0.9.5, promoted to canon after review on desktop, mobile and

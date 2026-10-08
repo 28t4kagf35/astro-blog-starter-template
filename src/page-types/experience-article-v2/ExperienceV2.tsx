@@ -226,7 +226,7 @@ export function ExperienceV2({ content, isDark = true }: { content: ExperienceV2
         return [
           <div key={`${key}-${i}`} style={{ margin: "2.6rem 0", paddingLeft: isMobile ? "1.1rem" : "1.5rem", borderLeft: `2px solid ${tk.bq}` }}>
             {text.split("\n").filter(Boolean).map((line, j) => (
-              <p key={j} style={{ margin: j === 0 ? 0 : "0.8rem 0 0", fontFamily: FONT_SS4, fontVariationSettings: '"opsz" 16', fontStyle: "italic", fontWeight: 400, fontSize: lineSz, lineHeight: 1.55, color: tk.head }}>{line}</p>
+              <p key={j} style={{ margin: j === 0 ? 0 : "0.2rem 0 0", fontFamily: FONT_SS4, fontVariationSettings: '"opsz" 16', fontStyle: "italic", fontWeight: 400, fontSize: lineSz, lineHeight: 1.45, color: tk.head }}>{line}</p>
             ))}
           </div>,
         ];

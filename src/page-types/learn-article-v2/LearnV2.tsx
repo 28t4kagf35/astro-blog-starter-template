@@ -120,18 +120,22 @@ export function LearnV2({ content, isDark = true }: { content: LearnV2Content; i
   const minutes = Math.max(1, Math.round(words / 200));
 
   // Group consecutive short lines into one quiet sequence; everything else keeps its order.
-  type Item = { kind: "heading" | "break" | "lines" | "paragraph"; text?: string; lines?: string[] };
+  type Item = { kind: "heading" | "break" | "lines" | "paragraph"; text?: string; lines?: { t: string; fresh: boolean }[] };
   const items: Item[] = [];
+  const pushLines = (parts: string[]) => {
+    const last = items[items.length - 1];
+    const mapped = parts.map((t, k) => ({ t, fresh: k === 0 }));
+    if (last && last.kind === "lines") last.lines!.push(...mapped); else items.push({ kind: "lines", lines: mapped });
+  };
   for (const b of content.body) {
     if (b.kind === "break") { items.push({ kind: "break" }); continue; }
     if (b.kind === "heading") { items.push({ kind: "heading", text: b.text ?? "" }); continue; }
     const t = b.text ?? "";
-    if (isShortLine(t)) {
-      const last = items[items.length - 1];
-      if (last && last.kind === "lines") last.lines!.push(t); else items.push({ kind: "lines", lines: [t] });
-    } else {
-      items.push({ kind: "paragraph", text: t });
-    }
+    // One paragraph made of a few short lines (a line break inside it) is one quiet thought: set it tight.
+    const parts = t.split("\n").map((x) => x.trim()).filter(Boolean);
+    if (parts.length > 1 && parts.every((l) => l.length <= 80)) { pushLines(parts); continue; }
+    if (isShortLine(t)) { pushLines([t]); continue; }
+    items.push({ kind: "paragraph", text: t });
   }
 
   const firstHeading = items.findIndex((it) => it.kind === "heading");
@@ -168,7 +172,7 @@ export function LearnV2({ content, isDark = true }: { content: LearnV2Content; i
                 return (
                   <div key={i} style={{ margin: "2.6rem 0", paddingLeft: isMobile ? "1.1rem" : "1.5rem", borderLeft: `2px solid ${tk.bq}` }}>
                     {it.lines!.map((line, j) => (
-                      <p key={j} style={{ margin: j === 0 ? 0 : "0.8rem 0 0", fontFamily: FONT_SS4, fontVariationSettings: '"opsz" 16', fontStyle: "italic", fontWeight: 400, fontSize: lineSz, lineHeight: 1.55, color: tk.head }}>{line}</p>
+                      <p key={j} style={{ margin: j === 0 ? 0 : line.fresh ? "0.8rem 0 0" : "0.2rem 0 0", fontFamily: FONT_SS4, fontVariationSettings: '"opsz" 16', fontStyle: "italic", fontWeight: 400, fontSize: lineSz, lineHeight: 1.45, color: tk.head }}>{line.t}</p>
                     ))}
                   </div>
                 );

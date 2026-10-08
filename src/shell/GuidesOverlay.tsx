@@ -2,23 +2,20 @@
  * GuidesOverlay: a working tool for the -v2 sandbox pages (never shown to
  * visitors on other pages). Draws thin vertical lines over the page at the
  * standard column edges: 860 px reading column, 1200 px wide column, the canon
- * side gutters and the page centre. Switch on with ?guides in the address or
- * the G key; it stays on for the browser tab until switched off (G key, or
- * ?guides=0). It does not affect the layout.
+ * side gutters, the page centre, and the 600 px prose measure. On only while
+ * ?guides is in the address (?guides=0 or off switches it off); no memory.
+ * A small "guides" button in the corner switches it off. G toggles it on a keyboard.
+ * It does not affect the layout.
  */
 import { useEffect, useState } from "react";
 
-const KEY = "vw-guides";
-
-function read(): boolean {
+function fromUrl(): boolean {
   try {
-    const q = new URLSearchParams(window.location.search).get("guides");
-    if (q !== null) {
-      const on = q !== "0" && q !== "off";
-      try { sessionStorage.setItem(KEY, on ? "1" : "0"); } catch { /* storage may be blocked */ }
-      return on;
-    }
-    return sessionStorage.getItem(KEY) === "1";
+    // Forgiving: also matches a malformed address such as ?guides/?body=sleek.
+    const m = /[?&]guides(?:=([^&]*))?/.exec(window.location.search);
+    if (!m) return false;
+    const v = (m[1] ?? "").toLowerCase();
+    return v !== "0" && v !== "off" && v !== "false";
   } catch {
     return false;
   }
@@ -28,17 +25,13 @@ const COLORS = { read: "rgba(64,200,220,0.85)", wide: "rgba(230,90,200,0.85)", g
 
 export function GuidesOverlay({ eligible }: { eligible: boolean }) {
   const [on, setOn] = useState(false);
-  useEffect(() => { setOn(read()); }, []);
+  useEffect(() => { setOn(fromUrl()); }, []);
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key.toLowerCase() !== "g" || e.metaKey || e.ctrlKey || e.altKey) return;
       const t = e.target as HTMLElement | null;
       if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
-      setOn((v) => {
-        const next = !v;
-        try { sessionStorage.setItem(KEY, next ? "1" : "0"); } catch { /* ignore */ }
-        return next;
-      });
+      setOn((v) => !v);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
@@ -52,20 +45,29 @@ export function GuidesOverlay({ eligible }: { eligible: boolean }) {
   );
 
   return (
-    <div aria-hidden="true" style={{ position: "fixed", inset: 0, zIndex: 10000, pointerEvents: "none", overflow: "hidden" }}>
-      <style>{`.vw-g{--g:1.25rem}@media (min-width:600px){.vw-g{--g:1.4rem}}@media (min-width:1024px){.vw-g{--g:1rem}}`}</style>
-      <div className="vw-g" style={{ position: "absolute", inset: 0 }}>
-        {line("var(--g)", COLORS.gutter, "gutter", 0)}
-        {line("calc(100% - var(--g))", COLORS.gutter, "gutter", 1)}
-        {line("calc(50% - 430px)", COLORS.read, "860", 0)}
-        {line("calc(50% + 430px)", COLORS.read, "860", 1)}
-        {line("calc(50% - 600px)", COLORS.wide, "1200", 0)}
-        {line("calc(50% + 600px)", COLORS.wide, "1200", 1)}
-        {line("50%", COLORS.centre, "centre", 0)}
-        {/* TEMPORARY: prose measures under review (600). Remove when settled. */}
-        {line("calc(50% - 300px)", COLORS.prose, "600", 0)}
-        {line("calc(50% + 300px)", COLORS.prose, "600", 1)}
+    <>
+      <div aria-hidden="true" style={{ position: "fixed", inset: 0, zIndex: 10000, pointerEvents: "none", overflow: "hidden" }}>
+        <style>{`.vw-g{--g:1.25rem}@media (min-width:600px){.vw-g{--g:1.4rem}}@media (min-width:1024px){.vw-g{--g:1rem}}`}</style>
+        <div className="vw-g" style={{ position: "absolute", inset: 0 }}>
+          {line("var(--g)", COLORS.gutter, "gutter", 0)}
+          {line("calc(100% - var(--g))", COLORS.gutter, "gutter", 1)}
+          {line("calc(50% - 430px)", COLORS.read, "860", 0)}
+          {line("calc(50% + 430px)", COLORS.read, "860", 1)}
+          {line("calc(50% - 600px)", COLORS.wide, "1200", 0)}
+          {line("calc(50% + 600px)", COLORS.wide, "1200", 1)}
+          {line("50%", COLORS.centre, "centre", 0)}
+          {/* TEMPORARY: the 600 prose measure under review. Remove when settled. */}
+          {line("calc(50% - 300px)", COLORS.prose, "600", 0)}
+          {line("calc(50% + 300px)", COLORS.prose, "600", 1)}
+        </div>
       </div>
-    </div>
+      <button
+        type="button"
+        onClick={() => setOn(false)}
+        style={{ position: "fixed", right: 12, bottom: 12, zIndex: 10001, fontFamily: "'IBM Plex Mono', monospace", fontSize: "0.62rem", letterSpacing: "0.1em", textTransform: "uppercase", color: "#EDE9E2", background: "rgba(0,0,0,0.7)", border: "1px solid rgba(237,233,226,0.35)", padding: "6px 10px", cursor: "pointer" }}
+      >
+        guides ✕
+      </button>
+    </>
   );
 }

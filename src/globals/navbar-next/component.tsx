@@ -225,7 +225,7 @@ export function SiteNavNext({
          onMouseEnter={() => setHoverKey(key)} onMouseLeave={() => setHoverKey("EXPLORE")}><Mark on={active} size={small ? 5 : 6} />{item.label}</a>
     ) : (
       <span key={item.label} style={style} title="Coming"
-        onMouseEnter={() => setHoverKey(key)} onMouseLeave={() => setHoverKey("EXPLORE")}>{item.label}</span>
+        onMouseEnter={() => setHoverKey(key)} onMouseLeave={() => setHoverKey("EXPLORE")}><Mark on={active} size={small ? 5 : 6} />{item.label}</span>
     );
   };
 
@@ -250,7 +250,7 @@ export function SiteNavNext({
         <Mark on={active} size={level === 1 ? 6 : 5} />{item.label}
       </a>
     ) : (
-      <span key={item.label} style={style} onMouseEnter={enter} onMouseLeave={leave} {...touch}>{item.label}</span>
+      <span key={item.label} style={style} onMouseEnter={enter} onMouseLeave={leave} {...touch}><Mark on={active} size={level === 1 ? 6 : 5} />{item.label}</span>
     );
   };
 

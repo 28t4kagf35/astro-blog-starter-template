@@ -9,6 +9,7 @@ version goes through the same gate again.
 |---|---|---|---|
 | Navbar | v1 (superseded by v2) | `canon/navbar-v1` | 2026-10-01 19:29 (+02:00) |
 | Navbar | v2 | `canon/navbar-v2` | 2026-10-07 16:37 (+02:00) |
+| Navbar | v2.1 (fix to v2) | `canon/navbar-v2.1` | 2026-10-08 15:56 (+02:00) |
 
 ## Navbar v1
 
@@ -59,3 +60,10 @@ preview (desktop, mobile, tablet portrait). Supersedes Navbar v1.
   `src/globals/navbar/` unused, apart from `behavior.ts`, which the shell still uses.
 
 **Where it applies:** every page, mounted only by the shell.
+
+## Navbar v2.1 (fix to v2)
+
+**Approved:** 2026-10-08, by the owner, with a GO. Navbar v2 stays canon; this is
+a fix. The red current-page marker is now drawn on items that are not links yet
+(Learn, Experience), on the desktop drawer and the mobile menu. Before, those
+items lit up as active but had no marker. Locked as navbar-next 2.0.1.
