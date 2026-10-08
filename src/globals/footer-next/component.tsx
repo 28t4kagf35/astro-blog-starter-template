@@ -1,18 +1,20 @@
 /**
  * SiteFooterNext: first footer (draft). Dark only for now.
- * Shown only on the -v2 sandbox pages. One quiet closing room: a short red mark,
- * the wordmark, one line of curiosity, the places to wander next, and a small
- * last row. Link text uses the body and head colours (never the faint grey).
+ * Shown only on the -v2 sandbox pages. A darker closing room than the page:
+ * the wordmark (a link home), the places to wander next, a last row, and a faint
+ * map of Vestland with Voss picked out lighter. No red. Links use the same
+ * behaviour as the waterfall detail pages (dim underline that fades on hover).
  */
 import type { CSSProperties } from "react";
+import { MAP_W, MAP_H, MAP_REST, MAP_VOSS } from "./map";
 
-const FONT_SS4 = "'Source Serif 4', Georgia, serif";
 const FONT_LBL = "'Raleway', system-ui, sans-serif";
 const FONT_MONO = "'IBM Plex Mono', monospace";
 
 const DARK = {
-  bg: "#1A1714", surface: "#222120", rule: "#2C2A28", muted: "#6E6A65",
-  body: "#C4BEB4", head: "#EDE9E2", bq: "#7A8B74", accent: "#D43535",
+  bg: "#131210", rule: "#24211F", body: "#C4BEB4", head: "#EDE9E2",
+  underline: "#4D4A47",           // same as the waterfall detail links
+  mapLand: "#221F1C", mapEdge: "#131210", mapVoss: "#3A352F",
 } as const;
 
 type Wander = { label: string; href?: string };
@@ -28,66 +30,56 @@ const WANDER: Wander[] = [
   { label: "Activities", href: "/activities" },
 ];
 
-// Placeholder line, to be rewritten by the owner.
-const CURIOSITY = "Most of the valley is found by walking a little further.";
-
 // Responsive layout in CSS so it is right on the first paint.
 const CSS = `
-.fn-wrap{background:${DARK.surface};border-top:1px solid ${DARK.rule};-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
-.fn-in{box-sizing:border-box;margin:0 auto;max-width:calc(1200px + 2rem);padding:3.2rem 1.25rem 2.2rem}
-.fn-top{display:grid;grid-template-columns:1fr;gap:1.8rem}
-.fn-links{display:grid;grid-template-columns:1fr 1fr;gap:.2rem 1.5rem;margin:2.6rem 0 0;padding:0;list-style:none}
+.fn-wrap{position:relative;overflow:hidden;background:${DARK.bg};-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+.fn-map{position:absolute;right:-6%;bottom:-8%;height:112%;width:auto;aspect-ratio:${MAP_W}/${MAP_H};pointer-events:none;opacity:.9}
+.fn-in{position:relative;box-sizing:border-box;margin:0 auto;max-width:calc(1200px + 2rem);padding:3.4rem 1.25rem 2.2rem}
+.fn-word{display:inline-block;font-family:${FONT_LBL};font-size:.84rem;font-weight:300;text-transform:uppercase;letter-spacing:.30em;line-height:1;color:${DARK.head};text-decoration:none;transition:color 200ms ease}
+.fn-word:hover,.fn-word:focus-visible{color:${DARK.body}}
+.fn-links{display:grid;grid-template-columns:1fr 1fr;gap:.1rem 1.5rem;margin:2.2rem 0 0;padding:0;list-style:none;max-width:420px}
 .fn-links li{margin:0}
-.fn-a{display:inline-block;padding:.7rem 0;font-family:${FONT_LBL};font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;line-height:1.2;color:${DARK.head};text-decoration:none;border-bottom:1px solid transparent;transition:border-color 200ms ease-out}
-.fn-a:hover,.fn-a:focus-visible{border-bottom-color:${DARK.accent}}
+.fn-a{display:inline-block;padding:.7rem 0;font-family:${FONT_LBL};font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;line-height:1.2;color:${DARK.body};text-decoration:underline;text-underline-offset:3px;text-decoration-color:${DARK.underline};transition:text-decoration-color .2s ease}
+.fn-a:hover,.fn-a:focus-visible{text-decoration-color:transparent}
 .fn-t{display:inline-block;padding:.7rem 0;font-family:${FONT_LBL};font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;line-height:1.2;color:${DARK.body}}
-.fn-bottom{display:flex;flex-direction:column;gap:.9rem;margin-top:2.4rem;padding-top:1.4rem;border-top:1px solid ${DARK.rule}}
+.fn-bottom{display:flex;flex-direction:column;gap:.5rem;margin-top:2.4rem;padding-top:1.4rem;border-top:1px solid ${DARK.rule}}
 .fn-mono{font-family:${FONT_MONO};font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;line-height:1.5;color:${DARK.body}}
-.fn-book{font-family:${FONT_LBL};font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:${DARK.head};text-decoration:none;border-bottom:1px solid ${DARK.body};padding-bottom:2px;align-self:flex-start}
-.fn-book:hover,.fn-book:focus-visible{border-bottom-color:${DARK.accent}}
 @media (min-width:600px){
   .fn-in{padding:3.8rem 1.4rem 2.4rem}
-  .fn-links{grid-template-columns:repeat(3,auto);justify-content:start;gap:.2rem 2.4rem}
+  .fn-links{grid-template-columns:repeat(3,auto);justify-content:start;gap:.1rem 2.4rem;max-width:none}
+  .fn-map{right:-2%;height:120%}
 }
 @media (min-width:1024px){
   .fn-in{padding:4.4rem 1rem 2.6rem}
-  .fn-top{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:4rem;align-items:start}
-  .fn-links{margin:0;grid-template-columns:repeat(2,auto);gap:.1rem 3rem;justify-content:end}
+  .fn-links{grid-template-columns:repeat(2,auto);gap:.1rem 3rem;max-width:none}
   .fn-bottom{flex-direction:row;justify-content:space-between;align-items:baseline;margin-top:3.4rem}
-  .fn-book{align-self:auto}
+  .fn-map{right:calc(50% - 600px - 1rem);height:125%;bottom:-12%}
 }
 `;
 
 export function SiteFooterNext() {
-  const wordmark: CSSProperties = {
-    fontFamily: FONT_LBL, fontSize: "0.84rem", fontWeight: 300, textTransform: "uppercase",
-    letterSpacing: "0.30em", color: DARK.head, lineHeight: 1, margin: "0 0 1.4rem",
-  };
+  const mapStyle: CSSProperties = {};
   return (
     <footer className="fn-wrap" data-site-footer>
       <style>{CSS}</style>
+      <svg className="fn-map" style={mapStyle} viewBox={`0 0 ${MAP_W} ${MAP_H}`} aria-hidden="true" focusable="false">
+        <path d={MAP_REST} fill={DARK.mapLand} stroke={DARK.mapEdge} strokeWidth="0.8" strokeLinejoin="round" />
+        <path d={MAP_VOSS} fill={DARK.mapVoss} stroke={DARK.mapEdge} strokeWidth="0.8" strokeLinejoin="round" />
+      </svg>
       <div className="fn-in">
-        <div style={{ width: 28, height: 2, background: DARK.accent, marginBottom: "2rem" }} />
-        <div className="fn-top">
-          <div>
-            <p style={wordmark}>Voss Waterfalls</p>
-            <div style={{ borderLeft: `2px solid ${DARK.bq}`, paddingLeft: "1.2rem", maxWidth: 460 }}>
-              <p style={{ margin: 0, fontFamily: FONT_SS4, fontVariationSettings: '"opsz" 16', fontStyle: "italic", fontWeight: 400, fontSize: "1.2rem", lineHeight: 1.45, color: DARK.head }}>{CURIOSITY}</p>
-            </div>
-          </div>
-          <nav aria-label="Footer">
-            <ul className="fn-links">
-              {WANDER.map((w) => (
-                <li key={w.label}>
-                  {w.href ? <a className="fn-a" href={w.href}>{w.label}</a> : <span className="fn-t">{w.label}</span>}
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
+        <a className="fn-word" href="/">Voss Waterfalls</a>
+        <nav aria-label="Footer">
+          <ul className="fn-links">
+            {WANDER.map((w) => (
+              <li key={w.label}>
+                {w.href ? <a className="fn-a" href={w.href}>{w.label}</a> : <span className="fn-t">{w.label}</span>}
+              </li>
+            ))}
+          </ul>
+        </nav>
         <div className="fn-bottom">
           <span className="fn-mono">Voss, Norway · © {new Date().getFullYear()}</span>
-          <a className="fn-book" href="/cabin">Book the cabin</a>
+          <a className="fn-a" href="/cabin">Book the cabin</a>
         </div>
       </div>
     </footer>

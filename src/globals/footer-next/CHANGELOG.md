@@ -1,5 +1,15 @@
 # footer-next: changelog
 
+## 0.2.0 (draft, builds on 0.1.0)
+
+- Red line and the placeholder quote removed. No red in the footer for now.
+- Background is darker than the page (like the mobile menu's register), not lighter.
+- Links use the waterfall detail behaviour: dim underline at 3px offset that fades on hover.
+- The wordmark is a link to the home page.
+- A faint map of Vestland sits behind the footer with Voss picked out lighter, in warm greys.
+  Drawn from Kartverket municipality data (see map.ts). Decorative, hidden from screen readers.
+- Link list kept as a calm placeholder until the cluster cards come.
+
 ## 0.1.0 (draft, first version)
 
 - New footer, dark only, shown on the -v2 pages only. A short red mark, the wordmark,
