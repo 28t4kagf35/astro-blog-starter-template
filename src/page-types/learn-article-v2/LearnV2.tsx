@@ -1,4 +1,6 @@
 // V2 WORKING COPY of ../learn-article/LearnArticle.tsx, for side-by-side comparison at /learn-v2. Design changes go here only.
+// Pass 5 ("looking closer"): same family as Experience v2 (compact hero, lede, centred 600px sleek body, sub-quotes), but calmer:
+// no bands, no chapter numbers, a reading-time line, thin rules between sections, "Keep looking" closing.
 /**
  * Page type: Learn article (Sanity type `learnArticle`).
  * Ported from the design export below; its built-in article is replaced by the
@@ -17,7 +19,8 @@
 
 import { PLACEMENT } from "../../site/placement";
 import { Hero } from "../../site/Hero";
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
+import { useArticleFonts, useBodyVariant, bodyFontStyle, NextCard } from "../../site/article";
 
 // ── Brand constants (inlined) ─────────────────────────────────────────────────
 const FONT_SS4  = "'Source Serif 4', Georgia, serif";
@@ -69,7 +72,6 @@ export interface LearnV2Content {
 // lines by hand for its one article).
 const isShortLine = (t: string) => t.length <= 60 && !t.includes("\n");
 
-const PROSE_MAX = 680;
 
 // ── Breakpoint hook ───────────────────────────────────────────────────────────
 function useBreakpoint() {
@@ -95,134 +97,95 @@ const heroSrcSet = (src: string): string | undefined =>
   src.endsWith("-1600.webp") ? HERO_WIDTHS.map((w) => `${src.replace("-1600.webp", `-${w}.webp`)} ${w}w`).join(", ") : undefined;
 
 export function LearnV2({ content, isDark = true }: { content: LearnV2Content; isDark?: boolean }) {
-  // Font loading — display=block (FONT-6)
-  useEffect(() => {
-    const id = "brand-fonts-learn";
-    if (document.getElementById(id)) return;
-    const link = document.createElement("link");
-    link.id   = id;
-    link.rel  = "stylesheet";
-    link.href =
-      "https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;1,8..60,300" +
-      "&family=Spectral:ital,opsz,wght@0,7..18,300;1,7..18,300" +
-      "&family=IBM+Plex+Mono:wght@400" +
-      "&family=Raleway:wght@300;400" +
-      "&display=block";
-    document.head.appendChild(link);
-  }, []);
+  useArticleFonts("brand-fonts-learn-v2");
+  const bodyVariant = useBodyVariant();
 
-  const bp       = useBreakpoint();
-  const isMobile = bp === "mobile";
-  const isTablet = bp === "tablet";
+  const bp        = useBreakpoint();
+  const isMobile  = bp === "mobile";
+  const isTablet  = bp === "tablet";
+  const isDesktop = bp === "desktop";
 
-  // Pass 2/3: canon gutters and section spacing
-  const PAD_H  = isMobile ? "1.25rem" : isTablet ? "1.4rem" : "1rem";
-  const SEC = isMobile ? "3.5rem" : isTablet ? "4.5rem" : "5.5rem";
-  const lblSz  = isMobile ? "0.82rem" : isTablet ? "0.94rem" : "1.06rem";
-  const h1Sz   = isMobile ? "1.5rem"  : isTablet ? "1.9rem"  : "2.4rem";
-  const heroBot = SEC;
-  const h2Sz   = isMobile ? "1.4rem"  : isTablet ? "1.7rem"  : "2rem";
-  const bodySz = isMobile ? "0.95rem" : isTablet ? "1.0rem"  : "1.05rem";
-  const shortSz = isMobile ? "0.95rem" : isTablet ? "1.05rem" : "1.1rem";
-  const bqSz   = isMobile ? "1.0rem"  : isTablet ? "1.1rem"  : "1.2rem";
-
-  const [titleVisible, setTitleVisible] = useState(false);
-  const [quoteVisible, setQuoteVisible] = useState(false);
-  const articleRef = useRef<HTMLDivElement>(null);
+  const PAD_H = isMobile ? "1.25rem" : isTablet ? "1.4rem" : "1rem";
+  const SEC   = isMobile ? "3.5rem" : isTablet ? "4.5rem" : "5.5rem";
+  const bodySz  = isMobile ? "1.05rem" : isTablet ? "1.1rem" : "1.15rem";
+  const lineSz  = isMobile ? "1.12rem" : isTablet ? "1.2rem" : "1.25rem";
+  const ledeSz  = isMobile ? "1.3rem"  : isTablet ? "1.45rem" : "1.6rem";
+  const headSz  = isMobile ? "1.35rem" : isTablet ? "1.6rem" : "1.85rem";
+  const bodyMax = isMobile ? "100%" : "600px";
   const tk = isDark ? DARK : LIGHT;
+  const bodyFont = bodyFontStyle(bodyVariant, bodySz);
 
-  useEffect(() => {
-    const t1 = setTimeout(() => setTitleVisible(true), 200);
-    const t2 = setTimeout(() => setQuoteVisible(true), 800);
-    return () => { clearTimeout(t1); clearTimeout(t2); };
-  }, []);
+  // Reading time from the text itself (about 200 words a minute).
+  const words = [content.subtitle ?? "", ...content.body.map((b) => b.text ?? "")].join(" ").split(/\s+/).filter(Boolean).length;
+  const minutes = Math.max(1, Math.round(words / 200));
+
+  // Group consecutive short lines into one quiet sequence; everything else keeps its order.
+  type Item = { kind: "heading" | "break" | "lines" | "paragraph"; text?: string; lines?: string[] };
+  const items: Item[] = [];
+  for (const b of content.body) {
+    if (b.kind === "break") { items.push({ kind: "break" }); continue; }
+    if (b.kind === "heading") { items.push({ kind: "heading", text: b.text ?? "" }); continue; }
+    const t = b.text ?? "";
+    if (isShortLine(t)) {
+      const last = items[items.length - 1];
+      if (last && last.kind === "lines") last.lines!.push(t); else items.push({ kind: "lines", lines: [t] });
+    } else {
+      items.push({ kind: "paragraph", text: t });
+    }
+  }
+
+  const firstHeading = items.findIndex((it) => it.kind === "heading");
 
   return (
-    <div data-scroll="root" style={{ ...SS4_SMOOTHING,
-      background: tk.bg,
-      minHeight:  "100vh",
-      overflowY:  "auto",
-      overflowX:  "hidden",
-      transition: "background 0.35s ease",
-    }}>
+    <div data-scroll="root" style={{ ...SS4_SMOOTHING, background: tk.bg, minHeight: "100vh", overflowX: "hidden", transition: "background 0.35s ease" }}>
 
-      {/* ── HERO — shared with the other v2 pages ── */}
-      <Hero image={content.heroImage} srcSet={heroSrcSet(content.heroImage)} position="center" alt={content.title} title={content.title} placement={PLACEMENT.learn} isMobile={isMobile} isTablet={isTablet} isDesktop={!isMobile && !isTablet} />
+      {/* ── HERO — shared with the other v2 pages, a calmer height for an article ── */}
+      <Hero compact image={content.heroImage} srcSet={heroSrcSet(content.heroImage)} position="center" alt={content.title} title={content.title} placement={PLACEMENT.learn} isMobile={isMobile} isTablet={isTablet} isDesktop={isDesktop} />
 
-      {/* ── ARTICLE BODY ── */}
-      <div
-        ref={articleRef}
-        style={{
-          maxWidth:     PROSE_MAX,
-          margin:       "0 auto",
-          paddingTop:   SEC,
-          paddingLeft:  PAD_H,
-          paddingRight: PAD_H,
-        }}
-      >
-{content.subtitle && (
-        <h2 style={{
-          margin:                "0 0 44px",
-          fontFamily:            FONT_SS4,
-          fontSize:              h2Sz,
-          fontWeight:            300,
-          fontStyle:             "italic",
-          fontVariationSettings: SS4_OPSZ_DISPLAY,
-          color:                 tk.head,
-          lineHeight:            1.2,
-          letterSpacing:         "-0.01em",
-        }}>
-          {content.subtitle}
-        </h2>
-        )}
+      {/* ── ARTICLE: one calm page, a centred 600px column on desktop ── */}
+      <div data-bb-field="bodyText" style={{ padding: `${isMobile ? "2.2rem" : isTablet ? "2.6rem" : "2.8rem"} 0 ${SEC}` }}>
+        <div style={{ maxWidth: isDesktop ? "calc(600px + 2rem)" : "none", margin: "0 auto", padding: `0 ${PAD_H}`, boxSizing: "border-box" }}>
 
-        {content.body.map((block, i) => {
-          if (block.kind === "break") {
-            return <div key={i} style={{ width: 48, height: 1, background: tk.rule, margin: "44px 0" }} />;
-          }
-          const text = block.text ?? "";
-          if (block.kind === "heading") {
-            return (
-              <h3 key={i} style={{
-                margin:                "44px 0 22px",
-                fontFamily:            FONT_SS4,
-                fontSize:              bqSz,
-                fontWeight:            300,
-                fontStyle:             "italic",
-                fontVariationSettings: SS4_OPSZ_DISPLAY,
-                color:                 tk.head,
-                lineHeight:            1.3,
-              }}>
-                {text}
-              </h3>
-            );
-          }
+          {content.subtitle && (
+            <div style={{ marginBottom: isMobile ? "2.4rem" : "3.2rem" }}>
+              <div style={{ width: 28, height: 2, background: tk.accent, marginBottom: "1.4rem" }} />
+              <p style={{ margin: 0, fontFamily: FONT_SS4, fontVariationSettings: '"opsz" 28', fontStyle: "italic", fontWeight: 300, fontSize: ledeSz, lineHeight: 1.45, letterSpacing: "-0.003em", color: tk.head }}>{content.subtitle}</p>
+              <p style={{ margin: "1.1rem 0 0", fontFamily: FONT_MONO, fontSize: "0.68rem", letterSpacing: "0.14em", textTransform: "uppercase", lineHeight: 1.5, color: tk.muted }}>{minutes} min read</p>
+            </div>
+          )}
 
-          const isShort     = isShortLine(text);
-          const nextBlock   = content.body[i + 1];
-          const nextIsShort = nextBlock?.kind === "paragraph" && isShortLine(nextBlock.text ?? "");
+          <div style={{ maxWidth: bodyMax }}>
+            {items.map((it, i) => {
+              if (it.kind === "break") return <div key={i} style={{ width: 48, height: 1, background: tk.rule, margin: "2.4rem 0" }} />;
+              if (it.kind === "heading") {
+                return (
+                  <div key={i} style={{ marginTop: i === firstHeading && i === 0 ? 0 : "3.6rem", paddingTop: i === 0 ? 0 : "2.2rem", borderTop: i === 0 ? "none" : `1px solid ${tk.rule}`, marginBottom: "1.5rem" }}>
+                    <h2 style={{ margin: 0, fontFamily: FONT_SS4, fontVariationSettings: '"opsz" 36, "wght" 300', fontStyle: "italic", fontWeight: 300, fontSize: headSz, lineHeight: 1.2, letterSpacing: "-0.005em", color: tk.head }}>{it.text}</h2>
+                  </div>
+                );
+              }
+              if (it.kind === "lines") {
+                return (
+                  <div key={i} style={{ margin: "2.6rem 0", paddingLeft: isMobile ? "1.1rem" : "1.5rem", borderLeft: `2px solid ${tk.bq}` }}>
+                    {it.lines!.map((line, j) => (
+                      <p key={j} style={{ margin: j === 0 ? 0 : "0.8rem 0 0", fontFamily: FONT_SS4, fontVariationSettings: '"opsz" 16', fontStyle: "italic", fontWeight: 400, fontSize: lineSz, lineHeight: 1.55, color: tk.head }}>{line}</p>
+                    ))}
+                  </div>
+                );
+              }
+              return <p key={i} style={{ margin: "0 0 1.6rem", ...bodyFont, color: tk.body, whiteSpace: "pre-line" }}>{it.text}</p>;
+            })}
+          </div>
 
-          return (
-            <p key={i} style={{
-              margin:        `0 0 ${isShort && nextIsShort ? "4px" : "22px"}`,
-              fontFamily:    FONT_SPEC,
-              fontSize:      isShort ? shortSz : bodySz,
-              fontStyle:     isShort ? "italic" : "normal",
-              fontWeight:    300,
-              color:         isShort ? tk.head : tk.body,
-              lineHeight:    isShort ? 1.6 : 1.88,
-              letterSpacing: "0.01em",
-              whiteSpace:    "pre-line",
-            }}>
-              {text}
-            </p>
-          );
-        })}
-
-        <div style={{ width: "100%", height: 1, background: tk.rule, marginTop: SEC }} />
+          {/* ── Closing ── */}
+          <div style={{ marginTop: SEC, paddingTop: "2.2rem", borderTop: `1px solid ${tk.rule}` }}>
+            <p style={{ margin: "0 0 1.2rem", fontFamily: FONT_LBL, fontSize: "0.76rem", letterSpacing: "0.14em", textTransform: "uppercase", lineHeight: 1.6, color: tk.muted }}>Keep looking</p>
+            <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: "1rem" }}>
+              {["Observe · see it closer", "Experience · go and feel it"].map((label, i) => <NextCard key={i} label={label} tk={tk} bg={tk.bg} />)}
+            </div>
+          </div>
+        </div>
       </div>
-
-      <div style={{ height: SEC }} />
     </div>
   );
 }
