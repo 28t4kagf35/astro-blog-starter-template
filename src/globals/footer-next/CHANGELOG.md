@@ -1,5 +1,10 @@
 # footer-next: changelog
 
+## 0.5.10 (draft, builds on 0.5.9)
+
+- The Vf mark sits on the right on every screen size, with its bottom edge level with the
+  "Voss, Norway · © 2026" line (the row no longer stacks on phones).
+
 ## 0.5.9 (draft, builds on 0.5.8)
 
 - Fix: on phones the Vf mark was stretched across the whole row (a column layout stretches

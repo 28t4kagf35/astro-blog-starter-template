@@ -34,13 +34,13 @@ const CSS = `
 .fn-in{position:relative;box-sizing:border-box;margin:0 auto;max-width:calc(1200px + 2rem);padding:5rem 1.25rem 2.2rem}
 .fn-word{display:inline-block;font-family:${FONT_LBL};font-size:.84rem;font-weight:300;text-transform:uppercase;letter-spacing:.30em;line-height:1;color:${DARK.head};text-decoration:none;transition:color 200ms ease}
 .fn-word:hover,.fn-word:focus-visible{color:${DARK.body}}
-.fn-vf{display:block;align-self:flex-start;flex:none;height:56px;width:auto;max-width:none;opacity:.45}
+.fn-vf{display:block;flex:none;height:56px;width:auto;max-width:none;opacity:.45}
 .fn-links{display:grid;grid-template-columns:1fr 1fr;gap:.1rem 1.5rem;margin:1.8rem 0 0;padding:0;list-style:none;max-width:420px}
 .fn-links li{margin:0}
 .fn-a{display:inline-block;padding:.7rem 0;font-family:${FONT_LBL};font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;line-height:1.2;color:${DARK.body};text-decoration:underline;text-underline-offset:3px;text-decoration-color:${DARK.underline};transition:text-decoration-color .2s ease}
 .fn-a:hover,.fn-a:focus-visible{text-decoration-color:transparent}
 .fn-t{display:inline-block;padding:.7rem 0;font-family:${FONT_LBL};font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;line-height:1.2;color:${DARK.body}}
-.fn-bottom{display:flex;flex-direction:column;gap:.5rem;margin-top:2.4rem;padding-top:1.4rem;border-top:1px solid ${DARK.rule}}
+.fn-bottom{display:flex;flex-direction:row;justify-content:space-between;align-items:flex-end;gap:1rem;margin-top:2.4rem;padding-top:1.4rem;border-top:1px solid ${DARK.rule}}
 .fn-mono{font-family:${FONT_MONO};font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;line-height:1.5;color:${DARK.body}}
 @media (min-width:600px){
   .fn-in{padding:6rem 1.4rem 2.4rem}
@@ -50,7 +50,7 @@ const CSS = `
 @media (min-width:1024px){
   .fn-in{padding:7rem 1rem 2.6rem}
   .fn-links{grid-template-columns:repeat(2,auto);gap:.1rem 3rem;max-width:none}
-  .fn-bottom{flex-direction:row;justify-content:space-between;align-items:flex-end;margin-top:3.4rem}
+  .fn-bottom{margin-top:3.4rem}
   .fn-map{right:calc(50% - 600px - 1rem);height:125%;bottom:-12%}
 }
 `;
