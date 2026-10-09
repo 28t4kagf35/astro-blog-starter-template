@@ -1,5 +1,12 @@
 # footer-next: changelog
 
+## 1.0.16 (candidate: Footer v1.1, awaiting the owner's approval)
+
+- Light vignette back to a straight (linear) fade, no S-curve; the easing option stays in the code
+  (`vigEase`), off in both modes.
+- Light oval 20% larger (radius 50% to 60% of the footer, per-mode `vigR`; dark stays 50%), the clear
+  middle still ending at 58% of the radius, and a lighter dark end: edge 0.135 to 0.11.
+
 ## 1.0.15 (candidate: Footer v1.1, awaiting the owner's approval)
 
 - Light vignette: a longer, smoother fade. It starts earlier (clear to 58% of the radius, was 72%)
