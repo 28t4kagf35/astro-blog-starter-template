@@ -1,5 +1,11 @@
 # footer-next: changelog
 
+## 1.0.6 (candidate: Footer v1.1, awaiting the owner's approval)
+
+- Vignette is now radial: one oval, clear in the middle 60%, shading to the edge on all four sides,
+  the top included (1.0.5 had straight fades on the left, right and bottom only). Strength as before
+  (dark 0.36, light 0.20); the corners get the full strength.
+
 ## 1.0.5 (candidate: Footer v1.1, awaiting the owner's approval)
 
 - Vignette the other way: a larger clear centre, the shade hugging the edges. Sides fade over 20% of

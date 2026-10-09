@@ -47,7 +47,7 @@ const WANDER: Wander[] = [
 const CSS = `
 .fn-wrap{position:relative;overflow:hidden;background:var(--fn-bg);transition:background .35s ease;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 .fn-map{position:absolute;right:-6%;bottom:-8%;height:112%;width:auto;aspect-ratio:${MAP_W}/${MAP_H};pointer-events:none;opacity:.85}
-.fn-vig{position:absolute;inset:0;pointer-events:none;background:linear-gradient(to right,var(--fn-vig),transparent 20%,transparent 80%,var(--fn-vig)),linear-gradient(to top,var(--fn-vig),transparent 26%)}
+.fn-vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse closest-side at 50% 50%,transparent 60%,var(--fn-vig) 100%)}
 .fn-in{position:relative;box-sizing:border-box;margin:0 auto;max-width:calc(1200px + 2rem);padding:5rem 1.25rem 2.2rem}
 .fn-word{display:inline-block;font-family:${FONT_LBL};font-size:.84rem;font-weight:300;text-transform:uppercase;letter-spacing:.30em;line-height:1;color:var(--fn-head);text-decoration:none;transition:color 200ms ease}
 .fn-word:hover,.fn-word:focus-visible{color:var(--fn-body)}
