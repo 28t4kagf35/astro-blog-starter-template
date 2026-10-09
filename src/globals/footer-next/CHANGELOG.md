@@ -1,5 +1,10 @@
 # footer-next: changelog
 
+## 0.5.1 (draft, builds on 0.5.0)
+
+- Dimmer again: wordmark #8F8A82, links and small text #827E77 (about 4.6:1 on the footer
+  background, just above the 4.5:1 minimum; do not go lower), underline #2E2C28, Vf mark 30%.
+
 ## 0.5.0 (draft, builds on 0.4.0)
 
 - More room above the wordmark (desktop 7rem, tablet 6rem, phone 5rem top padding).
