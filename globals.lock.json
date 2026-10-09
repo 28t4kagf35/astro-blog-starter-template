@@ -10,10 +10,11 @@
     },
     "navbar-next": {
       "version": "2.0.2",
-      "status": "candidate",
-      "source": "this repo; candidate Navbar v2.2 (menu closes after the theme or audio toggle on mobile), builds on canon v2.1 (canon/navbar-v2.1); awaiting owner approval",
-      "fingerprint": "4b05c275beaaf2130aeed9bf1f97da68fec2ab5898b3c5d329fcf46ddef36e47",
-      "basedOn": "navbar 1.2.0 (draft)"
+      "status": "canon",
+      "source": "this repo; canon Navbar v2.2 (adds: mobile menu closes after the theme or audio toggle), approved 2026-10-09 20:42; builds on canon v2 and v2.1",
+      "fingerprint": "e0d5ae6ec5521e20e92af7bbe961476160ce091182a06dbc3a4e4705775ebfad",
+      "basedOn": "navbar 1.2.0 (draft)",
+      "canonTag": "canon/navbar-v2.2"
     },
     "footer-next": {
       "version": "0.6.4",

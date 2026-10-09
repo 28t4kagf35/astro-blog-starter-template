@@ -10,6 +10,7 @@ version goes through the same gate again.
 | Navbar | v1 (superseded by v2) | `canon/navbar-v1` | 2026-10-01 19:29 (+02:00) |
 | Navbar | v2 | `canon/navbar-v2` | 2026-10-07 16:37 (+02:00) |
 | Navbar | v2.1 (fix to v2) | `canon/navbar-v2.1` | 2026-10-08 15:56 (+02:00) |
+| Navbar | v2.2 (mobile menu closes after the toggles) | `canon/navbar-v2.2` | 2026-10-09 20:42 (+02:00) |
 
 ## Navbar v1
 
@@ -67,3 +68,11 @@ preview (desktop, mobile, tablet portrait). Supersedes Navbar v1.
 a fix. The red current-page marker is now drawn on items that are not links yet
 (Learn, Experience), on the desktop drawer and the mobile menu. Before, those
 items lit up as active but had no marker. Locked as navbar-next 2.0.1.
+
+## Navbar v2.2 (addition to v2)
+
+**Approved:** 2026-10-09, by the owner, with a GO, after trying it on a phone. Navbar v2
+stays canon; this is an addition. On the mobile menu (and tablet held upright), tapping the
+dark/light toggle or the audio toggle closes the menu after a 200 ms beat, with the usual
+0.48 s fade, returning the visitor to the page. Desktop is unchanged. Locked as
+navbar-next 2.0.2.

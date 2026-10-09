@@ -1,10 +1,10 @@
 # navbar-next: changelog
 
-## 2.0.2 (candidate: Navbar v2.2, awaiting the owner's approval)
+## 2.0.2 (canon: Navbar v2.2, approved 2026-10-09)
 
 - Mobile and tablet portrait: tapping the dark/light toggle or the audio toggle in the menu now
   closes the menu (after a 200 ms beat so the toggle visibly responds; then the usual 0.48 s fade),
-  returning the visitor to the page. Desktop is unchanged. Nothing else changes.
+  returning the visitor to the page. Desktop is unchanged. Nothing else changes. Tag: `canon/navbar-v2.2`.
 
 ## 2.0.1 (canon fix: Navbar v2.1, approved 2026-10-08)
 
