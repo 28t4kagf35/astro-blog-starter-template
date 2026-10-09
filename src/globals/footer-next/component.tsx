@@ -18,13 +18,13 @@ const PALETTES = {
     bg: "#131210", rule: "#24211F", body: "#726E68", head: "#7D7972",
     underline: "#2E2C28",           // same as the waterfall detail links
     mapLand: "#191715", mapEdge: "#131210", mapVoss: "#1E1C1A",
-    vig: "rgba(0,0,0,0.20)",
+    vig: "rgba(0,0,0,0.20)", vigm: "rgba(0,0,0,0.18)",
   },
   light: {
     bg: "#B9B6B0", rule: "#A3A09A", body: "#4A4742", head: "#3E3B36",
     underline: "#8F8C86",
     mapLand: "#AEABA5", mapEdge: "#B9B6B0", mapVoss: "#A5A29C",
-    vig: "rgba(45,40,34,0.11)",
+    vig: "rgba(45,40,34,0.11)", vigm: "rgba(45,40,34,0.11)",
   },
 } as const;
 
@@ -47,7 +47,7 @@ const WANDER: Wander[] = [
 const CSS = `
 .fn-wrap{position:relative;overflow:hidden;background:var(--fn-bg);transition:background .35s ease;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 .fn-map{position:absolute;right:-6%;bottom:-8%;height:112%;width:auto;aspect-ratio:${MAP_W}/${MAP_H};pointer-events:none;opacity:.85}
-.fn-vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse closest-side at 50% 50%,transparent 60%,var(--fn-vig) 100%)}
+.fn-vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 50% 50% at 50% 70%,transparent 60%,var(--fn-vigm) 100%)}
 .fn-in{position:relative;box-sizing:border-box;margin:0 auto;max-width:calc(1200px + 2rem);padding:5rem 1.25rem 2.2rem}
 .fn-word{display:inline-block;font-family:${FONT_LBL};font-size:.84rem;font-weight:300;text-transform:uppercase;letter-spacing:.30em;line-height:1;color:var(--fn-head);text-decoration:none;transition:color 200ms ease}
 .fn-word:hover,.fn-word:focus-visible{color:var(--fn-body)}
@@ -60,6 +60,7 @@ const CSS = `
 .fn-bottom{display:flex;flex-direction:row;justify-content:space-between;align-items:flex-end;gap:1rem;margin-top:2.4rem;padding-top:1.4rem}
 .fn-mono{font-family:${FONT_MONO};font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;line-height:1.5;color:var(--fn-body)}
 @media (min-width:600px){
+  .fn-vig{background:radial-gradient(ellipse closest-side at 50% 50%,transparent 60%,var(--fn-vig) 100%)}
   .fn-vf{height:56px}
   .fn-in{padding:6rem 1.4rem 2.4rem}
   .fn-links{grid-template-columns:repeat(3,auto);justify-content:start;gap:.1rem 2.4rem;max-width:none}

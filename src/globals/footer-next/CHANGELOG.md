@@ -1,5 +1,11 @@
 # footer-next: changelog
 
+## 1.0.9 (candidate: Footer v1.1, awaiting the owner's approval)
+
+- Vignette on phones (under 600px): strength 10% lower (dark 0.20 to 0.18) and the centre of the
+  radial 20% lower (50% to 70% of the footer height), radii unchanged. Tablet and desktop are exactly
+  as in 1.0.8. Light unchanged on every size (its phone value equals its normal value).
+
 ## 1.0.8 (candidate: Footer v1.1, awaiting the owner's approval)
 
 - Vignette strength down by a further 20%: dark 0.25 to 0.20, light 0.14 to 0.11. Shape unchanged.
