@@ -1,5 +1,9 @@
 # footer-next: changelog
 
+## 0.5.12 (draft, builds on 0.5.11)
+
+- Vf mark opacity set to 40% (was 32%), now that it is smaller on phones.
+
 ## 0.5.11 (draft, builds on 0.5.10)
 
 - Vf mark dimmed from 45% to 32% to sit with the type. On phones it is 20% smaller (45px high
