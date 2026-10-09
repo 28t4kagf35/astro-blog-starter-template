@@ -17,12 +17,14 @@ const PALETTES = {
   dark: {
     bg: "#131210", rule: "#24211F", body: "#726E68", head: "#7D7972",
     underline: "#2E2C28",           // same as the waterfall detail links
-    mapLand: "#1C1A18", mapEdge: "#131210", mapVoss: "#232120",
+    mapLand: "#191715", mapEdge: "#131210", mapVoss: "#1E1C1A",
+    vig: "rgba(0,0,0,0.30)",
   },
   light: {
     bg: "#B9B6B0", rule: "#A3A09A", body: "#4A4742", head: "#3E3B36",
     underline: "#8F8C86",
     mapLand: "#AEABA5", mapEdge: "#B9B6B0", mapVoss: "#A5A29C",
+    vig: "rgba(45,40,34,0.16)",
   },
 } as const;
 
@@ -45,6 +47,7 @@ const WANDER: Wander[] = [
 const CSS = `
 .fn-wrap{position:relative;overflow:hidden;background:var(--fn-bg);transition:background .35s ease;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 .fn-map{position:absolute;right:-6%;bottom:-8%;height:112%;width:auto;aspect-ratio:${MAP_W}/${MAP_H};pointer-events:none;opacity:.85}
+.fn-vig{position:absolute;inset:0;pointer-events:none;background:linear-gradient(to right,var(--fn-vig),transparent 28%,transparent 72%,var(--fn-vig)),linear-gradient(to top,var(--fn-vig),transparent 35%)}
 .fn-in{position:relative;box-sizing:border-box;margin:0 auto;max-width:calc(1200px + 2rem);padding:5rem 1.25rem 2.2rem}
 .fn-word{display:inline-block;font-family:${FONT_LBL};font-size:.84rem;font-weight:300;text-transform:uppercase;letter-spacing:.30em;line-height:1;color:var(--fn-head);text-decoration:none;transition:color 200ms ease}
 .fn-word:hover,.fn-word:focus-visible{color:var(--fn-body)}
@@ -80,6 +83,7 @@ export function SiteFooterNext({ isDark = true }: { isDark?: boolean }) {
         <path d={MAP_REST} style={{ fill: "var(--fn-mapLand)", stroke: "var(--fn-mapEdge)", transition: "fill .35s ease, stroke .35s ease" }} strokeWidth="0.8" strokeLinejoin="round" />
         <path d={MAP_VOSS} style={{ fill: "var(--fn-mapVoss)", stroke: "var(--fn-mapEdge)", transition: "fill .35s ease, stroke .35s ease" }} strokeWidth="0.8" strokeLinejoin="round" />
       </svg>
+      <div className="fn-vig" aria-hidden="true" />
       <div className="fn-in">
         <a className="fn-word" href="/">Voss Waterfalls</a>
         <nav aria-label="Footer">

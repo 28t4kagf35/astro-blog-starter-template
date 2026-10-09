@@ -1,5 +1,14 @@
 # footer-next: changelog
 
+## 1.0.3 (candidate: Footer v1.1, awaiting the owner's approval)
+
+- Dark map back to the canon v1 values (land #191715, Voss #1E1C1A); the 1.0.1/1.0.2 bump is undone
+  (the difference was phone lighting). Light unchanged.
+- Trial: a faint vignette, a soft shade on the left, right and bottom edges (never the top) that
+  pulls the eye to the centre. One removable layer (`.fn-vig`) over the map and under the type;
+  strength is the `vig` colour in each palette (dark 0.30 black, light 0.16 warm dark). To drop it,
+  delete the layer and the `.fn-vig` rule.
+
 ## 1.0.2 (candidate: Footer v1.1, awaiting the owner's approval)
 
 - Dark map bumped a few percent, by perceived lightness, so its steps match the light map's
