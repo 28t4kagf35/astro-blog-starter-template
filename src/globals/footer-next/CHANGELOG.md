@@ -1,5 +1,9 @@
 # footer-next: changelog
 
+## 0.5.8 (draft, builds on 0.5.7)
+
+- Contrast between Voss and the rest of the map reduced once more (Voss #34302B to #2D2A26; the rest stays #221F1C).
+
 ## 0.5.7 (draft, builds on 0.5.6)
 
 - Contrast between Voss and the rest of the map reduced (Voss #48433E to #34302B; the rest stays #221F1C).
