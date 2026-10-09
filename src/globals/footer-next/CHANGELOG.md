@@ -1,5 +1,10 @@
 # footer-next: changelog
 
+## 1.0.4 (candidate: Footer v1.1, awaiting the owner's approval)
+
+- Vignette stronger and reaching further in: dark 0.30 to 0.44, light 0.16 to 0.24; sides fade over
+  34% of the width (was 28%), bottom over 42% of the height (was 35%). Still not on the top.
+
 ## 1.0.3 (candidate: Footer v1.1, awaiting the owner's approval)
 
 - Dark map back to the canon v1 values (land #191715, Voss #1E1C1A); the 1.0.1/1.0.2 bump is undone
