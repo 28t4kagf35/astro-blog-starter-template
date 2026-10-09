@@ -30,7 +30,7 @@ const WANDER: Wander[] = [
 // Responsive layout in CSS so it is right on the first paint.
 const CSS = `
 .fn-wrap{position:relative;overflow:hidden;background:${DARK.bg};-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
-.fn-map{position:absolute;right:-6%;bottom:-8%;height:112%;width:auto;aspect-ratio:${MAP_W}/${MAP_H};pointer-events:none;opacity:.9}
+.fn-map{position:absolute;right:-6%;bottom:-8%;height:112%;width:auto;aspect-ratio:${MAP_W}/${MAP_H};pointer-events:none;opacity:.85}
 .fn-in{position:relative;box-sizing:border-box;margin:0 auto;max-width:calc(1200px + 2rem);padding:5rem 1.25rem 2.2rem}
 .fn-word{display:inline-block;font-family:${FONT_LBL};font-size:.84rem;font-weight:300;text-transform:uppercase;letter-spacing:.30em;line-height:1;color:${DARK.head};text-decoration:none;transition:color 200ms ease}
 .fn-word:hover,.fn-word:focus-visible{color:${DARK.body}}

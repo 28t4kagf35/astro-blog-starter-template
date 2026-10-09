@@ -1,5 +1,9 @@
 # footer-next: changelog
 
+## 0.5.5 (draft, builds on 0.5.4)
+
+- Map dimmed by five points (opacity 90% to 85%).
+
 ## 0.5.4 (draft, builds on 0.5.3)
 
 - Vf mark dimmed back down to 45%. Text unchanged.
