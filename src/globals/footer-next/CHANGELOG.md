@@ -1,5 +1,10 @@
 # footer-next: changelog
 
+## 1.0.14 (candidate: Footer v1.1, awaiting the owner's approval)
+
+- Light vignette: the dark end of the gradient 10% lighter (0.15 to 0.135 at the edge), so the fade
+  is gentler over its length. Dark unchanged.
+
 ## 1.0.13 (candidate: Footer v1.1, awaiting the owner's approval)
 
 - Light vignette: clear centre 20% wider (the shade starts at 72% of the radius, was 60%), so the
