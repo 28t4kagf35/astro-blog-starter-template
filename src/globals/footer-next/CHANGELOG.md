@@ -1,5 +1,10 @@
 # footer-next: changelog
 
+## 0.5.9 (draft, builds on 0.5.8)
+
+- Fix: on phones the Vf mark was stretched across the whole row (a column layout stretches
+  an image to full width). It now keeps its own proportions at every size.
+
 ## 0.5.8 (draft, builds on 0.5.7)
 
 - Contrast between Voss and the rest of the map reduced once more (Voss #34302B to #2D2A26; the rest stays #221F1C).
