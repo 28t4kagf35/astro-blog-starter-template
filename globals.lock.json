@@ -9,18 +9,17 @@
       "basedOn": "1.0.0 (canon/navbar-v1)"
     },
     "navbar-next": {
-      "version": "2.0.1",
-      "status": "canon",
-      "source": "this repo; canon Navbar v2, approved 2026-10-07",
-      "fingerprint": "76dd1c9fd37a87115d2e77cb0442f0514e164b9ccff34d15f7d004c6cb582dcf",
-      "basedOn": "navbar 1.2.0 (draft)",
-      "canonTag": "canon/navbar-v2.1"
+      "version": "2.0.2",
+      "status": "candidate",
+      "source": "this repo; candidate Navbar v2.2 (menu closes after the theme or audio toggle on mobile), builds on canon v2.1 (canon/navbar-v2.1); awaiting owner approval",
+      "fingerprint": "4b05c275beaaf2130aeed9bf1f97da68fec2ab5898b3c5d329fcf46ddef36e47",
+      "basedOn": "navbar 1.2.0 (draft)"
     },
     "footer-next": {
-      "version": "0.6.3",
+      "version": "0.6.4",
       "status": "draft",
       "source": "this repo; footer draft, -v2 pages only; map from Kartverket data (CC BY 4.0)",
-      "fingerprint": "ba047e25f884c1d366e003066c595cd2b64b90a27f185daad70550c8ac698e5b"
+      "fingerprint": "d0e61b38e876ac5b9e9b72a001bbc57dbbcdb5938deca8ebe5a6bd5ea8fec7dc"
     }
   }
 }

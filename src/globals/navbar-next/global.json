@@ -1,7 +1,7 @@
 {
   "name": "navbar-next",
-  "version": "2.0.1",
-  "status": "canon (Navbar v2, supersedes v1)",
+  "version": "2.0.2",
+  "status": "candidate (Navbar v2.2, builds on canon v2.1; awaiting approval)",
   "source": {
     "repo": "this repo",
     "note": "Canon navbar v2. Drawer on desktop, slide-up menu on mobile and tablet portrait, current-section marker. Based on navbar 1.2.0. See CHANGELOG."

@@ -123,7 +123,10 @@ export function SiteNavNext({
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const isDark = isDarkProp !== undefined ? isDarkProp : isDarkInt;
-  const toggleDark = () => (onIsDarkChange ? onIsDarkChange(!isDark) : setIsDarkInt((d) => !d));
+  // On the mobile menu, tapping the theme or audio toggle returns the visitor to the page:
+  // a short beat so the toggle visibly responds, then the menu fades out as it always does.
+  const closeMenuSoon = () => { if (isMobile && menuOpen) window.setTimeout(() => setMenuOpen(false), 200); };
+  const toggleDark = () => { (onIsDarkChange ? onIsDarkChange(!isDark) : setIsDarkInt((d) => !d)); closeMenuSoon(); };
   const overlayOpen = menuOpen && isMobile;
   const section = sectionOf(currentPath);
   const sub = subOf(currentPath);
@@ -291,7 +294,7 @@ export function SiteNavNext({
 
           <div style={{ display: "flex", alignItems: "center", gap: isMobile ? 0 : "1.4rem" }}>
             {(!isMobile || overlayOpen) && (
-              <button onClick={() => { setAudioOn((v) => !v); onAudioToggle?.(); }}
+              <button onClick={() => { setAudioOn((v) => !v); onAudioToggle?.(); closeMenuSoon(); }}
                 onMouseEnter={() => setHoverKey("c:audio")} onMouseLeave={() => setHoverKey(null)}
                 style={{ background: "none", border: "none", cursor: "pointer", padding: 0, lineHeight: 0, width: isMobile ? 44 : "auto", height: isMobile ? 44 : "auto", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}
                 title={audioOn ? "Mute ambient audio" : "Play ambient audio"}>

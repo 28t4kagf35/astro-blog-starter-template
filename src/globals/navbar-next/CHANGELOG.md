@@ -1,5 +1,11 @@
 # navbar-next: changelog
 
+## 2.0.2 (candidate: Navbar v2.2, awaiting the owner's approval)
+
+- Mobile and tablet portrait: tapping the dark/light toggle or the audio toggle in the menu now
+  closes the menu (after a 200 ms beat so the toggle visibly responds; then the usual 0.48 s fade),
+  returning the visitor to the page. Desktop is unchanged. Nothing else changes.
+
 ## 2.0.1 (canon fix: Navbar v2.1, approved 2026-10-08)
 
 - The red current-page marker is now drawn on items that are not links yet (Learn and

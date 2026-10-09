@@ -1,5 +1,10 @@
 # footer-next: changelog
 
+## 0.6.4 (draft, builds on 0.6.3)
+
+- Dark map closer to the footer still, so its contrast is as low as the light map's:
+  land #1C1A18 to #191715, Voss #23211F to #1E1C1A (edge still = footer #131210).
+
 ## 0.6.3 (draft, builds on 0.6.2)
 
 - The thin rule above the "Voss, Norway" row is removed, so no line runs across the map.
