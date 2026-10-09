@@ -1,5 +1,14 @@
 # footer-next: changelog
 
+## 0.4.0 (draft, builds on 0.3.0)
+
+- Mood line removed for now. Its cluster wording (nature, waterfalls, culture, cabin,
+  activities, home; three lines each, placeholder) is in 0.3.0 if we want it back.
+- Links now: Home, Explore, The Cabin, Contact, Compliance. Contact and Compliance are plain
+  text until their pages exist. Activities and the Explore sub-pages are no longer in the footer.
+- "Book the cabin" removed. The Vf mark sits in its place (visual try-out; not a link yet).
+  Light and dark versions are in public/brand.
+
 ## 0.3.0 (draft, builds on 0.2.0)
 
 - A mood line is back (sage left border, no red). It matches the cluster the visitor is in
