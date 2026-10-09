@@ -1,5 +1,10 @@
 # footer-next: changelog
 
+## 1.0.12 (candidate: Footer v1.1, awaiting the owner's approval)
+
+- Light vignette was not visible at 1.0.11 (0.04): raised to 0.15 on all sizes (about 8 units
+  darker at the edge by perceived lightness). Dark unchanged. To be tuned by eye.
+
 ## 1.0.11 (candidate: Footer v1.1, awaiting the owner's approval)
 
 - Light vignette set to look the same as the dark one, by perceived lightness (as with the map).
