@@ -1,5 +1,16 @@
 # footer-next: changelog
 
+## 0.6.0 (draft, builds on 0.5.12)
+
+- Light variant. The shell passes light or dark and the footer fades between palettes (0.35s,
+  like the pages). Colours are now CSS variables.
+- Light values: footer #E6E1D8 (a warm stone one step darker than the page #F4F2EE), rule #D2CCC1,
+  wordmark #5C5850, links and small text #666259 (about 4.7:1, at the readability minimum),
+  underline #BDB8AE, map land #D6D1C8, Voss #CBC6BD (a step darker than the land, toward the
+  foreground; the step is the same size as in dark), map edge = footer.
+- Vf mark: the black version at the same 40% opacity on light pages; off-white on dark.
+- Dark values unchanged.
+
 ## 0.5.12 (draft, builds on 0.5.11)
 
 - Vf mark opacity set to 40% (was 32%), now that it is smaller on phones.

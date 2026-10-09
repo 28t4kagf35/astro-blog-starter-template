@@ -92,7 +92,7 @@ export function withShell<C>(Page: ComponentType<{ content: C } & ShellPageProps
           onAudioStateChange={onAudioStateChange}
         />
         {/* First footer (draft): shown on the -v2 sandbox pages only. */}
-        {path.replace(/\/+$/, "").endsWith("-v2") && <SiteFooterNext />}
+        {path.replace(/\/+$/, "").endsWith("-v2") && <SiteFooterNext isDark={isDark} />}
       </>
     );
   };
