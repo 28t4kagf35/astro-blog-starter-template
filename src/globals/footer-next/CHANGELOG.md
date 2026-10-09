@@ -1,5 +1,11 @@
 # footer-next: changelog
 
+## 0.5.0 (draft, builds on 0.4.0)
+
+- More room above the wordmark (desktop 7rem, tablet 6rem, phone 5rem top padding).
+- Dimmer: wordmark #A39E96, links and small text #8F8A82 (about 5.4:1 on the footer
+  background, above the 4.5:1 minimum), underline dimmer, Vf mark at 45% opacity.
+
 ## 0.4.0 (draft, builds on 0.3.0)
 
 - Mood line removed for now. Its cluster wording (nature, waterfalls, culture, cabin,

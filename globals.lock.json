@@ -17,10 +17,10 @@
       "canonTag": "canon/navbar-v2.1"
     },
     "footer-next": {
-      "version": "0.4.0",
+      "version": "0.5.0",
       "status": "draft",
       "source": "this repo; footer draft, -v2 pages only; map from Kartverket data (CC BY 4.0)",
-      "fingerprint": "c3a00b9af08d54907ee0fa76daabc47782c8dac1172dd7e2ce7aa00fe443ce35"
+      "fingerprint": "49930f08801d2ab58371676dbc45b40aa9cba9dd8bc8cbc11fa8e0b003636c5d"
     }
   }
 }

@@ -11,8 +11,8 @@ const FONT_LBL = "'Raleway', system-ui, sans-serif";
 const FONT_MONO = "'IBM Plex Mono', monospace";
 
 const DARK = {
-  bg: "#131210", rule: "#24211F", body: "#C4BEB4", head: "#EDE9E2", bq: "#7A8B74",
-  underline: "#4D4A47",           // same as the waterfall detail links
+  bg: "#131210", rule: "#24211F", body: "#8F8A82", head: "#A39E96", bq: "#7A8B74",
+  underline: "#38362F",           // same as the waterfall detail links
   mapLand: "#221F1C", mapEdge: "#131210", mapVoss: "#3A352F",
 } as const;
 
@@ -31,10 +31,10 @@ const WANDER: Wander[] = [
 const CSS = `
 .fn-wrap{position:relative;overflow:hidden;background:${DARK.bg};-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 .fn-map{position:absolute;right:-6%;bottom:-8%;height:112%;width:auto;aspect-ratio:${MAP_W}/${MAP_H};pointer-events:none;opacity:.9}
-.fn-in{position:relative;box-sizing:border-box;margin:0 auto;max-width:calc(1200px + 2rem);padding:3.4rem 1.25rem 2.2rem}
+.fn-in{position:relative;box-sizing:border-box;margin:0 auto;max-width:calc(1200px + 2rem);padding:5rem 1.25rem 2.2rem}
 .fn-word{display:inline-block;font-family:${FONT_LBL};font-size:.84rem;font-weight:300;text-transform:uppercase;letter-spacing:.30em;line-height:1;color:${DARK.head};text-decoration:none;transition:color 200ms ease}
 .fn-word:hover,.fn-word:focus-visible{color:${DARK.body}}
-.fn-vf{display:block;height:56px;width:auto;opacity:.75}
+.fn-vf{display:block;height:56px;width:auto;opacity:.45}
 .fn-links{display:grid;grid-template-columns:1fr 1fr;gap:.1rem 1.5rem;margin:1.8rem 0 0;padding:0;list-style:none;max-width:420px}
 .fn-links li{margin:0}
 .fn-a{display:inline-block;padding:.7rem 0;font-family:${FONT_LBL};font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;line-height:1.2;color:${DARK.body};text-decoration:underline;text-underline-offset:3px;text-decoration-color:${DARK.underline};transition:text-decoration-color .2s ease}
@@ -43,12 +43,12 @@ const CSS = `
 .fn-bottom{display:flex;flex-direction:column;gap:.5rem;margin-top:2.4rem;padding-top:1.4rem;border-top:1px solid ${DARK.rule}}
 .fn-mono{font-family:${FONT_MONO};font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;line-height:1.5;color:${DARK.body}}
 @media (min-width:600px){
-  .fn-in{padding:3.8rem 1.4rem 2.4rem}
+  .fn-in{padding:6rem 1.4rem 2.4rem}
   .fn-links{grid-template-columns:repeat(3,auto);justify-content:start;gap:.1rem 2.4rem;max-width:none}
   .fn-map{right:-2%;height:120%}
 }
 @media (min-width:1024px){
-  .fn-in{padding:4.4rem 1rem 2.6rem}
+  .fn-in{padding:7rem 1rem 2.6rem}
   .fn-links{grid-template-columns:repeat(2,auto);gap:.1rem 3rem;max-width:none}
   .fn-bottom{flex-direction:row;justify-content:space-between;align-items:flex-end;margin-top:3.4rem}
   .fn-map{right:calc(50% - 600px - 1rem);height:125%;bottom:-12%}
