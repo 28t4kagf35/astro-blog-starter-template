@@ -172,7 +172,7 @@ export function LearnV2({ content, isDark = true }: { content: LearnV2Content; i
                 return (
                   <div key={i} style={{ margin: "2.6rem 0", paddingLeft: isMobile ? "1.1rem" : "1.5rem", borderLeft: `2px solid ${tk.bq}` }}>
                     {it.lines!.map((line, j) => (
-                      <p key={j} style={{ margin: j === 0 ? 0 : line.fresh ? "0.8rem 0 0" : "0.2rem 0 0", fontFamily: FONT_SS4, fontVariationSettings: '"opsz" 16', fontStyle: "italic", fontWeight: 400, fontSize: lineSz, lineHeight: 1.45, color: tk.head }}>{line.t}</p>
+                      <p key={j} style={{ margin: j === 0 ? 0 : line.fresh ? "0.8rem 0 0" : "0.2rem 0 0", fontFamily: FONT_SS4, fontVariationSettings: '"opsz" 24', fontStyle: "italic", fontWeight: 300, fontSize: lineSz, lineHeight: 1.45, color: tk.body }}>{line.t}</p>
                     ))}
                   </div>
                 );

@@ -1,5 +1,9 @@
 # footer-next: changelog
 
+## 0.5.4 (draft, builds on 0.5.3)
+
+- Vf mark dimmed back down to 45%. Text unchanged.
+
 ## 0.5.3 (draft, builds on 0.5.2)
 
 - Vf mark raised to 62% so it stands out from the map.
