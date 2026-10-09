@@ -54,7 +54,7 @@ const CSS = `
 .fn-a{display:inline-block;padding:.7rem 0;font-family:${FONT_LBL};font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;line-height:1.2;color:var(--fn-body);text-decoration:underline;text-underline-offset:3px;text-decoration-color:var(--fn-underline);transition:text-decoration-color .2s ease}
 .fn-a:hover,.fn-a:focus-visible{text-decoration-color:transparent}
 .fn-t{display:inline-block;padding:.7rem 0;font-family:${FONT_LBL};font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;line-height:1.2;color:var(--fn-body)}
-.fn-bottom{display:flex;flex-direction:row;justify-content:space-between;align-items:flex-end;gap:1rem;margin-top:2.4rem;padding-top:1.4rem;border-top:1px solid var(--fn-rule)}
+.fn-bottom{display:flex;flex-direction:row;justify-content:space-between;align-items:flex-end;gap:1rem;margin-top:2.4rem;padding-top:1.4rem}
 .fn-mono{font-family:${FONT_MONO};font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;line-height:1.5;color:var(--fn-body)}
 @media (min-width:600px){
   .fn-vf{height:56px}

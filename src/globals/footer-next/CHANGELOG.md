@@ -1,5 +1,10 @@
 # footer-next: changelog
 
+## 0.6.3 (draft, builds on 0.6.2)
+
+- The thin rule above the "Voss, Norway" row is removed, so no line runs across the map.
+  Spacing is unchanged. (The rule colour stays in the palette in case a version of it returns.)
+
 ## 0.6.2 (draft, builds on 0.6.1)
 
 - Dark map brought closer to the light one: the land sits only a small step from the footer, so
