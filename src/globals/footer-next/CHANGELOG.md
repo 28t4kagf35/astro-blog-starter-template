@@ -1,5 +1,10 @@
 # footer-next: changelog
 
+## 1.0.10 (candidate: Footer v1.1, awaiting the owner's approval)
+
+- Phone vignette (dark) 5% lower still, as an edge-case test: 0.18 to 0.171. Tablet, desktop and
+  light unchanged.
+
 ## 1.0.9 (candidate: Footer v1.1, awaiting the owner's approval)
 
 - Vignette on phones (under 600px): strength 10% lower (dark 0.20 to 0.18) and the centre of the
