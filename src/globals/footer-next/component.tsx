@@ -18,13 +18,13 @@ const PALETTES = {
     bg: "#131210", rule: "#24211F", body: "#726E68", head: "#7D7972",
     underline: "#2E2C28",           // same as the waterfall detail links
     mapLand: "#191715", mapEdge: "#131210", mapVoss: "#1E1C1A",
-    vig: "rgba(0,0,0,0.25)",
+    vig: "rgba(0,0,0,0.20)",
   },
   light: {
     bg: "#B9B6B0", rule: "#A3A09A", body: "#4A4742", head: "#3E3B36",
     underline: "#8F8C86",
     mapLand: "#AEABA5", mapEdge: "#B9B6B0", mapVoss: "#A5A29C",
-    vig: "rgba(45,40,34,0.14)",
+    vig: "rgba(45,40,34,0.11)",
   },
 } as const;
 

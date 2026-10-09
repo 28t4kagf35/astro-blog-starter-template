@@ -1,5 +1,9 @@
 # footer-next: changelog
 
+## 1.0.8 (candidate: Footer v1.1, awaiting the owner's approval)
+
+- Vignette strength down by a further 20%: dark 0.25 to 0.20, light 0.14 to 0.11. Shape unchanged.
+
 ## 1.0.7 (candidate: Footer v1.1, awaiting the owner's approval)
 
 - Vignette strength down by 30%: dark 0.36 to 0.25, light 0.20 to 0.14. Shape unchanged.
