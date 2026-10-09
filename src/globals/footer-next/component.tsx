@@ -20,9 +20,9 @@ const PALETTES = {
     mapLand: "#221F1C", mapEdge: "#131210", mapVoss: "#2D2A26",
   },
   light: {
-    bg: "#E6E1D8", rule: "#D2CCC1", body: "#666259", head: "#5C5850",
-    underline: "#BDB8AE",
-    mapLand: "#D6D1C8", mapEdge: "#E6E1D8", mapVoss: "#CBC6BD",
+    bg: "#B9B6B0", rule: "#A3A09A", body: "#4A4742", head: "#3E3B36",
+    underline: "#8F8C86",
+    mapLand: "#AEABA5", mapEdge: "#B9B6B0", mapVoss: "#A5A29C",
   },
 } as const;
 
@@ -93,7 +93,7 @@ export function SiteFooterNext({ isDark = true }: { isDark?: boolean }) {
         </nav>
         <div className="fn-bottom">
           <span className="fn-mono">Voss, Norway · © {new Date().getFullYear()}</span>
-          <img className="fn-vf" src={isDark ? VF.dark : VF.light} alt="" width="46" height="56" />
+          <img className="fn-vf" src={isDark ? VF.dark : VF.light} alt="" width="46" height="56" style={{ opacity: isDark ? 0.4 : 0.45 }} />
         </div>
       </div>
     </footer>

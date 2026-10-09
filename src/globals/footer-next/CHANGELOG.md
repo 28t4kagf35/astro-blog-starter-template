@@ -1,5 +1,15 @@
 # footer-next: changelog
 
+## 0.6.1 (draft, builds on 0.6.0)
+
+- Light footer moved about a quarter of the way toward the dark one and neutralised (less warm),
+  so both footers feel like the same quiet closing statement. Dark is unchanged.
+- Light values: footer #B9B6B0, rule #A3A09A, wordmark #3E3B36, links and small text #4A4742
+  (about 4.5:1), underline #8F8C86, map land #AEABA5, Voss #A5A29C, edge = footer.
+  Vf mark (black) at 45% on light, 40% (off-white) on dark.
+- Previous light values (0.6.0), if a lighter step is wanted: footer #E6E1D8, rule #D2CCC1,
+  wordmark #5C5850, links #666259, underline #BDB8AE, land #D6D1C8, Voss #CBC6BD.
+
 ## 0.6.0 (draft, builds on 0.5.12)
 
 - Light variant. The shell passes light or dark and the footer fades between palettes (0.35s,
