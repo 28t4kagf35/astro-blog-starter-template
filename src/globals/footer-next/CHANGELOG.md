@@ -1,5 +1,11 @@
 # footer-next: changelog
 
+## 0.6.2 (draft, builds on 0.6.1)
+
+- Dark map brought closer to the light one: the land sits only a small step from the footer, so
+  the map reads as relief in the footer and not as a map on a backdrop. Dark land #221F1C to
+  #1C1A18, Voss #2D2A26 to #23211F (edge still = footer #131210). Light is unchanged.
+
 ## 0.6.1 (draft, builds on 0.6.0)
 
 - Light footer moved about a quarter of the way toward the dark one and neutralised (less warm),
