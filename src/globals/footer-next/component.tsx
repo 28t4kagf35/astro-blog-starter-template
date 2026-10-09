@@ -13,7 +13,7 @@ const FONT_MONO = "'IBM Plex Mono', monospace";
 const DARK = {
   bg: "#131210", rule: "#24211F", body: "#726E68", head: "#7D7972", bq: "#7A8B74",
   underline: "#2E2C28",           // same as the waterfall detail links
-  mapLand: "#221F1C", mapEdge: "#131210", mapVoss: "#3A352F",
+  mapLand: "#221F1C", mapEdge: "#131210", mapVoss: "#48433E",
 } as const;
 
 type Wander = { label: string; href?: string };

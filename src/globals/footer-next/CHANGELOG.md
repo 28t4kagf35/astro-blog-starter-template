@@ -1,5 +1,9 @@
 # footer-next: changelog
 
+## 0.5.6 (draft, builds on 0.5.5)
+
+- Voss region lightened by about 7% of the range toward white (#3A352F to #48433E). The rest of the map is unchanged.
+
 ## 0.5.5 (draft, builds on 0.5.4)
 
 - Map dimmed by five points (opacity 90% to 85%).
