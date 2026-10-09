@@ -1,5 +1,10 @@
 # footer-next: changelog
 
+## 0.5.11 (draft, builds on 0.5.10)
+
+- Vf mark dimmed from 45% to 32% to sit with the type. On phones it is 20% smaller (45px high
+  instead of 56px); tablet and desktop keep 56px.
+
 ## 0.5.10 (draft, builds on 0.5.9)
 
 - The Vf mark sits on the right on every screen size, with its bottom edge level with the
