@@ -1,5 +1,10 @@
 # footer-next: changelog
 
+## 1.0.13 (candidate: Footer v1.1, awaiting the owner's approval)
+
+- Light vignette: clear centre 20% wider (the shade starts at 72% of the radius, was 60%), so the
+  shade is gentler and hugs the edges. The size is now a palette value (`vigc`). Dark unchanged (60%).
+
 ## 1.0.12 (candidate: Footer v1.1, awaiting the owner's approval)
 
 - Light vignette was not visible at 1.0.11 (0.04): raised to 0.15 on all sizes (about 8 units

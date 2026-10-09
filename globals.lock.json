@@ -17,10 +17,10 @@
       "canonTag": "canon/navbar-v2.2"
     },
     "footer-next": {
-      "version": "1.0.12",
+      "version": "1.0.13",
       "status": "candidate",
       "source": "this repo; candidate Footer v1.1 (canon dark map values, faint vignette trial), builds on canon v1 (canon/footer-v1); awaiting owner approval",
-      "fingerprint": "68e9644a0712c8d3f494b6cd0b0398e3204bdebdeb894b3babb05529d51b9dfe"
+      "fingerprint": "7a4a176b0f6a9155e3824e20f19bdbd9afb16e91e2bcb43bcf000dcc291ef0fe"
     }
   }
 }
