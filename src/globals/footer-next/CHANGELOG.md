@@ -1,5 +1,12 @@
 # footer-next: changelog
 
+## 1.0.11 (candidate: Footer v1.1, awaiting the owner's approval)
+
+- Light vignette set to look the same as the dark one, by perceived lightness (as with the map).
+  Dark phone edge: about 1.2 units darker than the footer. Light: the same ratio the map uses
+  (light about 1.75 times dark, 2.1 units): phone 0.11 to 0.04, tablet and desktop 0.11 to 0.043.
+  Same shape and centre as dark. Dark unchanged.
+
 ## 1.0.10 (candidate: Footer v1.1, awaiting the owner's approval)
 
 - Phone vignette (dark) 5% lower still, as an edge-case test: 0.18 to 0.171. Tablet, desktop and
