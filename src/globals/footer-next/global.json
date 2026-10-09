@@ -1,7 +1,7 @@
 {
   "name": "footer-next",
-  "version": "1.0.0",
-  "status": "canon (Footer v1)",
+  "version": "1.0.1",
+  "status": "candidate (Footer v1.1, builds on canon v1; awaiting approval)",
   "source": {
     "repo": "this repo",
     "note": "Canon footer v1: dark and light, no red, faint Vestland map with Voss picked out, Vf mark, links Home, Explore, The Cabin, Contact, Compliance. Shown on the -v2 pages. See CHANGELOG."

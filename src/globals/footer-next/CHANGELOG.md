@@ -1,5 +1,11 @@
 # footer-next: changelog
 
+## 1.0.1 (candidate: Footer v1.1, awaiting the owner's approval)
+
+- Dark map nudged up so its steps equal the light map's: land #191715 to #1E1C1A (11 steps from the
+  footer #131210, as in light), Voss #1E1C1A to #272523 (9 steps above the land, as in light).
+  Nothing else changes.
+
 ## 1.0.0 (canon: Footer v1, approved 2026-10-09)
 
 Same code as 0.6.4, promoted to canon after review on phone (dark and light). Shown on the
