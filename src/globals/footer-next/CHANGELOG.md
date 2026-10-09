@@ -1,5 +1,9 @@
 # footer-next: changelog
 
+## 1.0.17 (candidate: Footer v1.1, awaiting the owner's approval)
+
+- Light vignette level 5% higher (0.11 to 0.1155 at the edge). Dark unchanged.
+
 ## 1.0.16 (candidate: Footer v1.1, awaiting the owner's approval)
 
 - Light vignette back to a straight (linear) fade, no S-curve; the easing option stays in the code

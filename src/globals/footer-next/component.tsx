@@ -24,7 +24,7 @@ const PALETTES = {
     bg: "#B9B6B0", rule: "#A3A09A", body: "#4A4742", head: "#3E3B36",
     underline: "#8F8C86",
     mapLand: "#AEABA5", mapEdge: "#B9B6B0", mapVoss: "#A5A29C",
-    vigRgb: "45,40,34", vigA: 0.11, vigAm: 0.11, vigC: 58, vigEase: false, vigR: 60,
+    vigRgb: "45,40,34", vigA: 0.1155, vigAm: 0.1155, vigC: 58, vigEase: false, vigR: 60,
   },
 } as const;
 
