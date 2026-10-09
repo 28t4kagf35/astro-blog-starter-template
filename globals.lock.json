@@ -17,10 +17,11 @@
       "canonTag": "canon/navbar-v2.2"
     },
     "footer-next": {
-      "version": "0.6.4",
-      "status": "draft",
-      "source": "this repo; footer draft, -v2 pages only; map from Kartverket data (CC BY 4.0)",
-      "fingerprint": "d0e61b38e876ac5b9e9b72a001bbc57dbbcdb5938deca8ebe5a6bd5ea8fec7dc"
+      "version": "1.0.0",
+      "status": "canon",
+      "source": "this repo; canon Footer v1, approved 2026-10-09 20:44; map from Kartverket data (CC BY 4.0)",
+      "fingerprint": "39f57e23df337953f6fef1dd819e2aa89149747b655b91c3bb9af9ad15806d33",
+      "canonTag": "canon/footer-v1"
     }
   }
 }

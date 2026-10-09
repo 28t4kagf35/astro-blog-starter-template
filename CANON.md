@@ -11,6 +11,7 @@ version goes through the same gate again.
 | Navbar | v2 | `canon/navbar-v2` | 2026-10-07 16:37 (+02:00) |
 | Navbar | v2.1 (fix to v2) | `canon/navbar-v2.1` | 2026-10-08 15:56 (+02:00) |
 | Navbar | v2.2 (mobile menu closes after the toggles) | `canon/navbar-v2.2` | 2026-10-09 20:42 (+02:00) |
+| Footer | v1 | `canon/footer-v1` | 2026-10-09 20:44 (+02:00) |
 
 ## Navbar v1
 
@@ -76,3 +77,28 @@ stays canon; this is an addition. On the mobile menu (and tablet held upright), 
 dark/light toggle or the audio toggle closes the menu after a 200 ms beat, with the usual
 0.48 s fade, returning the visitor to the page. Desktop is unchanged. Locked as
 navbar-next 2.0.2.
+
+## Footer v1
+
+**Approved:** 2026-10-09, by the owner, with a GO, after review on a phone (dark and light).
+
+**What is canon**
+- A closing room one step deeper than the page, in dark and in light (they fade with the theme):
+  dark `#131210`; light a neutral mid stone `#B9B6B0`. No red, no quote, no added colour.
+- Wordmark "Voss Waterfalls" as a link home; links Home, Explore, The Cabin, Contact,
+  Compliance (Contact and Compliance are plain text until their pages exist). Links use the
+  waterfall detail behaviour: a dim underline at 3 px that fades on hover.
+- A faint outline map of Vestland (from Kartverket municipality data, CC BY 4.0) with Voss a
+  small step lighter in dark and darker in light, so it reads as relief. Same low contrast in both modes.
+- The Vf mark at the right of the last row, level with the "Voss, Norway" line: off-white at 40%
+  on dark, black at 45% on light; 45 px high on phones, 56 px from 600 px wide.
+- Generous space above the wordmark (7 / 6 / 5 rem on desktop / tablet / phone).
+- Component: `src/globals/footer-next/` (version 1.0.0). The map and the Vf files are placeholders
+  until the page designs are locked.
+
+**Known and accepted**
+- Link and small text are about 3.7:1 on dark, below the 4.5:1 minimum for small text, by choice for
+  the mood; light is about 4.5:1. To be reconsidered before launch.
+- Shown only on the -v2 pages. The footer is mounted for every page only when the owner decides
+  (as the navbar was).
+- No privacy, cookie or booking links yet; they come with the Contact and Compliance pages.

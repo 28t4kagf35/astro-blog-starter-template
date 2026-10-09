@@ -1,5 +1,10 @@
 # footer-next: changelog
 
+## 1.0.0 (canon: Footer v1, approved 2026-10-09)
+
+Same code as 0.6.4, promoted to canon after review on phone (dark and light). Shown on the
+-v2 pages for now. Tag: `canon/footer-v1`.
+
 ## 0.6.4 (draft, builds on 0.6.3)
 
 - Dark map closer to the footer still, so its contrast is as low as the light map's:
