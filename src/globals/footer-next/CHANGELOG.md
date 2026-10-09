@@ -1,10 +1,11 @@
 # footer-next: changelog
 
-## 1.0.1 (candidate: Footer v1.1, awaiting the owner's approval)
+## 1.0.2 (candidate: Footer v1.1, awaiting the owner's approval)
 
-- Dark map nudged up so its steps equal the light map's: land #191715 to #1E1C1A (11 steps from the
-  footer #131210, as in light), Voss #1E1C1A to #272523 (9 steps above the land, as in light).
-  Nothing else changes.
+- Dark map bumped a few percent, by perceived lightness, so its steps match the light map's
+  (light: land about 4.2 units from the footer, Voss about 3.6 further; dark was about 2.4 and 2.5,
+  now about 4.2 and 3.9). Dark land #191715 to #1C1A18, Voss #1E1C1A to #232120. Light unchanged.
+  (1.0.1 overshot: it matched raw colour numbers and came out too strong.)
 
 ## 1.0.0 (canon: Footer v1, approved 2026-10-09)
 
