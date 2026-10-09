@@ -11,7 +11,7 @@ const FONT_LBL = "'Raleway', system-ui, sans-serif";
 const FONT_MONO = "'IBM Plex Mono', monospace";
 
 const DARK = {
-  bg: "#131210", rule: "#24211F", body: "#7A766F", head: "#85817A", bq: "#7A8B74",
+  bg: "#131210", rule: "#24211F", body: "#726E68", head: "#7D7972", bq: "#7A8B74",
   underline: "#2E2C28",           // same as the waterfall detail links
   mapLand: "#221F1C", mapEdge: "#131210", mapVoss: "#3A352F",
 } as const;
@@ -34,7 +34,7 @@ const CSS = `
 .fn-in{position:relative;box-sizing:border-box;margin:0 auto;max-width:calc(1200px + 2rem);padding:5rem 1.25rem 2.2rem}
 .fn-word{display:inline-block;font-family:${FONT_LBL};font-size:.84rem;font-weight:300;text-transform:uppercase;letter-spacing:.30em;line-height:1;color:${DARK.head};text-decoration:none;transition:color 200ms ease}
 .fn-word:hover,.fn-word:focus-visible{color:${DARK.body}}
-.fn-vf{display:block;height:56px;width:auto;opacity:.42}
+.fn-vf{display:block;height:56px;width:auto;opacity:.62}
 .fn-links{display:grid;grid-template-columns:1fr 1fr;gap:.1rem 1.5rem;margin:1.8rem 0 0;padding:0;list-style:none;max-width:420px}
 .fn-links li{margin:0}
 .fn-a{display:inline-block;padding:.7rem 0;font-family:${FONT_LBL};font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;line-height:1.2;color:${DARK.body};text-decoration:underline;text-underline-offset:3px;text-decoration-color:${DARK.underline};transition:text-decoration-color .2s ease}

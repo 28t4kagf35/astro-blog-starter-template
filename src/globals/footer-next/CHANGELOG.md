@@ -1,5 +1,11 @@
 # footer-next: changelog
 
+## 0.5.3 (draft, builds on 0.5.2)
+
+- Vf mark raised to 62% so it stands out from the map.
+- Fonts dimmed further: wordmark #7D7972, links and small text #726E68 (about 3.7:1, below the
+  4.5:1 minimum for small text; must be settled before canon).
+
 ## 0.5.2 (draft, builds on 0.5.1)
 
 - Fonts dimmed a bit more on request: wordmark #85817A, links and small text #7A766F
