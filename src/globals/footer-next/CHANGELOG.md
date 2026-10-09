@@ -1,5 +1,11 @@
 # footer-next: changelog
 
+## 1.0.5 (candidate: Footer v1.1, awaiting the owner's approval)
+
+- Vignette the other way: a larger clear centre, the shade hugging the edges. Sides fade over 20% of
+  the width (1.0.4: 34%), bottom over 26% (was 42%). Strength eased a little: dark 0.44 to 0.36,
+  light 0.24 to 0.20.
+
 ## 1.0.4 (candidate: Footer v1.1, awaiting the owner's approval)
 
 - Vignette stronger and reaching further in: dark 0.30 to 0.44, light 0.16 to 0.24; sides fade over
