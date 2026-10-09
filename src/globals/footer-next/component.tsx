@@ -18,15 +18,28 @@ const PALETTES = {
     bg: "#131210", rule: "#24211F", body: "#726E68", head: "#7D7972",
     underline: "#2E2C28",           // same as the waterfall detail links
     mapLand: "#191715", mapEdge: "#131210", mapVoss: "#1E1C1A",
-    vig: "rgba(0,0,0,0.20)", vigm: "rgba(0,0,0,0.171)", vigc: "60%",
+    vigRgb: "0,0,0", vigA: 0.20, vigAm: 0.171, vigC: 60, vigEase: false,
   },
   light: {
     bg: "#B9B6B0", rule: "#A3A09A", body: "#4A4742", head: "#3E3B36",
     underline: "#8F8C86",
     mapLand: "#AEABA5", mapEdge: "#B9B6B0", mapVoss: "#A5A29C",
-    vig: "rgba(45,40,34,0.135)", vigm: "rgba(45,40,34,0.135)", vigc: "72%",
+    vigRgb: "45,40,34", vigA: 0.135, vigAm: 0.135, vigC: 58, vigEase: true,
   },
 } as const;
+
+// Vignette colour stops. Linear: clear to the start, then straight up to full. Eased: the same span
+// but on a smooth S-curve, so the shade comes in and settles gently with no visible start or end.
+function vignetteStops(rgb: string, a: number, c: number, ease: boolean) {
+  const n = 8;
+  const out = ["transparent " + c + "%"];
+  for (let i = 1; i <= n; i++) {
+    const t = i / n;
+    const k = ease ? t * t * (3 - 2 * t) : t;
+    out.push(`rgba(${rgb},${(a * k).toFixed(4)}) ${(c + (100 - c) * t).toFixed(1)}%`);
+  }
+  return out.join(",");
+}
 
 // The Vf files are named for the page they sit on: "light" is the off-white mark for dark pages,
 // "dark" is the black mark for light pages.
@@ -47,7 +60,7 @@ const WANDER: Wander[] = [
 const CSS = `
 .fn-wrap{position:relative;overflow:hidden;background:var(--fn-bg);transition:background .35s ease;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 .fn-map{position:absolute;right:-6%;bottom:-8%;height:112%;width:auto;aspect-ratio:${MAP_W}/${MAP_H};pointer-events:none;opacity:.85}
-.fn-vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 50% 50% at 50% 70%,transparent var(--fn-vigc),var(--fn-vigm) 100%)}
+.fn-vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 50% 50% at 50% 70%,var(--fn-vgm))}
 .fn-in{position:relative;box-sizing:border-box;margin:0 auto;max-width:calc(1200px + 2rem);padding:5rem 1.25rem 2.2rem}
 .fn-word{display:inline-block;font-family:${FONT_LBL};font-size:.84rem;font-weight:300;text-transform:uppercase;letter-spacing:.30em;line-height:1;color:var(--fn-head);text-decoration:none;transition:color 200ms ease}
 .fn-word:hover,.fn-word:focus-visible{color:var(--fn-body)}
@@ -60,7 +73,7 @@ const CSS = `
 .fn-bottom{display:flex;flex-direction:row;justify-content:space-between;align-items:flex-end;gap:1rem;margin-top:2.4rem;padding-top:1.4rem}
 .fn-mono{font-family:${FONT_MONO};font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;line-height:1.5;color:var(--fn-body)}
 @media (min-width:600px){
-  .fn-vig{background:radial-gradient(ellipse closest-side at 50% 50%,transparent var(--fn-vigc),var(--fn-vig) 100%)}
+  .fn-vig{background:radial-gradient(ellipse 50% 50% at 50% 50%,var(--fn-vgd))}
   .fn-vf{height:56px}
   .fn-in{padding:6rem 1.4rem 2.4rem}
   .fn-links{grid-template-columns:repeat(3,auto);justify-content:start;gap:.1rem 2.4rem;max-width:none}
@@ -76,7 +89,11 @@ const CSS = `
 
 export function SiteFooterNext({ isDark = true }: { isDark?: boolean }) {
   const pal = isDark ? PALETTES.dark : PALETTES.light;
-  const vars = Object.fromEntries(Object.entries(pal).map(([k, v]) => ["--fn-" + k, v])) as React.CSSProperties;
+  const vars = {
+    ...Object.fromEntries(Object.entries(pal).filter(([k]) => !k.startsWith("vig")).map(([k, v]) => ["--fn-" + k, v])),
+    "--fn-vgm": vignetteStops(pal.vigRgb, pal.vigAm, pal.vigC, pal.vigEase),
+    "--fn-vgd": vignetteStops(pal.vigRgb, pal.vigA, pal.vigC, pal.vigEase),
+  } as React.CSSProperties;
   return (
     <footer className="fn-wrap" data-site-footer style={vars}>
       <style>{CSS}</style>

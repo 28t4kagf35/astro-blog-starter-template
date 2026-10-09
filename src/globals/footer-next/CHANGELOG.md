@@ -1,5 +1,13 @@
 # footer-next: changelog
 
+## 1.0.15 (candidate: Footer v1.1, awaiting the owner's approval)
+
+- Light vignette: a longer, smoother fade. It starts earlier (clear to 58% of the radius, was 72%)
+  and runs on an S-curve (eight stops) instead of a straight line, so there is no visible start or
+  end. Edge strength unchanged (0.135). Dark unchanged: same start (60%), still straight.
+- The vignette stops are now built in code from per-mode numbers (`vigRgb`, `vigA`, `vigAm`, `vigC`,
+  `vigEase`) instead of fixed CSS colours.
+
 ## 1.0.14 (candidate: Footer v1.1, awaiting the owner's approval)
 
 - Light vignette: the dark end of the gradient 10% lighter (0.15 to 0.135 at the edge), so the fade
