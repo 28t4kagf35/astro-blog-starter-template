@@ -1,5 +1,10 @@
 # footer-next: changelog
 
+## 0.5.7 (draft, builds on 0.5.6)
+
+- Contrast between Voss and the rest of the map reduced (Voss #48433E to #34302B; the rest stays #221F1C).
+  The step is now smaller than the original (#3A352F).
+
 ## 0.5.6 (draft, builds on 0.5.5)
 
 - Voss region lightened by about 7% of the range toward white (#3A352F to #48433E). The rest of the map is unchanged.
