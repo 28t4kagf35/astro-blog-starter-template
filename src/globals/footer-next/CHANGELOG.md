@@ -1,5 +1,9 @@
 # footer-next: changelog
 
+## 1.0.7 (candidate: Footer v1.1, awaiting the owner's approval)
+
+- Vignette strength down by 30%: dark 0.36 to 0.25, light 0.20 to 0.14. Shape unchanged.
+
 ## 1.0.6 (candidate: Footer v1.1, awaiting the owner's approval)
 
 - Vignette is now radial: one oval, clear in the middle 60%, shading to the edge on all four sides,
