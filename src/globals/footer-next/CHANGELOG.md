@@ -1,5 +1,11 @@
 # footer-next: changelog
 
+## 0.5.2 (draft, builds on 0.5.1)
+
+- Fonts dimmed a bit more on request: wordmark #85817A, links and small text #7A766F
+  (about 4.1:1, now below the 4.5:1 minimum for small text; to be reviewed before canon).
+  Vf mark raised back to 42%.
+
 ## 0.5.1 (draft, builds on 0.5.0)
 
 - Dimmer again: wordmark #8F8A82, links and small text #827E77 (about 4.6:1 on the footer
