@@ -110,7 +110,7 @@ function Post({
   const stop = (e: { stopPropagation: () => void }) => e.stopPropagation();
 
   return (
-    <article id={id} style={{ marginBottom: isMobile ? "1.5rem" : "2.1rem", scrollMarginTop: "4.5rem" }}>
+    <article id={id} style={{ marginBottom: isMobile ? "3rem" : "3.6rem", scrollMarginTop: "4.5rem" }}>
       {showSection && b.section && (
         <div style={{ padding: `0 ${padH}`, margin: "0.9rem 0 0.9rem", display: "flex", alignItems: "center", gap: "0.8rem" }}>
           <span style={{ display: "block", width: "1.6rem", height: 1, background: DARK.rule }} />
@@ -148,7 +148,7 @@ function Post({
             </svg>
           )}
 
-          <div onClick={stop} style={{ position: "absolute", left: padH, right: padH, bottom: "3.1rem", display: "flex", alignItems: "center", gap: "1.5rem" }}>
+          <div onClick={stop} style={{ position: "absolute", left: padH, right: padH, bottom: "3.5rem", display: "flex", alignItems: "center", gap: "1.5rem" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
               <button aria-label={liked ? "Remove heart" : "Heart this"} aria-pressed={liked} onClick={onLike} className={liked ? "ov3-pop" : undefined} style={iconBtn}>
                 <HeartIcon on={liked} />
@@ -161,9 +161,9 @@ function Post({
         </div>
 
         <p style={{
-          position: "relative", zIndex: 1, margin: "-2.3rem 0 0", padding: `0 ${padH}`, maxWidth: "34rem",
+          position: "relative", zIndex: 1, margin: "-2rem 0 0", padding: `0 ${padH}`, maxWidth: "34rem",
           fontFamily: FONT_SS4, fontStyle: "italic", fontWeight: 300, fontVariationSettings: SS4_OPSZ,
-          fontSize: isMobile ? "1rem" : "1.06rem", lineHeight: 1.5, letterSpacing: "-0.003em", color: DARK.head,
+          fontSize: isMobile ? "1rem" : "1.06rem", lineHeight: 1.62, letterSpacing: "-0.003em", color: DARK.head,
           opacity: seen ? 1 : 0, transform: seen ? "none" : "translateY(6px)",
           transition: "opacity 1.1s ease 0.3s, transform 1.1s ease 0.3s",
         }}>
