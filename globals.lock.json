@@ -11,8 +11,8 @@
     "navbar-next": {
       "version": "2.0.3",
       "status": "draft",
-      "source": "this repo; candidate 2.0.3: marks /culture-v3 as current in the menu; builds on canon Navbar v2.2 (canon/navbar-v2.2)",
-      "fingerprint": "7212eebc8e080b19ef02cf707052d63ca0385d584b2b8f3dc800dedf6489d68e",
+      "source": "this repo; candidate 2.0.3: marks /culture-v3 and /observe-v3 as current in the menu; builds on canon Navbar v2.2 (canon/navbar-v2.2)",
+      "fingerprint": "cf296b8d6d5517178188d249a5393c6494b2d4c9a2b62b8b7c0c5c521437b440",
       "basedOn": "navbar-next 2.0.2 (canon/navbar-v2.2)"
     },
     "footer-next": {

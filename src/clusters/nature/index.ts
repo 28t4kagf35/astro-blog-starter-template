@@ -37,9 +37,15 @@ export async function experiencePages(): Promise<SitePage[]> {
   }));
 }
 
+// Width / height of a page image, read from its Sanity asset id ("image-<hash>-<w>x<h>-<ext>").
+const ratioOf = (assetId?: string): number | undefined => {
+  const m = assetId?.match(/-(\d+)x(\d+)-[a-z]+$/);
+  return m ? Number(m[1]) / Number(m[2]) : undefined;
+};
+
 export async function observePages(): Promise<SitePage[]> {
-  const doc = await sanityFetch<{ title?: string; blocks?: Array<{ _key: string; caption?: string; mediaFilename?: string; imageId?: string }> } | null>(
-    `*[_type == "observePage"][0]{ title, blocks[]{ _key, caption, mediaFilename, "imageId": image.asset->_id } }`,
+  const doc = await sanityFetch<{ title?: string; blocks?: Array<{ _key: string; caption?: string; mediaFilename?: string; section?: string; imageId?: string }> } | null>(
+    `*[_type == "observePage"][0]{ title, blocks[]{ _key, caption, mediaFilename, section, "imageId": image.asset->_id } }`,
   );
   if (!doc) return [];
   const title = doc.title ?? "Observe";
@@ -53,9 +59,9 @@ export async function observePages(): Promise<SitePage[]> {
       content: {
         // The live feed shows approved, captioned blocks only. Uncaptioned pictures added for design work
         // (Sanity section "Design set") are carried in `allBlocks` for the experimental feed pages.
-        blocks: (doc.blocks ?? []).filter((b) => (b.caption ?? "").trim() !== "").map((b) => ({ id: b._key, image: mediaSrc(b.imageId), mediaFilename: b.mediaFilename, caption: b.caption ?? "" })),
-        allBlocks: (doc.blocks ?? []).map((b) => ({ id: b._key, image: mediaSrc(b.imageId), mediaFilename: b.mediaFilename, caption: b.caption ?? "" })),
-      } as { blocks: Array<{ id: string; image: string; mediaFilename?: string; caption: string }> },
+        blocks: (doc.blocks ?? []).filter((b) => (b.caption ?? "").trim() !== "").map((b) => ({ id: b._key, image: mediaSrc(b.imageId), mediaFilename: b.mediaFilename, caption: b.caption ?? "", section: b.section, ratio: ratioOf(b.imageId) })),
+        allBlocks: (doc.blocks ?? []).map((b) => ({ id: b._key, image: mediaSrc(b.imageId), mediaFilename: b.mediaFilename, caption: b.caption ?? "", section: b.section, ratio: ratioOf(b.imageId) })),
+      } as { blocks: Array<{ id: string; image: string; mediaFilename?: string; caption: string; section?: string; ratio?: number }> },
     },
   ];
 }

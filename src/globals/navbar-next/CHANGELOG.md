@@ -2,8 +2,9 @@
 
 ## 2.0.3 (candidate, builds on canon Navbar v2.2; awaits owner approval)
 
-- The new Culture & History page (`/culture-v3`) now shows its place in the menu: Explore and
-  Culture & History are marked as current, like the v2 page. Nothing else changes.
+- The new Culture & History page (`/culture-v3`) and the new Observe page (`/observe-v3`) now show their
+  place in the menu, like their v2 pages: Explore and the page's own item are marked as current.
+  Nothing else changes.
 
 ## 2.0.2 (canon: Navbar v2.2, approved 2026-10-09)
 

@@ -18,6 +18,7 @@ import type { CabinContent } from "../page-types/cabin";
 import type { HomeV2Content } from "../page-types/home-v2";
 import type { CultureFeedV2Content } from "../page-types/culture-feed-v2";
 import type { CultureFeedV3Content } from "../page-types/culture-feed-v3";
+import type { ObserveFeedV3Content } from "../page-types/observe-feed-v3";
 import type { ObserveFeedV2Content } from "../page-types/observe-feed-v2";
 import type { ActivityV2Content } from "../page-types/activity-v2";
 import type { WaterfallV2Content } from "../page-types/waterfall-v2";
@@ -47,6 +48,7 @@ export type SitePage =
   | (Base & { type: "waterfallV2"; content: WaterfallV2Content })
   | (Base & { type: "cultureV2"; content: CultureFeedV2Content })
   | (Base & { type: "cultureV3"; content: CultureFeedV3Content })
+  | (Base & { type: "observeV3"; content: ObserveFeedV3Content })
   | (Base & { type: "observeV2"; content: ObserveFeedV2Content })
   | (Base & { type: "activityV2"; content: ActivityV2Content })
   | (Base & { type: "experienceV2"; content: ExperienceV2Content })
@@ -55,7 +57,7 @@ export type SitePage =
   | (Base & { type: "activitiesHome"; content: ActivitiesHomeContent })
   | (Base & { type: "previewIndex"; content: { links: Array<{ href: string; label: string }> } });
 
-export const PAGE_TYPES = ["waterfall", "masterGuide", "learnArticle", "experienceArticle", "cultureFeed", "observeFeed", "activity", "home", "cabin", "homeV2", "cabinV2", "learnV2", "waterfallV2", "experienceV2", "cultureV2", "cultureV3", "observeV2", "activityV2", "exploreHome", "activitiesHome", "previewIndex"] as const;
+export const PAGE_TYPES = ["waterfall", "masterGuide", "learnArticle", "experienceArticle", "cultureFeed", "observeFeed", "activity", "home", "cabin", "homeV2", "cabinV2", "learnV2", "waterfallV2", "experienceV2", "cultureV2", "cultureV3", "observeV2", "observeV3", "activityV2", "exploreHome", "activitiesHome", "previewIndex"] as const;
 
 export async function buildSitePages(): Promise<SitePage[]> {
   const pages: SitePage[] = [
@@ -80,6 +82,7 @@ export async function buildSitePages(): Promise<SitePage[]> {
     if (p.type === "experienceArticle" && !pages.some((x) => x.type === "experienceV2")) pages.push({ ...p, path: "experience-v2", type: "experienceV2", title: `${p.title} (v2)`, listLabel: `${p.listLabel} (v2)`, content: p.content as unknown as ExperienceV2Content });
     if (p.type === "cultureFeed" && !pages.some((x) => x.type === "cultureV2")) pages.push({ ...p, path: "culture-v2", type: "cultureV2", title: `${p.title} (v2)`, listLabel: `${p.listLabel} (v2)`, content: p.content as unknown as CultureFeedV2Content });
     if (p.type === "cultureFeed" && !pages.some((x) => x.type === "cultureV3")) pages.push({ ...p, path: "culture-v3", type: "cultureV3", title: `${p.title} (v3)`, listLabel: `${p.listLabel} (v3)`, content: p.content as unknown as CultureFeedV3Content });
+    if (p.type === "observeFeed" && !pages.some((x) => x.type === "observeV3")) pages.push({ ...p, path: "observe-v3", type: "observeV3", title: `${p.title} (v3)`, listLabel: `${p.listLabel} (v3)`, content: p.content as unknown as ObserveFeedV3Content });
     if (p.type === "observeFeed" && !pages.some((x) => x.type === "observeV2")) pages.push({ ...p, path: "observe-v2", type: "observeV2", title: `${p.title} (v2)`, listLabel: `${p.listLabel} (v2)`, content: p.content as unknown as ObserveFeedV2Content });
     if (p.type === "activity" && !pages.some((x) => x.type === "activityV2")) pages.push({ ...p, path: "activity-v2", type: "activityV2", title: `${p.title} (v2)`, listLabel: `${p.listLabel} (v2)`, content: p.content as unknown as ActivityV2Content });
     if (p.type === "waterfall" && p.path.endsWith("tvindefossen")) pages.push({ ...p, path: "tvindefossen-v2", type: "waterfallV2", title: `${p.title} (v2)`, listLabel: `${p.listLabel} (v2)`, content: p.content as unknown as WaterfallV2Content });
