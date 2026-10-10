@@ -163,7 +163,7 @@ function Post({
         <p style={{
           position: "relative", zIndex: 1, margin: "-2rem 0 0", padding: `0 ${padH}`, maxWidth: "34rem",
           fontFamily: FONT_SS4, fontStyle: "italic", fontWeight: 300, fontVariationSettings: SS4_OPSZ,
-          fontSize: isMobile ? "1rem" : "1.06rem", lineHeight: 1.62, letterSpacing: "-0.003em", color: DARK.head,
+          fontSize: isMobile ? "1rem" : "1.06rem", lineHeight: 1.62, letterSpacing: "0.022em", color: DARK.head,
           opacity: seen ? 1 : 0, transform: seen ? "none" : "translateY(6px)",
           transition: "opacity 1.1s ease 0.3s, transform 1.1s ease 0.3s",
         }}>
