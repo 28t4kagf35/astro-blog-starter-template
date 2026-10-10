@@ -91,7 +91,6 @@ function Post({
     return () => io.disconnect();
   }, []);
 
-  const ratio = Math.min(1.6, Math.max(0.56, b.ratio ?? 0.75));
   const photoTap = () => {
     const now = Date.now();
     if (now - lastTap.current < 320) { onSetLike(); setBurst((n) => n + 1); lastTap.current = 0; }
@@ -109,22 +108,30 @@ function Post({
   const iconBtn: CSSProperties = { background: "none", border: "none", padding: "0.55rem", margin: "-0.55rem", cursor: "pointer", color: DARK.body, display: "inline-flex", alignItems: "center", WebkitTapHighlightColor: "transparent" };
 
   return (
-    <article id={id} style={{ marginBottom: isMobile ? "3.4rem" : "4.6rem", scrollMarginTop: "4.5rem" }}>
-      {showSection && b.section && (
-        <div style={{ padding: `0 ${padH}`, margin: `${first ? "0.4rem" : "0.6rem"} 0 1.1rem`, display: "flex", alignItems: "center", gap: "0.8rem" }}>
+    <article id={id} style={{ marginBottom: isMobile ? "1.9rem" : "2.6rem", scrollMarginTop: "0" }}>
+      {showSection && !first && b.section && (
+        <div style={{ padding: `0 ${padH}`, margin: "0.9rem 0 1rem", display: "flex", alignItems: "center", gap: "0.8rem" }}>
           <span style={{ display: "block", width: "1.6rem", height: 1, background: DARK.rule }} />
           <span style={label()}>{b.section}</span>
         </div>
       )}
 
       <div ref={ref} onClick={photoTap}
-        style={{ position: "relative", width: "100%", aspectRatio: String(ratio), maxHeight: "82svh", overflow: "hidden", background: DARK.surface, borderRadius: isMobile ? 0 : "0.35rem", cursor: "pointer", userSelect: "none", WebkitTapHighlightColor: "transparent" }}>
+        style={{ position: "relative", width: "100%", aspectRatio: "1 / 1", overflow: "hidden", background: DARK.surface, borderRadius: isMobile ? 0 : "0.35rem", cursor: "pointer", userSelect: "none", WebkitTapHighlightColor: "transparent" }}>
         {b.image ? (
           <img src={b.image} srcSet={mediaSrcSet(b.image)} sizes="(min-width: 700px) 560px, 100vw" alt="" draggable={false}
             loading={eager ? "eager" : "lazy"} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", ...PHOTO }} />
         ) : (
           <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}><span style={mono()}>image unavailable</span></div>
         )}
+        {/* The picture melts into the page at its top and bottom, as the other headers do; the first one
+            also carries the navbar, so its top fades deeper. */}
+        <div aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, top: 0, height: first ? "34%" : "16%", pointerEvents: "none",
+          background: first
+            ? "linear-gradient(to bottom, rgba(26,23,20,0.92) 0%, rgba(26,23,20,0.62) 38%, rgba(26,23,20,0) 100%)"
+            : "linear-gradient(to bottom, rgba(26,23,20,0.55) 0%, rgba(26,23,20,0) 100%)" }} />
+        <div aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "22%", pointerEvents: "none",
+          background: "linear-gradient(to top, rgba(26,23,20,0.7) 0%, rgba(26,23,20,0) 100%)" }} />
         {burst > 0 && (
           <svg key={burst} className="ov3-burst" width="92" height="92" viewBox="0 0 24 24" fill={DARK.accent} aria-hidden="true"
             style={{ position: "absolute", left: "50%", top: "50%", marginLeft: -46, marginTop: -46, pointerEvents: "none" }}>
@@ -197,12 +204,7 @@ export function ObserveFeedV3({ content }: { content: ObserveFeedV3Content; isDa
         .ov3-pop svg { animation: ov3-pop 0.34s cubic-bezier(0.22, 0.8, 0.28, 1); }
         @media (prefers-reduced-motion: reduce) { .ov3-burst, .ov3-pop svg { animation: none; } }
       `}</style>
-      <div style={{ maxWidth: isMobile ? "none" : "560px", margin: "0 auto", paddingTop: isMobile ? "5.6rem" : "5rem" }}>
-        <div style={{ padding: `0 ${padH}`, marginBottom: "1.8rem", display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-          <span style={label({ color: DARK.body })}>Observe</span>
-          <span style={mono({ fontSize: "0.66rem", letterSpacing: "0.14em", textTransform: "uppercase" })}>{blocks.length} close-ups</span>
-        </div>
-
+      <div style={{ maxWidth: isMobile ? "none" : "560px", margin: "0 auto", paddingTop: 0 }}>
         {blocks.map((b, i) => (
           <Post key={b.id} b={b} first={i === 0} eager={i < 2} isMobile={isMobile} padH={padH}
             showSection={i === 0 || blocks[i - 1].section !== b.section}
