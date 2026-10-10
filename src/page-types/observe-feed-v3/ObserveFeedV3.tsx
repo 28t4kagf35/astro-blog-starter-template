@@ -14,7 +14,6 @@ import { mediaSrcSet } from "../../site/media";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 
 const FONT_SS4  = "'Source Serif 4', Georgia, serif";
-const FONT_SS3  = "'Source Sans 3', system-ui, sans-serif";
 const FONT_MONO = "'IBM Plex Mono', monospace";
 const FONT_LBL  = "'Raleway', system-ui, sans-serif";
 const SS4_OPSZ = '"opsz" 24, "wght" 300';
@@ -119,9 +118,9 @@ function Post({
         </div>
       )}
 
-      <div style={{ padding: `0 ${padH}` }}>
+      <div>
         <div ref={ref} onClick={photoTap}
-          style={{ position: "relative", width: "100%", aspectRatio: "1 / 1", overflow: "hidden", background: DARK.surface, borderRadius: "0.35rem", cursor: "pointer", userSelect: "none", WebkitTapHighlightColor: "transparent" }}>
+          style={{ position: "relative", width: "100%", aspectRatio: "1 / 1", overflow: "hidden", background: DARK.surface, borderRadius: isMobile ? 0 : "0.35rem", cursor: "pointer", userSelect: "none", WebkitTapHighlightColor: "transparent" }}>
           {b.image ? (
             <img src={b.image} srcSet={mediaSrcSet(b.image)} sizes="(min-width: 700px) 520px, 100vw" alt="" draggable={false}
               loading={eager ? "eager" : "lazy"} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", ...PHOTO }} />
@@ -144,7 +143,7 @@ function Post({
             </svg>
           )}
 
-          <div onClick={stop} style={{ position: "absolute", left: "0.95rem", right: "0.95rem", bottom: "0.8rem", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div onClick={stop} style={{ position: "absolute", left: padH, right: padH, bottom: "0.8rem", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "0.7rem" }}>
               <button aria-label={liked ? "Remove heart" : "Heart this"} aria-pressed={liked} onClick={onLike} className={liked ? "ov3-pop" : undefined} style={iconBtn}>
                 <HeartIcon on={liked} />
@@ -159,9 +158,9 @@ function Post({
         </div>
 
         <p style={{
-          margin: "0.8rem 0 0", maxWidth: "34rem",
-          fontFamily: FONT_SS3, fontWeight: 300,
-          fontSize: isMobile ? "1rem" : "1.05rem", lineHeight: 1.6, letterSpacing: "0.01em", color: DARK.body,
+          margin: "0.85rem 0 0", padding: `0 ${padH}`, maxWidth: "34rem",
+          fontFamily: FONT_SS4, fontStyle: "italic", fontWeight: 300, fontVariationSettings: SS4_OPSZ,
+          fontSize: isMobile ? "1rem" : "1.06rem", lineHeight: 1.5, letterSpacing: "-0.003em", color: DARK.head,
           opacity: seen ? 1 : 0, transform: seen ? "none" : "translateY(6px)",
           transition: "opacity 1.1s ease 0.3s, transform 1.1s ease 0.3s",
         }}>
@@ -182,7 +181,8 @@ export function ObserveFeedV3({ content }: { content: ObserveFeedV3Content; isDa
 
   const bp = useBreakpoint();
   const isMobile = bp === "mobile";
-  const padH = isMobile ? "1.25rem" : bp === "tablet" ? "1.4rem" : "1.2rem";
+  // Text and buttons keep a generous margin; the pictures run edge to edge.
+  const padH = isMobile ? "1.7rem" : bp === "tablet" ? "1.9rem" : "1.5rem";
   const blocks = content.blocks.filter((b) => b.caption.trim() !== "");
 
   // Hearts: this visitor's own (kept on the phone) and everyone's totals (from the server, when it exists).
