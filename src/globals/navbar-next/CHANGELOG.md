@@ -1,5 +1,10 @@
 # navbar-next: changelog
 
+## 2.0.3 (candidate, builds on canon Navbar v2.2; awaits owner approval)
+
+- The new Culture & History page (`/culture-v3`) now shows its place in the menu: Explore and
+  Culture & History are marked as current, like the v2 page. Nothing else changes.
+
 ## 2.0.2 (canon: Navbar v2.2, approved 2026-10-09)
 
 - Mobile and tablet portrait: tapping the dark/light toggle or the audio toggle in the menu now

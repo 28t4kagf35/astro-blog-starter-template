@@ -45,7 +45,7 @@ const norm = (p: string) => (p.replace(/\/+$/, "") || "/");
 function sectionOf(path: string): TopLabel | null {
   const p = norm(path);
   if (p === "/" || p === "/home-v2") return "NORWAY";
-  if (p.startsWith("/explore") || ["/learn-v2", "/experience-v2", "/culture-v2", "/observe-v2", "/tvindefossen-v2"].includes(p)) return "EXPLORE";
+  if (p.startsWith("/explore") || ["/learn-v2", "/experience-v2", "/culture-v2", "/culture-v3", "/observe-v2", "/tvindefossen-v2"].includes(p)) return "EXPLORE";
   if (p.startsWith("/cabin")) return "THE CABIN";
   if (p.startsWith("/activit")) return "ACTIVITIES";
   return null;
@@ -54,7 +54,7 @@ function sectionOf(path: string): TopLabel | null {
 /** Which Explore sub-item the current address belongs to. */
 function subOf(path: string): string | null {
   const p = norm(path);
-  if (p.startsWith("/explore/culture-history") || p === "/culture-v2") return "CULTURE & HISTORY";
+  if (p.startsWith("/explore/culture-history") || p === "/culture-v2" || p === "/culture-v3") return "CULTURE & HISTORY";
   if (p.startsWith("/explore/waterfalls") || p === "/tvindefossen-v2") return "WATERFALLS";
   if (p.startsWith("/explore/nature/observe") || p === "/observe-v2") return "OBSERVE";
   if (p.startsWith("/explore/nature/learn") || p === "/learn-v2") return "LEARN";

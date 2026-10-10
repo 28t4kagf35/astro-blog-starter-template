@@ -9,12 +9,11 @@
       "basedOn": "1.0.0 (canon/navbar-v1)"
     },
     "navbar-next": {
-      "version": "2.0.2",
-      "status": "canon",
-      "source": "this repo; canon Navbar v2.2 (adds: mobile menu closes after the theme or audio toggle), approved 2026-10-09 20:42; builds on canon v2 and v2.1",
-      "fingerprint": "e0d5ae6ec5521e20e92af7bbe961476160ce091182a06dbc3a4e4705775ebfad",
-      "basedOn": "navbar 1.2.0 (draft)",
-      "canonTag": "canon/navbar-v2.2"
+      "version": "2.0.3",
+      "status": "draft",
+      "source": "this repo; candidate 2.0.3: marks /culture-v3 as current in the menu; builds on canon Navbar v2.2 (canon/navbar-v2.2)",
+      "fingerprint": "7212eebc8e080b19ef02cf707052d63ca0385d584b2b8f3dc800dedf6489d68e",
+      "basedOn": "navbar-next 2.0.2 (canon/navbar-v2.2)"
     },
     "footer-next": {
       "version": "1.1.0",
