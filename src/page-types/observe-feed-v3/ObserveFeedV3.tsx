@@ -70,9 +70,9 @@ const ShareIcon = () => (
 );
 
 function Post({
-  b, first, eager, isMobile, padH, showSection, liked, count, onLike, onSetLike,
+  b, first, eager, isMobile, padH, liked, count, onLike, onSetLike,
 }: {
-  b: ObserveFeedV3Block; first: boolean; eager: boolean; isMobile: boolean; padH: string; showSection: boolean;
+  b: ObserveFeedV3Block; first: boolean; eager: boolean; isMobile: boolean; padH: string;
   liked: boolean; count: number; onLike: () => void; onSetLike: () => void;
 }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -111,13 +111,6 @@ function Post({
 
   return (
     <article id={id} style={{ marginBottom: "1.8rem", scrollMarginTop: "4.5rem" }}>
-      {showSection && b.section && (
-        <div style={{ padding: `0 ${padH}`, margin: "0.9rem 0 0.9rem", display: "flex", alignItems: "center", gap: "0.8rem" }}>
-          <span style={{ display: "block", width: "1.6rem", height: 1, background: DARK.rule }} />
-          <span style={label()}>{b.section}</span>
-        </div>
-      )}
-
       <div>
         <div ref={ref} onClick={photoTap}
           style={{ position: "relative", width: "100%", aspectRatio: "1 / 1", overflow: "hidden", background: DARK.surface, borderRadius: isMobile ? 0 : "0.35rem", cursor: "pointer", userSelect: "none", WebkitTapHighlightColor: "transparent" }}>
@@ -216,7 +209,6 @@ export function ObserveFeedV3({ content }: { content: ObserveFeedV3Content; isDa
       <div style={{ maxWidth: isMobile ? "none" : "600px", margin: "0 auto", paddingTop: 0 }}>
         {blocks.map((b, i) => (
           <Post key={b.id} b={b} first={i === 0} eager={i < 2} isMobile={isMobile} padH={padH}
-            showSection={i > 0 && blocks[i - 1].section !== b.section}
             liked={!!mine[slugOf(b)]} count={totals[slugOf(b)] ?? 0}
             onLike={() => setLike(slugOf(b), !mine[slugOf(b)])} onSetLike={() => setLike(slugOf(b), true)} />
         ))}
