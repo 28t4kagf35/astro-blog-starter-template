@@ -70,9 +70,9 @@ const ShareIcon = () => (
 );
 
 function Post({
-  b, eager, isMobile, padH, showSection, liked, count, onLike, onSetLike,
+  b, first, eager, isMobile, padH, showSection, liked, count, onLike, onSetLike,
 }: {
-  b: ObserveFeedV3Block; eager: boolean; isMobile: boolean; padH: string; showSection: boolean;
+  b: ObserveFeedV3Block; first: boolean; eager: boolean; isMobile: boolean; padH: string; showSection: boolean;
   liked: boolean; count: number; onLike: () => void; onSetLike: () => void;
 }) {
   const ref = useRef<HTMLDivElement>(null);
@@ -110,7 +110,7 @@ function Post({
   const stop = (e: { stopPropagation: () => void }) => e.stopPropagation();
 
   return (
-    <article id={id} style={{ marginBottom: isMobile ? "1.7rem" : "2.3rem", scrollMarginTop: "4.5rem" }}>
+    <article id={id} style={{ marginBottom: isMobile ? "1.5rem" : "2.1rem", scrollMarginTop: "4.5rem" }}>
       {showSection && b.section && (
         <div style={{ padding: `0 ${padH}`, margin: "0.9rem 0 0.9rem", display: "flex", alignItems: "center", gap: "0.8rem" }}>
           <span style={{ display: "block", width: "1.6rem", height: 1, background: DARK.rule }} />
@@ -131,14 +131,15 @@ function Post({
           {/* A light multiply vignette draws the eye in; the top and bottom melt into the page like the other headers. */}
           <div aria-hidden="true" style={{ position: "absolute", inset: 0, pointerEvents: "none", mixBlendMode: "multiply",
             background: "radial-gradient(ellipse 78% 74% at 50% 46%, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 42%, rgba(70,60,50,0.434) 100%)" }} />
-          <div aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, top: 0, height: "16%", pointerEvents: "none",
-            background: "linear-gradient(to bottom, rgba(26,23,20,0.5) 0%, rgba(26,23,20,0) 100%)" }} />
-          <div aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "34%", pointerEvents: "none",
-            background: "linear-gradient(to top, rgba(26,23,20,0.78) 0%, rgba(26,23,20,0.4) 50%, rgba(26,23,20,0) 100%)" }} />
-
-          {/* A gentle extra band right behind the buttons, so they sit in their own quiet strip. */}
-          <div aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "19%", pointerEvents: "none",
-            background: "linear-gradient(to top, rgba(26,23,20,0.5) 0%, rgba(26,23,20,0.22) 55%, rgba(26,23,20,0) 100%)" }} />
+          {/* Top: the first picture carries the navbar, so it starts in the page colour and clears downward. */}
+          <div aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, top: 0, height: first ? "36%" : "16%", pointerEvents: "none",
+            background: first
+              ? "linear-gradient(to bottom, rgba(26,23,20,1) 0%, rgba(26,23,20,0.82) 30%, rgba(26,23,20,0.4) 65%, rgba(26,23,20,0) 100%)"
+              : "linear-gradient(to bottom, rgba(26,23,20,0.5) 0%, rgba(26,23,20,0) 100%)" }} />
+          {/* Bottom: as in the hero, the fade reaches the full page colour and carries on into the page below,
+              so the heart, share and caption rest on the page colour with no edge. */}
+          <div aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, bottom: -1, height: "50%", pointerEvents: "none",
+            background: "linear-gradient(to top, rgba(26,23,20,1) 0%, rgba(26,23,20,0.96) 14%, rgba(26,23,20,0.7) 38%, rgba(26,23,20,0.28) 70%, rgba(26,23,20,0) 100%)" }} />
 
           {burst > 0 && (
             <svg key={burst} className="ov3-burst" width="92" height="92" viewBox="0 0 24 24" fill={DARK.accent} aria-hidden="true"
@@ -147,22 +148,20 @@ function Post({
             </svg>
           )}
 
-          <div onClick={stop} style={{ position: "absolute", left: padH, right: padH, bottom: "0.8rem", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "0.7rem" }}>
+          <div onClick={stop} style={{ position: "absolute", left: padH, right: padH, bottom: "3.1rem", display: "flex", alignItems: "center", gap: "1.5rem" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
               <button aria-label={liked ? "Remove heart" : "Heart this"} aria-pressed={liked} onClick={onLike} className={liked ? "ov3-pop" : undefined} style={iconBtn}>
                 <HeartIcon on={liked} />
               </button>
               {count > 0 && <span style={mono({ color: DARK.head })}>{count.toLocaleString("en")}</span>}
             </div>
-            <div style={{ display: "flex", alignItems: "center", gap: "0.8rem" }}>
-              {note && <span style={mono({ fontSize: "0.64rem", color: DARK.head })}>{note}</span>}
-              <button aria-label="Share" onClick={share} style={iconBtn}><ShareIcon /></button>
-            </div>
+            <button aria-label="Share" onClick={share} style={iconBtn}><ShareIcon /></button>
+            {note && <span style={mono({ fontSize: "0.64rem", color: DARK.head })}>{note}</span>}
           </div>
         </div>
 
         <p style={{
-          margin: "0.85rem 0 0", padding: `0 ${padH}`, maxWidth: "34rem",
+          position: "relative", zIndex: 1, margin: "-2.3rem 0 0", padding: `0 ${padH}`, maxWidth: "34rem",
           fontFamily: FONT_SS4, fontStyle: "italic", fontWeight: 300, fontVariationSettings: SS4_OPSZ,
           fontSize: isMobile ? "1rem" : "1.06rem", lineHeight: 1.5, letterSpacing: "-0.003em", color: DARK.head,
           opacity: seen ? 1 : 0, transform: seen ? "none" : "translateY(6px)",
@@ -214,9 +213,9 @@ export function ObserveFeedV3({ content }: { content: ObserveFeedV3Content; isDa
         .ov3-pop svg { animation: ov3-pop 0.34s cubic-bezier(0.22, 0.8, 0.28, 1); }
         @media (prefers-reduced-motion: reduce) { .ov3-burst, .ov3-pop svg { animation: none; } }
       `}</style>
-      <div style={{ maxWidth: isMobile ? "none" : "600px", margin: "0 auto", paddingTop: isMobile ? "4.9rem" : "4.6rem" }}>
+      <div style={{ maxWidth: isMobile ? "none" : "600px", margin: "0 auto", paddingTop: 0 }}>
         {blocks.map((b, i) => (
-          <Post key={b.id} b={b} eager={i < 2} isMobile={isMobile} padH={padH}
+          <Post key={b.id} b={b} first={i === 0} eager={i < 2} isMobile={isMobile} padH={padH}
             showSection={i > 0 && blocks[i - 1].section !== b.section}
             liked={!!mine[slugOf(b)]} count={totals[slugOf(b)] ?? 0}
             onLike={() => setLike(slugOf(b), !mine[slugOf(b)])} onSetLike={() => setLike(slugOf(b), true)} />
