@@ -51,8 +51,11 @@ export async function observePages(): Promise<SitePage[]> {
       description: doc.blocks?.[0]?.caption,
       listLabel: `${title} — feed`,
       content: {
-        blocks: (doc.blocks ?? []).map((b) => ({ id: b._key, image: mediaSrc(b.imageId), mediaFilename: b.mediaFilename, caption: b.caption ?? "" })),
-      },
+        // The live feed shows approved, captioned blocks only. Uncaptioned pictures added for design work
+        // (Sanity section "Design set") are carried in `allBlocks` for the experimental feed pages.
+        blocks: (doc.blocks ?? []).filter((b) => (b.caption ?? "").trim() !== "").map((b) => ({ id: b._key, image: mediaSrc(b.imageId), mediaFilename: b.mediaFilename, caption: b.caption ?? "" })),
+        allBlocks: (doc.blocks ?? []).map((b) => ({ id: b._key, image: mediaSrc(b.imageId), mediaFilename: b.mediaFilename, caption: b.caption ?? "" })),
+      } as { blocks: Array<{ id: string; image: string; mediaFilename?: string; caption: string }> },
     },
   ];
 }
