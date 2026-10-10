@@ -15,7 +15,7 @@
  *  - Desktop: the same pager in a narrower centred column, with arrow buttons and arrow keys.
  */
 import { useEffect, useRef, useState } from "react";
-import type { CSSProperties } from "react";
+import type { CSSProperties, PointerEvent as RPointerEvent } from "react";
 import { mediaSrcSet } from "../../site/media";
 import { ContinueBlock } from "../../site/article";
 
@@ -255,37 +255,77 @@ export function CultureFeedV3({ content, isDark = true }: { content: CultureFeed
   const SEC = isMobile ? "3.5rem" : isTablet ? "4.5rem" : "5.5rem";
   const GAP = 12;
 
-  const trackRef = useRef<HTMLDivElement>(null);
+  // The row of cards slides under our own hand-held swipe, not the browser's scroll, so it can be made to
+  // stop at exactly one card per swipe (the browser's own momentum scroll ran several cards over on a phone).
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const rowRef = useRef<HTMLDivElement>(null);
   const slotRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [active, setActive] = useState(0);
   const [height, setHeight] = useState<number | undefined>(undefined);
+  const [step, setStep] = useState(0); // px from one card to the next, measured
+  const drag = useRef({ on: false, locked: false, x0: 0, y0: 0, t0: 0, dx: 0 });
+  const suppressClick = useRef(false);
+  const instant = useRef(false);
 
-  const goTo = (i: number, smooth = true) => {
-    const track = trackRef.current; const el = slotRefs.current[i];
-    if (!track || !el) return;
-    track.scrollTo({ left: el.offsetLeft - track.offsetLeft - parseFloat(getComputedStyle(track).paddingLeft), behavior: smooth ? "smooth" : "auto" });
-  };
+  const EASE = "transform 0.42s cubic-bezier(0.22, 0.8, 0.28, 1)"; // eases out and settles
+  const goTo = (i: number) => setActive(Math.max(0, Math.min(slots - 1, i)));
 
-  // Which slot is in front: the one whose left edge is nearest the start of the track.
   useEffect(() => {
-    const track = trackRef.current; if (!track) return;
-    let raf = 0;
-    const onScroll = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
-        const padL = parseFloat(getComputedStyle(track).paddingLeft);
-        let best = 0; let bestD = Infinity;
-        slotRefs.current.forEach((el, i) => {
-          if (!el) return;
-          const d = Math.abs(el.offsetLeft - track.offsetLeft - padL - track.scrollLeft);
-          if (d < bestD) { bestD = d; best = i; }
-        });
-        setActive(best);
-      });
-    };
-    track.addEventListener("scroll", onScroll, { passive: true });
-    return () => { track.removeEventListener("scroll", onScroll); cancelAnimationFrame(raf); };
-  }, []);
+    const wrap = wrapRef.current; if (!wrap) return;
+    const measure = () => { const el = slotRefs.current[0]; if (el) setStep(el.offsetWidth + GAP); };
+    measure();
+    if (typeof ResizeObserver === "undefined") return;
+    const ro = new ResizeObserver(measure);
+    ro.observe(wrap);
+    return () => ro.disconnect();
+  }, [bp]);
+
+  // Put the row where the active card is: eased when it moves, at once on the first paint.
+  useEffect(() => {
+    const row = rowRef.current; if (!row || !step) return;
+    row.style.transition = instant.current ? "none" : EASE;
+    row.style.transform = `translate3d(${-active * step}px, 0, 0)`;
+    instant.current = false;
+  }, [active, step]);
+
+  const onPointerDown = (e: RPointerEvent) => {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    drag.current = { on: true, locked: false, x0: e.clientX, y0: e.clientY, t0: performance.now(), dx: 0 };
+  };
+  const onPointerMove = (e: RPointerEvent) => {
+    const d = drag.current; const row = rowRef.current; const wrap = wrapRef.current;
+    if (!d.on || !row || !wrap) return;
+    const dx = e.clientX - d.x0; const dy = e.clientY - d.y0;
+    if (!d.locked) {
+      if (Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy) * 1.2) {
+        d.locked = true;
+        wrap.style.userSelect = "none";
+        try { wrap.setPointerCapture(e.pointerId); } catch { /* not all browsers */ }
+      } else if (Math.abs(dy) > 10) { d.on = false; return; } else return;
+    }
+    d.dx = dx;
+    // Pulling past the first or last card is held back, like a rubber band.
+    const held = (active === 0 && dx > 0) || (active === slots - 1 && dx < 0) ? dx / 3 : dx;
+    row.style.transition = "none";
+    row.style.transform = `translate3d(${-active * step + held}px, 0, 0)`;
+  };
+  const endDrag = () => {
+    const d = drag.current; const row = rowRef.current; const wrap = wrapRef.current;
+    if (!d.on) return;
+    d.on = false;
+    if (!d.locked || !row) return;
+    if (wrap) wrap.style.userSelect = "";
+    const v = d.dx / Math.max(1, performance.now() - d.t0); // px per ms
+    let next = active;
+    if (d.dx < -step * 0.18 || (v < -0.35 && d.dx < -12)) next = active + 1;
+    else if (d.dx > step * 0.18 || (v > 0.35 && d.dx > 12)) next = active - 1;
+    next = Math.max(0, Math.min(slots - 1, next));
+    suppressClick.current = true;
+    window.setTimeout(() => { suppressClick.current = false; }, 350);
+    row.style.transition = EASE;
+    row.style.transform = `translate3d(${-next * step}px, 0, 0)`;
+    setActive(next); // one card per swipe, however hard the flick
+  };
 
   // The row is as tall as the card in front, so a short story has no empty space under it.
   useEffect(() => {
@@ -302,7 +342,7 @@ export function CultureFeedV3({ content, isDark = true }: { content: CultureFeed
   useEffect(() => {
     const slug = decodeURIComponent(window.location.hash.replace(/^#/, ""));
     const i = stories.findIndex((s) => s.slug === slug);
-    if (i >= 0) requestAnimationFrame(() => goTo(i + 1, false));
+    if (i >= 0) { instant.current = true; setActive(i + 1); }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
@@ -326,7 +366,7 @@ export function CultureFeedV3({ content, isDark = true }: { content: CultureFeed
   // The card is as wide as the row less a thin sliver: about 28px of the next card shows at the right
   // (the previous card shows about the same at the left), so the card keeps its width for the text.
   const PEEK = 28;
-  const slotW = `calc(100% + ${padH} - ${PEEK + GAP}px)`;
+  const slotW = `calc(100% - ${PEEK + GAP}px)`; // 100% is the row less its left padding
 
   return (
     <div style={{ background: tk.bg, minHeight: "100vh", overflowX: "hidden", transition: "background 0.35s ease", WebkitFontSmoothing: "antialiased", MozOsxFontSmoothing: "grayscale" }}>
@@ -348,32 +388,34 @@ export function CultureFeedV3({ content, isDark = true }: { content: CultureFeed
           </div>
         </div>
 
-        {/* The pager: swipe sideways; the edge of the next card shows at the right. */}
+        {/* The pager: swipe sideways, one card per swipe; the edge of the next card shows at the right. */}
         <div
-          ref={trackRef}
+          ref={wrapRef}
           data-bb-field="entries"
-          style={{
-            position: "relative", display: "flex", alignItems: "flex-start", gap: GAP,
-            overflowX: "auto", overflowY: "hidden", scrollSnapType: "x mandatory", scrollbarWidth: "none", WebkitOverflowScrolling: "touch",
-            padding: `0 ${padH}`, scrollPaddingLeft: padH,
-            height, transition: "height 0.35s ease",
-          }}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={endDrag}
+          onPointerCancel={endDrag}
+          onClickCapture={(e) => { if (suppressClick.current) { e.preventDefault(); e.stopPropagation(); suppressClick.current = false; } }}
+          onDragStart={(e) => e.preventDefault()}
+          onScroll={(e) => { e.currentTarget.scrollLeft = 0; e.currentTarget.scrollTop = 0; }}
+          style={{ position: "relative", overflow: "hidden", touchAction: "pan-y", height, transition: "height 0.35s ease" }}
         >
-          <style>{`[data-bb-field="entries"]::-webkit-scrollbar{display:none}`}</style>
-          <div ref={(el) => { slotRefs.current[0] = el; }} style={{ flex: `0 0 ${slotW}`, scrollSnapAlign: "start", scrollSnapStop: "always" }}>
-            <Cover tk={tk} count={n} image={content.heroImage.src} position={content.heroImage.position} isMobile={isMobile} onStart={() => goTo(1)} />
-          </div>
-          {stories.map((s, i) => (
-            <div key={s.slug} id={s.slug} ref={(el) => { slotRefs.current[i + 1] = el; }} style={{ flex: `0 0 ${slotW}`, scrollSnapAlign: "start", scrollSnapStop: "always" }}>
-              <Story
-                entry={s} tk={tk} isActive={active === i + 1} isMobile={isMobile} eager={i < 2}
-                index={i + 1} total={n}
-                nextTitle={stories[i + 1]?.title}
-                onNext={stories[i + 1] ? () => goTo(i + 2) : undefined}
-              />
+          <div ref={rowRef} style={{ display: "flex", alignItems: "flex-start", gap: GAP, paddingLeft: padH, willChange: "transform" }}>
+            <div ref={(el) => { slotRefs.current[0] = el; }} style={{ flex: `0 0 ${slotW}` }}>
+              <Cover tk={tk} count={n} image={content.heroImage.src} position={content.heroImage.position} isMobile={isMobile} onStart={() => goTo(1)} />
             </div>
-          ))}
-          <div aria-hidden="true" style={{ flex: `0 0 calc(${padH} - ${GAP}px)` }} />
+            {stories.map((s, i) => (
+              <div key={s.slug} id={s.slug} ref={(el) => { slotRefs.current[i + 1] = el; }} style={{ flex: `0 0 ${slotW}` }}>
+                <Story
+                  entry={s} tk={tk} isActive={active === i + 1} isMobile={isMobile} eager={i < 2}
+                  index={i + 1} total={n}
+                  nextTitle={stories[i + 1]?.title}
+                  onNext={stories[i + 1] ? () => goTo(i + 2) : undefined}
+                />
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Arrows for larger screens; on a phone the swipe is the control. */}
