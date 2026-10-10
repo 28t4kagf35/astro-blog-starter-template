@@ -80,10 +80,13 @@ const CSS = `
   .fn-map{right:-2%;height:120%}
 }
 @media (min-width:1024px){
-  .fn-in{padding:7rem 1rem 2.6rem}
+  .fn-in{padding:7rem 4rem 2.6rem}
   .fn-links{grid-template-columns:repeat(2,auto);gap:.1rem 3rem;max-width:none}
   .fn-bottom{margin-top:3.4rem}
-  .fn-map{right:calc(50% - 600px - 1rem);height:125%;bottom:-12%}
+  .fn-map{right:max(-2%, calc(50% - 600px - 1rem));height:125%;bottom:-12%}
+}
+@media (min-width:1280px){
+  .fn-in{padding:7rem 1rem 2.6rem}
 }
 `;
 

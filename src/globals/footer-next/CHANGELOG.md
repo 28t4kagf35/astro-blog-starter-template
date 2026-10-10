@@ -1,5 +1,12 @@
 # footer-next: changelog
 
+## 1.0.19 (candidate: Footer v1.1, awaiting the owner's approval)
+
+- Large tablet in portrait (1024 to 1279px wide, e.g. iPad Pro 12.9"): side margin 1rem to 4rem, so
+  the footer no longer hugs the gutter there. From 1280px up the footer is as before (1200 wide,
+  centred). On these narrower widths the map also stays on the page (it was pushed off the right).
+- Changes 1.0.18 (600 to 1023px: 3rem) still apply.
+
 ## 1.0.18 (candidate: Footer v1.1, awaiting the owner's approval)
 
 - Tablet portrait (600 to 1023px): side margin 1.4rem to 3rem, so the footer no longer sits on the
