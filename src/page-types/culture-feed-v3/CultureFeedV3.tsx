@@ -188,7 +188,7 @@ function Story({
           </button>
         )}
 
-        <div style={{ display: "grid", gridTemplateRows: open ? "1fr" : "0fr", transition: "grid-template-rows 0.45s cubic-bezier(0.4, 0, 0.2, 1)" }}>
+        <div style={{ display: "grid", gridTemplateRows: open ? "1fr" : "0fr", transition: "grid-template-rows 0.26s cubic-bezier(0.65, 0, 0.35, 1)" }}>
           <div style={{ overflow: "hidden", minHeight: 0 }}>
             {entry.expanded.map((t, i) => <p key={i} style={p}>{t}</p>)}
           </div>
@@ -431,7 +431,7 @@ export function CultureFeedV3({ content, isDark = true }: { content: CultureFeed
           onClickCapture={(e) => { if (suppressClick.current) { e.preventDefault(); e.stopPropagation(); suppressClick.current = false; } }}
           onDragStart={(e) => e.preventDefault()}
           onScroll={(e) => { e.currentTarget.scrollLeft = 0; e.currentTarget.scrollTop = 0; }}
-          style={{ position: "relative", overflow: "hidden", touchAction: "pan-y", height, transition: "height 0.35s ease" }}
+          style={{ position: "relative", overflow: "hidden", touchAction: "pan-y", height, transition: "height 0.26s cubic-bezier(0.65, 0, 0.35, 1)" }}
         >
           {active > 0 && (
             <button aria-label="Previous story" onClick={() => goTo(active - 1)}
