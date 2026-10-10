@@ -127,7 +127,7 @@ const PHOTO: CSSProperties = { filter: "saturate(0.86) sepia(0.1) brightness(0.9
 
 function Photo({ src, position, tk, eager }: { src: string; position: string; tk: Tk; eager?: boolean }) {
   return (
-    <div style={{ position: "relative", width: "100%", aspectRatio: "3 / 2", overflow: "hidden", background: tk.surface }}>
+    <div style={{ position: "relative", width: "100%", aspectRatio: "16 / 10", maxHeight: "30svh", overflow: "hidden", background: tk.surface }}>
       {src ? (
         <img
           src={src}
@@ -170,9 +170,19 @@ function Story({
         <h2 style={{ margin: 0, fontFamily: FONT_SS4, fontSize: isMobile ? "1.7rem" : "1.9rem", fontWeight: 300, fontStyle: "italic", fontVariationSettings: SS4_OPSZ_DISPLAY, color: tk.head, lineHeight: 1.16, letterSpacing: "-0.01em" }}>
           {entry.title}
         </h2>
-        {entry.teaser.map((t, i) => <p key={i} style={i === 0 ? { ...p, marginTop: "1rem" } : p}>{t}</p>)}
+        {/* Closed: one opening paragraph, clamped with a soft fade, so the card ends inside the screen and "Read on" is always in sight. */}
+        <div style={{ position: "relative" }}>
+          <p style={{
+            ...p, marginTop: "1rem",
+            ...(open ? {} : { display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 5, overflow: "hidden" }),
+          } as CSSProperties}>{entry.teaser[0]}</p>
+          {!open && (entry.teaser.length > 1 || entry.expanded.length > 0) && (
+            <div aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "2.6rem", background: `linear-gradient(to bottom, transparent, ${tk.surface})`, pointerEvents: "none" }} />
+          )}
+        </div>
+        {open && entry.teaser.slice(1).map((t, i) => <p key={i} style={p}>{t}</p>)}
 
-        {!open && entry.expanded.length > 0 && (
+        {!open && (entry.expanded.length > 0 || entry.teaser.length > 1) && (
           <button onClick={() => setOpen(true)} aria-expanded={false}
             style={{ display: "flex", alignItems: "center", gap: "0.5rem", margin: "1rem 0 0", padding: "0.7rem 0", background: "none", border: "none", cursor: "pointer", ...label(tk, { color: tk.body }) }}>
             Read on <span aria-hidden="true">↓</span>
@@ -185,7 +195,7 @@ function Story({
           </div>
         </div>
 
-        {(open || entry.expanded.length === 0) && onNext && nextTitle && (
+        {(open || (entry.expanded.length === 0 && entry.teaser.length <= 1)) && onNext && nextTitle && (
           <button onClick={onNext}
             style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "0.35rem", width: "100%", margin: "1.6rem 0 0", padding: "1.1rem 0 0", background: "none", border: "none", borderTop: `1px solid ${tk.rule}`, cursor: "pointer", textAlign: "left" }}>
             <span style={label(tk)}>Next · {index + 1} / {total}</span>
@@ -347,11 +357,11 @@ export function CultureFeedV3({ content, isDark = true }: { content: CultureFeed
           }}
         >
           <style>{`[data-bb-field="entries"]::-webkit-scrollbar{display:none}`}</style>
-          <div ref={(el) => { slotRefs.current[0] = el; }} style={{ flex: `0 0 ${slotW}`, scrollSnapAlign: "start" }}>
+          <div ref={(el) => { slotRefs.current[0] = el; }} style={{ flex: `0 0 ${slotW}`, scrollSnapAlign: "start", scrollSnapStop: "always" }}>
             <Cover tk={tk} count={n} image={content.heroImage.src} position={content.heroImage.position} isMobile={isMobile} onStart={() => goTo(1)} />
           </div>
           {stories.map((s, i) => (
-            <div key={s.slug} id={s.slug} ref={(el) => { slotRefs.current[i + 1] = el; }} style={{ flex: `0 0 ${slotW}`, scrollSnapAlign: "start" }}>
+            <div key={s.slug} id={s.slug} ref={(el) => { slotRefs.current[i + 1] = el; }} style={{ flex: `0 0 ${slotW}`, scrollSnapAlign: "start", scrollSnapStop: "always" }}>
               <Story
                 entry={s} tk={tk} isActive={active === i + 1} isMobile={isMobile} eager={i < 2}
                 index={i + 1} total={n}
