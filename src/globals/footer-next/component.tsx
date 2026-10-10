@@ -75,7 +75,7 @@ const CSS = `
 @media (min-width:600px){
   .fn-vig{background:radial-gradient(ellipse var(--fn-vr) var(--fn-vr) at 50% 50%,var(--fn-vgd))}
   .fn-vf{height:56px}
-  .fn-in{padding:6rem 1.4rem 2.4rem}
+  .fn-in{padding:6rem 3rem 2.4rem}
   .fn-links{grid-template-columns:repeat(3,auto);justify-content:start;gap:.1rem 2.4rem;max-width:none}
   .fn-map{right:-2%;height:120%}
 }

@@ -1,5 +1,10 @@
 # footer-next: changelog
 
+## 1.0.18 (candidate: Footer v1.1, awaiting the owner's approval)
+
+- Tablet portrait (600 to 1023px): side margin 1.4rem to 3rem, so the footer no longer sits on the
+  gutter. Phone and the 1024px-and-up layouts (1200 wide, centred) unchanged.
+
 ## 1.0.17 (candidate: Footer v1.1, awaiting the owner's approval)
 
 - Light vignette level 5% higher (0.11 to 0.1155 at the edge). Dark unchanged.
