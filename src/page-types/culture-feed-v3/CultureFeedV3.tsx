@@ -93,11 +93,6 @@ const ORDER = [
   "voss",
 ];
 
-const minutes = (c: CultureCardV3) => {
-  const words = [...c.teaser, ...c.expanded].join(" ").split(/\s+/).filter(Boolean).length;
-  return Math.max(1, Math.round(words / 200));
-};
-
 function useBreakpoint() {
   const get = () => {
     const w = typeof window !== "undefined" ? window.innerWidth : 390;
@@ -162,9 +157,8 @@ function Story({
     <div style={{ background: tk.surface, border: `1px solid ${tk.rule}`, borderRadius: "0.35rem", overflow: "hidden", transition: "background .35s ease, border-color .35s ease" }}>
       <Photo src={entry.image} position={entry.imagePosition} tk={tk} eager={eager} />
       <div style={{ padding: `1.3rem ${pad} 1.4rem` }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: "1rem", marginBottom: "0.8rem" }}>
+        <div style={{ display: "flex", justifyContent: "flex-start", alignItems: "baseline", gap: "1rem", marginBottom: "0.8rem" }}>
           <span style={label(tk)}>{KIND[entry.slug] ?? "Culture & History"}</span>
-          <span style={mono(tk)}>{minutes(entry)} min</span>
         </div>
         <h2 style={{ margin: 0, fontFamily: FONT_SS4, fontSize: isMobile ? "1.7rem" : "1.9rem", fontWeight: 300, fontStyle: "italic", fontVariationSettings: SS4_OPSZ_DISPLAY, color: tk.head, lineHeight: 1.16, letterSpacing: "-0.01em" }}>
           {entry.title}
@@ -217,7 +211,7 @@ function Cover({ tk, count, image, position, isMobile, onStart }: { tk: Tk; coun
           Culture &amp; History
         </h1>
         <p style={{ margin: "1rem 0 0", fontFamily: FONT_SS3, fontSize: isMobile ? "0.95rem" : "1rem", fontWeight: 300, lineHeight: 1.78, letterSpacing: "0.01em", color: tk.body }}>
-          {count} small stories from Norway, a minute each. Swipe to begin.
+          {count} small stories from Norway. Swipe to begin.
         </p>
         <button onClick={onStart}
           style={{ display: "flex", alignItems: "center", gap: "0.5rem", margin: "1rem 0 0", padding: "0.7rem 0", background: "none", border: "none", cursor: "pointer", ...label(tk, { color: tk.body }) }}>
