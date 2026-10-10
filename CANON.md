@@ -12,6 +12,7 @@ version goes through the same gate again.
 | Navbar | v2.1 (fix to v2) | `canon/navbar-v2.1` | 2026-10-08 15:56 (+02:00) |
 | Navbar | v2.2 (mobile menu closes after the toggles) | `canon/navbar-v2.2` | 2026-10-09 20:42 (+02:00) |
 | Footer | v1 | `canon/footer-v1` | 2026-10-09 20:44 (+02:00) |
+| Footer | v1.1 (vignette, tablet margins) | `canon/footer-v1.1` | 2026-10-10 11:04 (+02:00) |
 
 ## Navbar v1
 
@@ -102,3 +103,23 @@ navbar-next 2.0.2.
 - Shown only on the -v2 pages. The footer is mounted for every page only when the owner decides
   (as the navbar was).
 - No privacy, cookie or booking links yet; they come with the Contact and Compliance pages.
+
+## Footer v1.1 (addition to v1)
+
+**Approved:** 2026-10-10, by the owner, with a GO, after review on a phone and an iPad (dark and
+light, portrait and landscape). Footer v1 stays canon; this is an addition. Locked as footer-next 1.1.0.
+
+**What is added**
+- A soft vignette over the map, one radial layer under the type: clear in the middle, shading
+  toward the edges on all four sides. On phones the centre sits lower (70% down) and the strength is
+  a little lower. Dark and light are tuned separately so they look alike: the light one is a larger
+  oval. A straight fade in both modes.
+- Side margins on tablets: 3rem from 600 to 1023px wide, 4rem from 1024 to 1279px, so the footer no
+  longer sits on the gutter in portrait. From 1280px up it is unchanged (1200 wide, centred). On the
+  1024 to 1279px range the map is kept on the page.
+
+**Known and accepted**
+- Carried over from v1: link contrast on dark, shown only on the -v2 pages, no privacy, cookie or
+  booking links yet.
+- The Vf is still a PNG; a vector version is planned. The map is a simplified outline that can be
+  refined.

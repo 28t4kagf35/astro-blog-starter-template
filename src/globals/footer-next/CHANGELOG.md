@@ -1,5 +1,12 @@
 # footer-next: changelog
 
+## 1.1.0 (canon: Footer v1.1, approved 2026-10-10)
+
+Same code as 1.0.19, promoted to canon after review on phone and iPad (dark and light, portrait and
+landscape). What it adds to canon v1: the radial vignette (tuned separately for dark and light, a
+lower centre on phones), and wider side margins on tablets (3rem from 600 to 1023px, 4rem from 1024
+to 1279px; 1200 wide and centred from 1280px). Tag: `canon/footer-v1.1`.
+
 ## 1.0.19 (candidate: Footer v1.1, awaiting the owner's approval)
 
 - Large tablet in portrait (1024 to 1279px wide, e.g. iPad Pro 12.9"): side margin 1rem to 4rem, so

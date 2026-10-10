@@ -17,10 +17,12 @@
       "canonTag": "canon/navbar-v2.2"
     },
     "footer-next": {
-      "version": "1.0.19",
-      "status": "candidate",
-      "source": "this repo; candidate Footer v1.1 (canon dark map values, faint vignette trial), builds on canon v1 (canon/footer-v1); awaiting owner approval",
-      "fingerprint": "8577328ab0469a5e2cdc183633b88ac02ebc0831285b83e73e1a0bb7d54fd941"
+      "version": "1.1.0",
+      "status": "canon",
+      "source": "this repo; canon Footer v1.1 (adds: radial vignette, wider side margins on tablets), approved 2026-10-10; builds on canon v1",
+      "fingerprint": "d1dcfd8f58818d2b7b2e0c43705df982ee174f0ffe2bef36f73726effba24685",
+      "basedOn": "footer-next 1.0.0 (canon/footer-v1)",
+      "canonTag": "canon/footer-v1.1"
     }
   }
 }

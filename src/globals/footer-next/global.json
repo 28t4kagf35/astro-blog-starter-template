@@ -1,9 +1,9 @@
 {
   "name": "footer-next",
-  "version": "1.0.19",
-  "status": "candidate (Footer v1.1, builds on canon v1; awaiting approval)",
+  "version": "1.1.0",
+  "status": "canon (Footer v1.1, approved 2026-10-10)",
   "source": {
     "repo": "this repo",
-    "note": "Canon footer v1: dark and light, no red, faint Vestland map with Voss picked out, Vf mark, links Home, Explore, The Cabin, Contact, Compliance. Shown on the -v2 pages. See CHANGELOG."
+    "note": "Canon footer v1.1: builds on v1 and adds the vignette and the wider margins on tablets. Dark and light, no red, faint Vestland map with Voss picked out, Vf mark, links Home, Explore, The Cabin, Contact, Compliance. Shown on the -v2 pages. See CHANGELOG."
   }
 }
