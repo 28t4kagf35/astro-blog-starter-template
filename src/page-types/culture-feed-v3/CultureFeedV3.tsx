@@ -17,7 +17,6 @@
 import { useEffect, useRef, useState } from "react";
 import type { CSSProperties, PointerEvent as RPointerEvent } from "react";
 import { mediaSrcSet } from "../../site/media";
-import { ContinueBlock } from "../../site/article";
 
 const FONT_SS4  = "'Source Serif 4', Georgia, serif";
 const FONT_SS3  = "'Source Sans 3', system-ui, sans-serif";
@@ -241,7 +240,6 @@ export function CultureFeedV3({ content, isDark = true }: { content: CultureFeed
   const bp = useBreakpoint();
   const isMobile = bp === "mobile";
   const isTablet = bp === "tablet";
-  const isDesktop = bp === "desktop";
   const tk = isDark ? DARK : LIGHT;
 
   const stories = [...content.cards].sort((a, b) => {
@@ -263,7 +261,7 @@ export function CultureFeedV3({ content, isDark = true }: { content: CultureFeed
   const [active, setActive] = useState(0);
   const [height, setHeight] = useState<number | undefined>(undefined);
   const [step, setStep] = useState(0); // px from one card to the next, measured
-  const drag = useRef({ on: false, locked: false, x0: 0, y0: 0, t0: 0, dx: 0 });
+  const drag = useRef({ on: false, locked: false, x0: 0, y0: 0, t0: 0, dx: 0, pts: [] as { x: number; t: number }[] });
   const suppressClick = useRef(false);
   const instant = useRef(false);
 
@@ -290,20 +288,21 @@ export function CultureFeedV3({ content, isDark = true }: { content: CultureFeed
 
   const onPointerDown = (e: RPointerEvent) => {
     if (e.pointerType === "mouse" && e.button !== 0) return;
-    drag.current = { on: true, locked: false, x0: e.clientX, y0: e.clientY, t0: performance.now(), dx: 0 };
+    drag.current = { on: true, locked: false, x0: e.clientX, y0: e.clientY, t0: performance.now(), dx: 0, pts: [{ x: e.clientX, t: performance.now() }] };
   };
   const onPointerMove = (e: RPointerEvent) => {
     const d = drag.current; const row = rowRef.current; const wrap = wrapRef.current;
     if (!d.on || !row || !wrap) return;
     const dx = e.clientX - d.x0; const dy = e.clientY - d.y0;
     if (!d.locked) {
-      if (Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy) * 1.2) {
+      if (Math.abs(dx) > 6 && Math.abs(dx) > Math.abs(dy) * 1.0) {
         d.locked = true;
         wrap.style.userSelect = "none";
         try { wrap.setPointerCapture(e.pointerId); } catch { /* not all browsers */ }
       } else if (Math.abs(dy) > 10) { d.on = false; return; } else return;
     }
     d.dx = dx;
+    d.pts.push({ x: e.clientX, t: performance.now() }); if (d.pts.length > 6) d.pts.shift();
     // Pulling past the first or last card is held back, like a rubber band.
     const held = (active === 0 && dx > 0) || (active === slots - 1 && dx < 0) ? dx / 3 : dx;
     row.style.transition = "none";
@@ -315,10 +314,13 @@ export function CultureFeedV3({ content, isDark = true }: { content: CultureFeed
     d.on = false;
     if (!d.locked || !row) return;
     if (wrap) wrap.style.userSelect = "";
-    const v = d.dx / Math.max(1, performance.now() - d.t0); // px per ms
+    // Speed of the last moments of the swipe, so a pause before the flick does not count against it.
+    const a0 = d.pts[0]; const a1 = d.pts[d.pts.length - 1];
+    const v = a0 && a1 && a1.t > a0.t ? (a1.x - a0.x) / (a1.t - a0.t) : 0; // px per ms
+    const far = Math.min(step * 0.15, 48);
     let next = active;
-    if (d.dx < -step * 0.18 || (v < -0.35 && d.dx < -12)) next = active + 1;
-    else if (d.dx > step * 0.18 || (v > 0.35 && d.dx > 12)) next = active - 1;
+    if (d.dx < -far || (v < -0.25 && d.dx < -10)) next = active + 1;
+    else if (d.dx > far || (v > 0.25 && d.dx > 10)) next = active - 1;
     next = Math.max(0, Math.min(slots - 1, next));
     suppressClick.current = true;
     window.setTimeout(() => { suppressClick.current = false; }, 350);
@@ -401,6 +403,10 @@ export function CultureFeedV3({ content, isDark = true }: { content: CultureFeed
           onScroll={(e) => { e.currentTarget.scrollLeft = 0; e.currentTarget.scrollTop = 0; }}
           style={{ position: "relative", overflow: "hidden", touchAction: "pan-y", height, transition: "height 0.35s ease" }}
         >
+          {active > 0 && (
+            <button aria-label="Previous story" onClick={() => goTo(active - 1)}
+              style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: padH, zIndex: 2, background: "none", border: "none", padding: 0, cursor: "pointer" }} />
+          )}
           <div ref={rowRef} style={{ display: "flex", alignItems: "flex-start", gap: GAP, paddingLeft: padH, willChange: "transform" }}>
             <div ref={(el) => { slotRefs.current[0] = el; }} style={{ flex: `0 0 ${slotW}` }}>
               <Cover tk={tk} count={n} image={content.heroImage.src} position={content.heroImage.position} isMobile={isMobile} onStart={() => goTo(1)} />
@@ -428,12 +434,8 @@ export function CultureFeedV3({ content, isDark = true }: { content: CultureFeed
           </div>
         )}
 
-        <div style={{ padding: `${SEC} ${padH} ${SEC}` }}>
-          <ContinueBlock tk={tk} isMobile={isMobile} isTablet={isTablet} isDesktop={isDesktop} sec={SEC} cards={[
-            { label: "Observe", body: "The land up close.", href: "/explore/nature/observe" },
-            { label: "The Cabin", body: "Where calm has a place.", href: "/cabin" },
-          ]} />
-        </div>
+        {/* Room below the cards so the footer sits comfortably under them. */}
+        <div style={{ height: SEC }} aria-hidden="true" />
       </div>
     </div>
   );
