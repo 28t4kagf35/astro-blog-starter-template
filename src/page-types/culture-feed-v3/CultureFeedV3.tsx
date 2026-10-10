@@ -260,6 +260,7 @@ export function CultureFeedV3({ content, isDark = true }: { content: CultureFeed
   const slotRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [active, setActive] = useState(0);
   const [height, setHeight] = useState<number | undefined>(undefined);
+  const [switching, setSwitching] = useState(false);
   const [step, setStep] = useState(0); // px from one card to the next, measured
   const drag = useRef({ on: false, locked: false, x0: 0, y0: 0, t0: 0, dx: 0, pts: [] as { x: number; t: number }[] });
   const suppressClick = useRef(false);
@@ -364,10 +365,18 @@ export function CultureFeedV3({ content, isDark = true }: { content: CultureFeed
   };
   const onMouseUp = (e: RPointerEvent) => { if (e.pointerType === "mouse") finish(); };
 
+  useEffect(() => {
+    setSwitching(true);
+    const t = window.setTimeout(() => setSwitching(false), 450);
+    return () => window.clearTimeout(t);
+  }, [active]);
+
   // The row is as tall as the card in front, so a short story has no empty space under it.
   useEffect(() => {
     const el = slotRefs.current[active]; if (!el) return;
-    const measure = () => setHeight(el.offsetHeight);
+    // The frame takes the card's height straight away, frame by frame, so when a card opens the card and
+    // its text grow together. (Only moving between cards eases the height, see `switching`.)
+    const measure = () => { const h = el.offsetHeight; if (wrapRef.current) wrapRef.current.style.height = `${h}px`; setHeight(h); };
     measure();
     if (typeof ResizeObserver === "undefined") return;
     const ro = new ResizeObserver(measure);
@@ -431,7 +440,7 @@ export function CultureFeedV3({ content, isDark = true }: { content: CultureFeed
           onClickCapture={(e) => { if (suppressClick.current) { e.preventDefault(); e.stopPropagation(); suppressClick.current = false; } }}
           onDragStart={(e) => e.preventDefault()}
           onScroll={(e) => { e.currentTarget.scrollLeft = 0; e.currentTarget.scrollTop = 0; }}
-          style={{ position: "relative", overflow: "hidden", touchAction: "pan-y", height, transition: "height 0.26s cubic-bezier(0.65, 0, 0.35, 1)" }}
+          style={{ position: "relative", overflow: "hidden", touchAction: "pan-y", height, transition: switching ? "height 0.35s cubic-bezier(0.65, 0, 0.35, 1)" : "none" }}
         >
           {active > 0 && (
             <button aria-label="Previous story" onClick={() => goTo(active - 1)}
