@@ -323,7 +323,10 @@ export function CultureFeedV3({ content, isDark = true }: { content: CultureFeed
   }, [active, slots]);
 
   const colMax = isMobile ? "none" : "680px";
-  const slotW = isMobile ? "88%" : "88%";
+  // The card is as wide as the row less a thin sliver: about 28px of the next card shows at the right
+  // (the previous card shows about the same at the left), so the card keeps its width for the text.
+  const PEEK = 28;
+  const slotW = `calc(100% + ${padH} - ${PEEK + GAP}px)`;
 
   return (
     <div style={{ background: tk.bg, minHeight: "100vh", overflowX: "hidden", transition: "background 0.35s ease", WebkitFontSmoothing: "antialiased", MozOsxFontSmoothing: "grayscale" }}>
