@@ -110,7 +110,7 @@ function Post({
   const stop = (e: { stopPropagation: () => void }) => e.stopPropagation();
 
   return (
-    <article id={id} style={{ marginBottom: isMobile ? "3rem" : "3.6rem", scrollMarginTop: "4.5rem" }}>
+    <article id={id} style={{ marginBottom: isMobile ? "2.7rem" : "3.3rem", scrollMarginTop: "4.5rem" }}>
       {showSection && b.section && (
         <div style={{ padding: `0 ${padH}`, margin: "0.9rem 0 0.9rem", display: "flex", alignItems: "center", gap: "0.8rem" }}>
           <span style={{ display: "block", width: "1.6rem", height: 1, background: DARK.rule }} />
@@ -148,7 +148,7 @@ function Post({
             </svg>
           )}
 
-          <div onClick={stop} style={{ position: "absolute", left: padH, right: padH, bottom: "3.5rem", display: "flex", alignItems: "center", gap: "1.5rem" }}>
+          <div onClick={stop} style={{ position: "absolute", left: padH, right: padH, bottom: "3.2rem", display: "flex", alignItems: "center", gap: "1.5rem" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
               <button aria-label={liked ? "Remove heart" : "Heart this"} aria-pressed={liked} onClick={onLike} className={liked ? "ov3-pop" : undefined} style={iconBtn}>
                 <HeartIcon on={liked} />
