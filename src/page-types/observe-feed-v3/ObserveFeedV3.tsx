@@ -130,11 +130,15 @@ function Post({
 
           {/* A light multiply vignette draws the eye in; the top and bottom melt into the page like the other headers. */}
           <div aria-hidden="true" style={{ position: "absolute", inset: 0, pointerEvents: "none", mixBlendMode: "multiply",
-            background: "radial-gradient(ellipse 78% 74% at 50% 46%, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 42%, rgba(70,60,50,0.62) 100%)" }} />
+            background: "radial-gradient(ellipse 78% 74% at 50% 46%, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 42%, rgba(70,60,50,0.434) 100%)" }} />
           <div aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, top: 0, height: "16%", pointerEvents: "none",
             background: "linear-gradient(to bottom, rgba(26,23,20,0.5) 0%, rgba(26,23,20,0) 100%)" }} />
           <div aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "34%", pointerEvents: "none",
             background: "linear-gradient(to top, rgba(26,23,20,0.78) 0%, rgba(26,23,20,0.4) 50%, rgba(26,23,20,0) 100%)" }} />
+
+          {/* A gentle extra band right behind the buttons, so they sit in their own quiet strip. */}
+          <div aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "19%", pointerEvents: "none",
+            background: "linear-gradient(to top, rgba(26,23,20,0.5) 0%, rgba(26,23,20,0.22) 55%, rgba(26,23,20,0) 100%)" }} />
 
           {burst > 0 && (
             <svg key={burst} className="ov3-burst" width="92" height="92" viewBox="0 0 24 24" fill={DARK.accent} aria-hidden="true"
