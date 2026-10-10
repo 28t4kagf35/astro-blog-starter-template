@@ -266,7 +266,9 @@ export function CultureFeedV3({ content, isDark = true }: { content: CultureFeed
   const instant = useRef(false);
 
   const EASE = "transform 0.42s cubic-bezier(0.22, 0.8, 0.28, 1)"; // eases out and settles
-  const goTo = (i: number) => setActive(Math.max(0, Math.min(slots - 1, i)));
+  // Moving to another card brings the page back to the top, so the new card is read from its start.
+  const toTop = () => { try { window.scrollTo({ top: 0, behavior: "smooth" }); } catch { window.scrollTo(0, 0); } };
+  const goTo = (i: number) => { setActive(Math.max(0, Math.min(slots - 1, i))); toTop(); };
 
   useEffect(() => {
     const wrap = wrapRef.current; if (!wrap) return;
@@ -327,6 +329,7 @@ export function CultureFeedV3({ content, isDark = true }: { content: CultureFeed
     row.style.transition = EASE;
     row.style.transform = `translate3d(${-next * step}px, 0, 0)`;
     setActive(next); // one card per swipe, however hard the flick
+    if (next !== active) toTop();
   };
 
   // The row is as tall as the card in front, so a short story has no empty space under it.
@@ -340,18 +343,12 @@ export function CultureFeedV3({ content, isDark = true }: { content: CultureFeed
     return () => ro.disconnect();
   }, [active, bp, stories.length]);
 
-  // Deep link: #slug opens the pager at that story; the address follows as you move.
+  // A reload always starts at the cover. Story names are not kept in the address, so the browser has no
+  // card to jump to and cannot slide the row sideways on its own.
   useEffect(() => {
-    const slug = decodeURIComponent(window.location.hash.replace(/^#/, ""));
-    const i = stories.findIndex((s) => s.slug === slug);
-    if (i >= 0) { instant.current = true; setActive(i + 1); }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (window.location.hash) window.history.replaceState(null, "", window.location.pathname + window.location.search);
+    window.scrollTo(0, 0);
   }, []);
-  useEffect(() => {
-    const url = active === 0 ? window.location.pathname + window.location.search : `#${stories[active - 1]?.slug ?? ""}`;
-    window.history.replaceState(null, "", url);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [active]);
 
   // Left and right arrow keys move between stories.
   useEffect(() => {
@@ -377,7 +374,8 @@ export function CultureFeedV3({ content, isDark = true }: { content: CultureFeed
         {/* Orientation: where you are, with one thin segment per story. */}
         <div style={{ padding: `0 ${padH}`, marginBottom: "1.1rem" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "0.8rem" }}>
-            <span style={label(tk, { color: tk.body })}>Culture &amp; History</span>
+            <button onClick={() => goTo(0)} aria-label="Culture and History, back to the start"
+              style={{ background: "none", border: "none", padding: 0, cursor: "pointer", ...label(tk, { color: tk.body }) }}>Culture &amp; History</button>
             <span style={mono(tk)}>{active === 0 ? `${n} stories` : `${String(active).padStart(2, "0")} / ${n}`}</span>
           </div>
           <div style={{ display: "flex", gap: 3 }} aria-hidden="true">
@@ -412,7 +410,7 @@ export function CultureFeedV3({ content, isDark = true }: { content: CultureFeed
               <Cover tk={tk} count={n} image={content.heroImage.src} position={content.heroImage.position} isMobile={isMobile} onStart={() => goTo(1)} />
             </div>
             {stories.map((s, i) => (
-              <div key={s.slug} id={s.slug} ref={(el) => { slotRefs.current[i + 1] = el; }} style={{ flex: `0 0 ${slotW}` }}>
+              <div key={s.slug} ref={(el) => { slotRefs.current[i + 1] = el; }} style={{ flex: `0 0 ${slotW}` }}>
                 <Story
                   entry={s} tk={tk} isActive={active === i + 1} isMobile={isMobile} eager={i < 2}
                   index={i + 1} total={n}
