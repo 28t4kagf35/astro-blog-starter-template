@@ -354,8 +354,8 @@ export function CultureFeedV2({ content, isDark = true }: { content: CultureFeed
       transition: "background 0.35s ease",
     }}>
 
-      {/* ── HERO — shared with the other v2 pages ── */}
-      <Hero image={content.heroImage.src} srcSet={mediaSrcSet(content.heroImage.src)} position={content.heroImage.position} title="Culture & History" isMobile={isMobile} isTablet={isTablet} isDesktop={!isMobile && !isTablet} />
+      {/* ── HERO — shared with the other v2 pages, the same calmer height as Learn and Experience ── */}
+      <Hero compact image={content.heroImage.src} srcSet={mediaSrcSet(content.heroImage.src)} position={content.heroImage.position} title="Culture & History" isMobile={isMobile} isTablet={isTablet} isDesktop={!isMobile && !isTablet} />
 
       {/* ── ARTICLE GRID ── */}
       <div data-bb-field="entries" style={{ maxWidth: maxW, margin: "0 auto", padding: gridPad }}>
