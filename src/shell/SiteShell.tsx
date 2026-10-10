@@ -84,7 +84,7 @@ export function withShell<C>(Page: ComponentType<{ content: C } & ShellPageProps
           hidden={navHidden}
           currentPath={path}
         />
-        <GuidesOverlay eligible={path.replace(/\/+$/, "").endsWith("-v2")} />
+        <GuidesOverlay eligible={/-v\d+$/.test(path.replace(/\/+$/, ""))} />
         <Page
           content={content}
           isDark={isDark}
@@ -92,7 +92,7 @@ export function withShell<C>(Page: ComponentType<{ content: C } & ShellPageProps
           onAudioStateChange={onAudioStateChange}
         />
         {/* First footer (draft): shown on the -v2 sandbox pages only. */}
-        {path.replace(/\/+$/, "").endsWith("-v2") && <SiteFooterNext isDark={isDark} />}
+        {/-v\d+$/.test(path.replace(/\/+$/, "")) && <SiteFooterNext isDark={isDark} />}
       </>
     );
   };

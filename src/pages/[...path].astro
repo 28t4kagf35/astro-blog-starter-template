@@ -20,6 +20,7 @@ import CabinPage from "../page-types/cabin/index.tsx";
 import HomeV2Page from "../page-types/home-v2/index.tsx";
 import CabinV2Page from "../page-types/cabin-v2/index.tsx";
 import CultureFeedV2Page from "../page-types/culture-feed-v2/index.tsx";
+import CultureFeedV3Page from "../page-types/culture-feed-v3/index.tsx";
 import ObserveFeedV2Page from "../page-types/observe-feed-v2/index.tsx";
 import ActivityV2Page from "../page-types/activity-v2/index.tsx";
 import WaterfallV2Page from "../page-types/waterfall-v2/index.tsx";
@@ -57,6 +58,7 @@ if (!(PAGE_TYPES as readonly string[]).includes(page.type)) {
 	{page.type === "homeV2" && <HomeV2Page client:load content={page.content} />}
 	{page.type === "cabinV2" && <CabinV2Page client:load content={page.content} />}
 	{page.type === "cultureV2" && <CultureFeedV2Page client:load content={page.content} />}
+	{page.type === "cultureV3" && <CultureFeedV3Page client:load content={page.content} />}
 	{page.type === "observeV2" && <ObserveFeedV2Page client:load content={page.content} />}
 	{page.type === "activityV2" && <ActivityV2Page client:load content={page.content} />}
 	{page.type === "waterfallV2" && <WaterfallV2Page client:load content={page.content} />}
