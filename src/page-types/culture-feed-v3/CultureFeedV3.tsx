@@ -288,49 +288,81 @@ export function CultureFeedV3({ content, isDark = true }: { content: CultureFeed
     instant.current = false;
   }, [active, step]);
 
-  const onPointerDown = (e: RPointerEvent) => {
-    if (e.pointerType === "mouse" && e.button !== 0) return;
-    drag.current = { on: true, locked: false, x0: e.clientX, y0: e.clientY, t0: performance.now(), dx: 0, pts: [{ x: e.clientX, t: performance.now() }] };
+  // The swipe reads the latest values through a ref, so it can never act on a stale card or width.
+  const live = useRef({ active: 0, step: 0, slots: 0 });
+  live.current = { active, step, slots };
+
+  const begin = (x: number, y: number) => {
+    const wrap = wrapRef.current; if (wrap) wrap.style.userSelect = "";
+    drag.current = { on: true, locked: false, x0: x, y0: y, t0: performance.now(), dx: 0, pts: [{ x, t: performance.now() }] };
   };
-  const onPointerMove = (e: RPointerEvent) => {
+  // Returns true once the movement is a sideways swipe (and so the page must not scroll with it).
+  const move = (x: number, y: number): boolean => {
     const d = drag.current; const row = rowRef.current; const wrap = wrapRef.current;
-    if (!d.on || !row || !wrap) return;
-    const dx = e.clientX - d.x0; const dy = e.clientY - d.y0;
+    if (!d.on || !row || !wrap) return false;
+    const { active: a, step: st, slots: sl } = live.current;
+    const dx = x - d.x0; const dy = y - d.y0;
     if (!d.locked) {
-      if (Math.abs(dx) > 6 && Math.abs(dx) > Math.abs(dy) * 1.0) {
-        d.locked = true;
-        wrap.style.userSelect = "none";
-        try { wrap.setPointerCapture(e.pointerId); } catch { /* not all browsers */ }
-      } else if (Math.abs(dy) > 10) { d.on = false; return; } else return;
+      if (Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy) * 0.8) { d.locked = true; wrap.style.userSelect = "none"; }
+      else if (Math.abs(dy) > 8) { d.on = false; return false; } // a vertical scroll: leave it to the page
+      else return false;
     }
     d.dx = dx;
-    d.pts.push({ x: e.clientX, t: performance.now() }); if (d.pts.length > 6) d.pts.shift();
+    d.pts.push({ x, t: performance.now() }); if (d.pts.length > 6) d.pts.shift();
     // Pulling past the first or last card is held back, like a rubber band.
-    const held = (active === 0 && dx > 0) || (active === slots - 1 && dx < 0) ? dx / 3 : dx;
+    const held = (a === 0 && dx > 0) || (a === sl - 1 && dx < 0) ? dx / 3 : dx;
     row.style.transition = "none";
-    row.style.transform = `translate3d(${-active * step + held}px, 0, 0)`;
+    row.style.transform = `translate3d(${-a * st + held}px, 0, 0)`;
+    return true;
   };
-  const endDrag = () => {
+  const finish = () => {
     const d = drag.current; const row = rowRef.current; const wrap = wrapRef.current;
-    if (!d.on) return;
-    d.on = false;
-    if (!d.locked || !row) return;
+    const wasOn = d.on; d.on = false;
     if (wrap) wrap.style.userSelect = "";
+    if (!wasOn || !d.locked || !row) return;
+    d.locked = false;
+    const { active: a, step: st, slots: sl } = live.current;
     // Speed of the last moments of the swipe, so a pause before the flick does not count against it.
     const a0 = d.pts[0]; const a1 = d.pts[d.pts.length - 1];
     const v = a0 && a1 && a1.t > a0.t ? (a1.x - a0.x) / (a1.t - a0.t) : 0; // px per ms
-    const far = Math.min(step * 0.15, 48);
-    let next = active;
-    if (d.dx < -far || (v < -0.25 && d.dx < -10)) next = active + 1;
-    else if (d.dx > far || (v > 0.25 && d.dx > 10)) next = active - 1;
-    next = Math.max(0, Math.min(slots - 1, next));
+    const far = Math.min(st * 0.15, 48);
+    let next = a;
+    if (d.dx < -far || (v < -0.25 && d.dx < -10)) next = a + 1;
+    else if (d.dx > far || (v > 0.25 && d.dx > 10)) next = a - 1;
+    next = Math.max(0, Math.min(sl - 1, next));
     suppressClick.current = true;
     window.setTimeout(() => { suppressClick.current = false; }, 350);
     row.style.transition = EASE;
-    row.style.transform = `translate3d(${-next * step}px, 0, 0)`;
+    row.style.transform = `translate3d(${-next * st}px, 0, 0)`;
     setActive(next); // one card per swipe, however hard the flick
-    if (next !== active) toTop();
+    if (next !== a) toTop();
   };
+
+  // Fingers: plain touch events, which iOS never half-cancels the way it can pointer events. Once a swipe is
+  // sideways the page is told not to scroll, so the gesture cannot be taken over or left hanging.
+  useEffect(() => {
+    const wrap = wrapRef.current; if (!wrap) return;
+    const ts = (e: TouchEvent) => { if (e.touches.length === 1) begin(e.touches[0].clientX, e.touches[0].clientY); else finish(); };
+    const tm = (e: TouchEvent) => { if (e.touches.length === 1 && move(e.touches[0].clientX, e.touches[0].clientY) && e.cancelable) e.preventDefault(); };
+    const te = () => finish();
+    wrap.addEventListener("touchstart", ts, { passive: true });
+    wrap.addEventListener("touchmove", tm, { passive: false });
+    wrap.addEventListener("touchend", te, { passive: true });
+    wrap.addEventListener("touchcancel", te, { passive: true });
+    return () => {
+      wrap.removeEventListener("touchstart", ts); wrap.removeEventListener("touchmove", tm);
+      wrap.removeEventListener("touchend", te); wrap.removeEventListener("touchcancel", te);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Mouse (desktop): the same swipe by dragging.
+  const onMouseDown = (e: RPointerEvent) => { if (e.pointerType === "mouse" && e.button === 0) begin(e.clientX, e.clientY); };
+  const onMouseMove = (e: RPointerEvent) => {
+    if (e.pointerType !== "mouse") return;
+    if (move(e.clientX, e.clientY)) { try { wrapRef.current?.setPointerCapture(e.pointerId); } catch { /* not all browsers */ } }
+  };
+  const onMouseUp = (e: RPointerEvent) => { if (e.pointerType === "mouse") finish(); };
 
   // The row is as tall as the card in front, so a short story has no empty space under it.
   useEffect(() => {
@@ -392,10 +424,10 @@ export function CultureFeedV3({ content, isDark = true }: { content: CultureFeed
         <div
           ref={wrapRef}
           data-bb-field="entries"
-          onPointerDown={onPointerDown}
-          onPointerMove={onPointerMove}
-          onPointerUp={endDrag}
-          onPointerCancel={endDrag}
+          onPointerDown={onMouseDown}
+          onPointerMove={onMouseMove}
+          onPointerUp={onMouseUp}
+          onPointerCancel={onMouseUp}
           onClickCapture={(e) => { if (suppressClick.current) { e.preventDefault(); e.stopPropagation(); suppressClick.current = false; } }}
           onDragStart={(e) => e.preventDefault()}
           onScroll={(e) => { e.currentTarget.scrollLeft = 0; e.currentTarget.scrollTop = 0; }}
