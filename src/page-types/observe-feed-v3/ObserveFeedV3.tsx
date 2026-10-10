@@ -16,9 +16,9 @@ import { useEffect, useRef, useState, type CSSProperties } from "react";
 const FONT_SS4  = "'Source Serif 4', Georgia, serif";
 const FONT_MONO = "'IBM Plex Mono', monospace";
 const FONT_LBL  = "'Raleway', system-ui, sans-serif";
-const SS4_OPSZ = '"opsz" 24, "wght" 300';
+const SS4_OPSZ = '"opsz" 30, "wght" 230'; // slimmer than the usual 300
 const FONTS_HREF =
-  "https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;1,8..60,300" +
+  "https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..300;1,8..60,200..300" +
   "&family=Source+Sans+3:wght@300;400&family=IBM+Plex+Mono:wght@400&family=Raleway:wght@300;400&display=block";
 
 const DARK = { bg: "#1A1714", surface: "#222120", rule: "#2C2A28", muted: "#6E6A65", body: "#C4BEB4", head: "#EDE9E2", accent: "#D43535" };
@@ -162,8 +162,8 @@ function Post({
 
         <p style={{
           position: "relative", zIndex: 1, margin: "-2rem 0 0", padding: `0 ${padH}`, maxWidth: "34rem",
-          fontFamily: FONT_SS4, fontStyle: "italic", fontWeight: 300, fontVariationSettings: SS4_OPSZ,
-          fontSize: isMobile ? "1rem" : "1.06rem", lineHeight: 1.62, letterSpacing: "0.022em", color: DARK.head,
+          fontFamily: FONT_SS4, fontStyle: "italic", fontWeight: 230, fontVariationSettings: SS4_OPSZ,
+          fontSize: isMobile ? "1.08rem" : "1.15rem", lineHeight: 1.62, letterSpacing: "0.04em", color: DARK.head,
           opacity: seen ? 1 : 0, transform: seen ? "none" : "translateY(6px)",
           transition: "opacity 1.1s ease 0.3s, transform 1.1s ease 0.3s",
         }}>
@@ -176,9 +176,9 @@ function Post({
 
 export function ObserveFeedV3({ content }: { content: ObserveFeedV3Content; isDark?: boolean }) {
   useEffect(() => {
-    if (document.querySelector("link[data-brand-fonts]")) return;
+    if (document.querySelector("link[data-observe-fonts]")) return;
     const link = document.createElement("link");
-    link.rel = "stylesheet"; link.href = FONTS_HREF; link.setAttribute("data-brand-fonts", "1");
+    link.rel = "stylesheet"; link.href = FONTS_HREF; link.setAttribute("data-observe-fonts", "1");
     document.head.appendChild(link);
   }, []);
 
