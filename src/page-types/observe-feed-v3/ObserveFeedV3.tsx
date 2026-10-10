@@ -110,7 +110,7 @@ function Post({
   const stop = (e: { stopPropagation: () => void }) => e.stopPropagation();
 
   return (
-    <article id={id} style={{ marginBottom: "1.2rem" /* equals the gap between the buttons and the caption */, scrollMarginTop: "4.5rem" }}>
+    <article id={id} style={{ marginBottom: "1.8rem", scrollMarginTop: "4.5rem" }}>
       {showSection && b.section && (
         <div style={{ padding: `0 ${padH}`, margin: "0.9rem 0 0.9rem", display: "flex", alignItems: "center", gap: "0.8rem" }}>
           <span style={{ display: "block", width: "1.6rem", height: 1, background: DARK.rule }} />
