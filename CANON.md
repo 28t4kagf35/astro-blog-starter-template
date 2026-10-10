@@ -94,8 +94,9 @@ navbar-next 2.0.2.
 - The Vf mark at the right of the last row, level with the "Voss, Norway" line: off-white at 40%
   on dark, black at 45% on light; 45 px high on phones, 56 px from 600 px wide.
 - Generous space above the wordmark (7 / 6 / 5 rem on desktop / tablet / phone).
-- Component: `src/globals/footer-next/` (version 1.0.0). The map and the Vf files are placeholders
-  until the page designs are locked.
+- Component: `src/globals/footer-next/` (version 1.0.0). The Vf is the owner's own mark; the web
+  files are PNGs, to be replaced by a vector version. The map is a simplified outline that can be
+  refined.
 
 **Known and accepted**
 - Link and small text are about 3.7:1 on dark, below the 4.5:1 minimum for small text, by choice for
