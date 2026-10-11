@@ -126,17 +126,7 @@ function Post({
             <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}><span style={mono()}>image unavailable</span></div>
           )}
 
-          {/* A light neutral multiply vignette (pure darkening, no tint) draws the eye in; the top and bottom melt into the page like the other headers. */}
-          <div aria-hidden="true" style={{ position: "absolute", inset: 0, pointerEvents: "none", mixBlendMode: "multiply",
-            background: "radial-gradient(ellipse 78% 74% at 50% 46%, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 42%, rgba(0,0,0,0.28) 100%)" }} />
-          {/* Top: the first picture carries the navbar, so it starts in the page colour and clears downward. */}
-          <div aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, top: 0, height: first ? "36%" : "16%", pointerEvents: "none",
-            background: first
-              ? "linear-gradient(to bottom, rgba(26,23,20,1) 0%, rgba(26,23,20,0.82) 30%, rgba(26,23,20,0.4) 65%, rgba(26,23,20,0) 100%)"
-              : "linear-gradient(to bottom, rgba(26,23,20,0.5) 0%, rgba(26,23,20,0) 100%)" }} />
-          {/* Bottom: the fade reaches the card colour (as in the Culture cards) and the caption rests on it inside the card. */}
-          <div aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, bottom: -1, height: "50%", pointerEvents: "none",
-            background: "linear-gradient(to top, rgba(23,20,17,1) 0%, rgba(23,20,17,0.96) 14%, rgba(23,20,17,0.7) 38%, rgba(23,20,17,0.28) 70%, rgba(23,20,17,0) 100%)" }} />
+          {/* Bare baseline: no vignette and no gradients; they are rebuilt step by step. */}
 
           {burst > 0 && (
             <svg key={burst} className="ov3-burst" width="92" height="92" viewBox="0 0 24 24" fill={DARK.accent} aria-hidden="true"
@@ -162,7 +152,7 @@ function Post({
         </div>
 
         <p style={{
-          position: "relative", zIndex: 1, margin: "-2rem 0 0", padding: `0 ${padH} 1.5rem`, maxWidth: "34rem",
+          position: "relative", zIndex: 1, margin: 0, padding: `1.3rem ${padH} 1.5rem`, maxWidth: "34rem",
           fontFamily: FONT_SS4, fontStyle: "italic", fontWeight: 230, fontVariationSettings: SS4_OPSZ,
           fontSize: isMobile ? "1.02rem" : "1.18rem", lineHeight: 1.72, letterSpacing: "0.06em", color: "#D3CDC3",
           opacity: seen ? 1 : 0, transform: seen ? "none" : "translateY(6px)",
