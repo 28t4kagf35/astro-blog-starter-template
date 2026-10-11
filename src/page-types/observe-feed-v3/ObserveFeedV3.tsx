@@ -114,7 +114,7 @@ function Post({
   const stop = (e: { stopPropagation: () => void }) => e.stopPropagation();
 
   return (
-    <article id={id} style={{ marginBottom: "1.2rem", scrollMarginTop: "4.5rem", background: CARD, border: "1px solid #1F1E1C", borderRadius: "0.35rem", overflow: "hidden", boxShadow: "0 8px 26px rgba(0,0,0,0.37)" }}>
+    <article id={id} style={{ marginBottom: "1.2rem", scrollMarginTop: "4.5rem", background: CARD, border: "1px solid #1F1E1C", borderRadius: "0.35rem", overflow: "hidden", boxShadow: "0 8px 26px rgba(0,0,0,0.32)" }}>
       <div>
         <div ref={ref} onClick={photoTap}
           style={{ position: "relative", width: "100%", aspectRatio: "1 / 1", overflow: "hidden", background: CARD, cursor: "pointer", userSelect: "none", WebkitTapHighlightColor: "transparent" }}>
