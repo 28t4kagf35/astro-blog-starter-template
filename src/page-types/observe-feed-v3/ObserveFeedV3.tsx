@@ -26,8 +26,8 @@ const CARD = "#171411";
 const DARK = { bg: "#1A1714", surface: "#222120", rule: "#2C2A28", muted: "#6E6A65", body: "#C4BEB4", head: "#EDE9E2", accent: "#D43535" };
 // Heart and share are switched off while the picture and caption are fine-tuned; set to true to bring them back.
 const SHOW_ACTIONS = false;
-// No photo filter on Observe: the pictures show as they were taken.
-const PHOTO: CSSProperties = {};
+// Observe: no sepia and no colour shift, only a plain 10% exposure drop so the caption reads better. Hues and saturation stay as taken.
+const PHOTO: CSSProperties = { filter: "brightness(0.9)" };
 
 export type ObserveFeedV3Block = {
   id: string;
