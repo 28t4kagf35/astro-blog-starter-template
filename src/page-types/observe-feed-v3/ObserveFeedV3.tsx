@@ -117,7 +117,7 @@ function Post({
         <div ref={ref} onClick={photoTap}
           style={{ position: "relative", width: "100%", aspectRatio: "1 / 1", overflow: "hidden", background: DARK.surface, borderRadius: isMobile ? 0 : "0.35rem", cursor: "pointer", userSelect: "none", WebkitTapHighlightColor: "transparent" }}>
           {b.image ? (
-            <img src={b.image} srcSet={mediaSrcSet(b.image)} sizes="(min-width: 700px) 520px, 100vw" alt="" draggable={false}
+            <img src={b.image} srcSet={mediaSrcSet(b.image)} sizes="(min-width: 700px) 680px, 100vw" alt="" draggable={false}
               loading={eager ? "eager" : "lazy"} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", ...PHOTO }} />
           ) : (
             <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}><span style={mono()}>image unavailable</span></div>
@@ -184,7 +184,7 @@ export function ObserveFeedV3({ content }: { content: ObserveFeedV3Content; isDa
   const bp = useBreakpoint();
   const isMobile = bp === "mobile";
   // Text and buttons keep a generous margin; the pictures run edge to edge.
-  const padH = isMobile ? "1.7rem" : bp === "tablet" ? "1.9rem" : "1.5rem";
+  const padH = isMobile ? "1.7rem" : "2.2rem";
   const blocks = content.blocks.filter((b) => b.caption.trim() !== "");
 
   // Hearts: this visitor's own (kept on the phone) and everyone's totals (from the server, when it exists).
@@ -212,7 +212,7 @@ export function ObserveFeedV3({ content }: { content: ObserveFeedV3Content; isDa
         .ov3-pop svg { animation: ov3-pop 0.34s cubic-bezier(0.22, 0.8, 0.28, 1); }
         @media (prefers-reduced-motion: reduce) { .ov3-burst, .ov3-pop svg { animation: none; } }
       `}</style>
-      <div style={{ maxWidth: isMobile ? "none" : "600px", margin: "0 auto", paddingTop: 0 }}>
+      <div style={{ maxWidth: isMobile ? "none" : "680px", margin: "0 auto", paddingTop: 0 }}>
         {blocks.map((b, i) => (
           <Post key={b.id} b={b} first={i === 0} eager={i < 2} isMobile={isMobile} padH={padH}
             liked={!!mine[slugOf(b)]} count={totals[slugOf(b)] ?? 0}
