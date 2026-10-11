@@ -135,25 +135,7 @@ function Post({
               of the picture, clear in the middle and rising dark along the sides, strongest at the bottom. At the caption it is about
               74% in the centre and solid at the sides; the bottom edge is solid, so it lands exactly on the card. The top is masked clear. */}
           <div aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, top: 0, bottom: -1, pointerEvents: "none",
-            background: "radial-gradient(ellipse 86% 65% at 50% 35%, rgba(23,20,17,0) 0%, rgba(23,20,17,0) 30%, rgba(23,20,17,0.05) 42%, rgba(23,20,17,0.14) 54%, rgba(23,20,17,0.3) 66%, rgba(23,20,17,0.52) 75%, rgba(23,20,17,0.74) 83%, rgba(23,20,17,1) 100%)",
-            WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, #000 30%)", maskImage: "linear-gradient(to bottom, transparent 0%, #000 30%)" }} />
-
-          {burst > 0 && (
-            <svg key={burst} className="ov3-burst" width="92" height="92" viewBox="0 0 24 24" fill={DARK.accent} aria-hidden="true"
-              style={{ position: "absolute", left: "50%", top: "50%", marginLeft: -46, marginTop: -46, pointerEvents: "none" }}>
-              <path d="M12 20.4s-7.6-4.6-7.6-10.3c0-2.6 2-4.5 4.4-4.5 1.5 0 2.7.8 3.2 1.9.5-1.1 1.7-1.9 3.2-1.9 2.4 0 4.4 1.9 4.4 4.5 0 5.7-7.6 10.3-7.6 10.3z" />
-            </svg>
-          )}
-
-          {SHOW_ACTIONS && (
-          <div onClick={stop} style={{ position: "absolute", left: padH, right: padH, bottom: "3.2rem", display: "flex", alignItems: "center", gap: "1.5rem",
-            opacity: seen ? 1 : 0, transform: seen ? "none" : "translateY(6px)", pointerEvents: seen ? "auto" : "none",
-            transition: "opacity 1.1s ease 0.3s, transform 1.1s ease 0.3s" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
-              <button aria-label={liked ? "Remove heart" : "Heart this"} aria-pressed={liked} onClick={onLike} className={liked ? "ov3-pop" : undefined} style={iconBtn}>
-                <HeartIcon on={liked} />
-              </button>
-              {count > 0 && <span style={mono({ color: DARK.head })}>{count.toLocaleString("en")}</span>}
+            background: "radial-gradient(ellipse 86% 65% at 50% 30%, rgba(23,20,17,0) 0%, rgba(23,20,17,0) 20%, rgba(23,20,17,0.04) 32%, rgba(23,20,17,0.1) 44%, rgba(23,20,17,0.22) 56%, rgba(23,20,17,0.4) 68%, rgba(23,20,17,0.62) 79%, rgba(23,20,17,0.8) 88%, rgba(23,20,17,1) 100%")}</span>}
             </div>
             <button aria-label="Share" onClick={share} style={iconBtn}><ShareIcon /></button>
             {note && <span style={mono({ fontSize: "0.64rem", color: DARK.head })}>{note}</span>}
@@ -162,10 +144,10 @@ function Post({
         </div>
 
         {/* A strip of card colour under the picture, to catch the last caption line. The bowl is solid at the picture's bottom edge, so there is no seam. */}
-        <div aria-hidden="true" style={{ height: isMobile ? "2rem" : "1rem", background: CARD }} />
+        <div aria-hidden="true" style={{ height: "0.75rem", background: CARD }} />
 
         <p style={{
-          position: "absolute", left: 0, right: 0, bottom: 0, zIndex: 1, margin: 0, padding: `0 ${padH} 1.5rem`, maxWidth: "34rem",
+          position: "absolute", left: 0, right: 0, bottom: 0, zIndex: 1, margin: 0, padding: `0 ${padH} 0.9rem`, maxWidth: "34rem",
           fontFamily: FONT_SS4, fontStyle: "italic", fontWeight: 230, fontVariationSettings: SS4_OPSZ,
           fontSize: isMobile ? "1.02rem" : "1.18rem", lineHeight: 1.72, letterSpacing: "0.06em", color: "#D3CDC3",
           opacity: seen ? 1 : 0, transform: seen ? "none" : "translateY(6px)",
