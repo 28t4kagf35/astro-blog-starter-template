@@ -22,6 +22,8 @@ const FONTS_HREF =
   "&family=Source+Sans+3:wght@300;400&family=IBM+Plex+Mono:wght@400&family=Raleway:wght@300;400&display=block";
 
 const DARK = { bg: "#1A1714", surface: "#222120", rule: "#2C2A28", muted: "#6E6A65", body: "#C4BEB4", head: "#EDE9E2", accent: "#D43535" };
+// Heart and share are switched off while the picture and caption are fine-tuned; set to true to bring them back.
+const SHOW_ACTIONS = false;
 const PHOTO: CSSProperties = { filter: "saturate(0.86) sepia(0.1) brightness(0.94)" };
 
 export type ObserveFeedV3Block = {
@@ -141,6 +143,7 @@ function Post({
             </svg>
           )}
 
+          {SHOW_ACTIONS && (
           <div onClick={stop} style={{ position: "absolute", left: padH, right: padH, bottom: "3.2rem", display: "flex", alignItems: "center", gap: "1.5rem",
             opacity: seen ? 1 : 0, transform: seen ? "none" : "translateY(6px)", pointerEvents: seen ? "auto" : "none",
             transition: "opacity 1.1s ease 0.3s, transform 1.1s ease 0.3s" }}>
@@ -153,6 +156,7 @@ function Post({
             <button aria-label="Share" onClick={share} style={iconBtn}><ShareIcon /></button>
             {note && <span style={mono({ fontSize: "0.64rem", color: DARK.head })}>{note}</span>}
           </div>
+          )}
         </div>
 
         <p style={{
