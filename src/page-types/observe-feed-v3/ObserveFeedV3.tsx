@@ -118,7 +118,7 @@ function Post({
     <article id={id} style={{ position: "relative", marginBottom: "1.2rem", scrollMarginTop: "4.5rem", background: "transparent", border: "1px solid #1F1E1C", borderRadius: "0.35rem", overflow: "hidden", boxShadow: "0 8px 26px rgba(0,0,0,0.32)" }}>
       <div>
         <div ref={ref} onClick={photoTap}
-          style={{ position: "relative", width: "100%", aspectRatio: "1 / 1", overflow: "hidden", background: CARD, cursor: "pointer", userSelect: "none", WebkitTapHighlightColor: "transparent" }}>
+          style={{ position: "relative", width: "100%", aspectRatio: isMobile ? "4 / 5" : "1 / 1", overflow: "hidden", background: CARD, cursor: "pointer", userSelect: "none", WebkitTapHighlightColor: "transparent" }}>
           {b.image ? (
             <img src={b.image} srcSet={mediaSrcSet(b.image)} sizes="(min-width: 700px) 620px, calc(100vw - 40px)" alt="" draggable={false}
               loading={eager ? "eager" : "lazy"} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", ...PHOTO }} />
@@ -135,7 +135,7 @@ function Post({
               of the picture, clear in the middle and rising dark along the sides, strongest at the bottom. At the caption it is about
               74% in the centre and solid at the sides; the bottom edge is solid, so it lands exactly on the card. The top is masked clear. */}
           <div aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, top: 0, bottom: -1, pointerEvents: "none",
-            background: `radial-gradient(${isMobile ? "ellipse 108% 100% at 50% 0%" : "ellipse 120% 78% at 50% calc(30% - 50px)"}, ${isMobile ? "rgba(23,20,17,0) 0%, rgba(23,20,17,0) 8%, rgba(23,20,17,0.026) 22%, rgba(23,20,17,0.067) 36%, rgba(23,20,17,0.145) 49%, rgba(23,20,17,0.266) 63%, rgba(23,20,17,0.411) 76%, rgba(23,20,17,0.533) 86%, rgba(23,20,17,0.66) 93%, rgba(23,20,17,0.82) 97%, rgba(23,20,17,1) 100%" : "rgba(23,20,17,0) 0%, rgba(23,20,17,0) 8%, rgba(23,20,17,0.035) 22%, rgba(23,20,17,0.088) 36%, rgba(23,20,17,0.19) 49%, rgba(23,20,17,0.35) 63%, rgba(23,20,17,0.54) 76%, rgba(23,20,17,0.7) 86%, rgba(23,20,17,0.86) 93%, rgba(23,20,17,1) 100%"})`,
+            background: `radial-gradient(${isMobile ? "ellipse 120% 78% at 50% 22%" : "ellipse 120% 78% at 50% calc(30% - 50px)"}, ${"rgba(23,20,17,0) 0%, rgba(23,20,17,0) 8%, rgba(23,20,17,0.035) 22%, rgba(23,20,17,0.088) 36%, rgba(23,20,17,0.19) 49%, rgba(23,20,17,0.35) 63%, rgba(23,20,17,0.54) 76%, rgba(23,20,17,0.7) 86%, rgba(23,20,17,0.86) 93%, rgba(23,20,17,1) 100%"})`,
             WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, #000 30%)", maskImage: "linear-gradient(to bottom, transparent 0%, #000 30%)" }} />
 
           {burst > 0 && (
