@@ -115,9 +115,9 @@ function Post({
     <article id={id} style={{ marginBottom: "1.8rem", scrollMarginTop: "4.5rem" }}>
       <div>
         <div ref={ref} onClick={photoTap}
-          style={{ position: "relative", width: "100%", aspectRatio: "1 / 1", overflow: "hidden", background: DARK.surface, borderRadius: isMobile ? 0 : "0.35rem", cursor: "pointer", userSelect: "none", WebkitTapHighlightColor: "transparent" }}>
+          style={{ position: "relative", width: "100%", aspectRatio: "1 / 1", overflow: "hidden", background: DARK.surface, borderRadius: "0.35rem", cursor: "pointer", userSelect: "none", WebkitTapHighlightColor: "transparent" }}>
           {b.image ? (
-            <img src={b.image} srcSet={mediaSrcSet(b.image)} sizes="(min-width: 700px) 680px, 100vw" alt="" draggable={false}
+            <img src={b.image} srcSet={mediaSrcSet(b.image)} sizes="(min-width: 700px) 620px, calc(100vw - 40px)" alt="" draggable={false}
               loading={eager ? "eager" : "lazy"} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", ...PHOTO }} />
           ) : (
             <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}><span style={mono()}>image unavailable</span></div>
@@ -135,6 +135,11 @@ function Post({
               so the heart, share and caption rest on the page colour with no edge. */}
           <div aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, bottom: -1, height: "50%", pointerEvents: "none",
             background: "linear-gradient(to top, rgba(26,23,20,1) 0%, rgba(26,23,20,0.96) 14%, rgba(26,23,20,0.7) 38%, rgba(26,23,20,0.28) 70%, rgba(26,23,20,0) 100%)" }} />
+
+          {/* The same thin border as the Culture cards; it fades out with the bottom gradient so it never frames the caption. */}
+          <div aria-hidden="true" style={{ position: "absolute", inset: 0, pointerEvents: "none", borderRadius: "0.35rem", border: `1px solid ${DARK.rule}`,
+            WebkitMaskImage: first ? "linear-gradient(to bottom, transparent 0%, #000 30%, #000 45%, transparent 85%)" : "linear-gradient(to bottom, #000 0%, #000 45%, transparent 85%)",
+            maskImage: first ? "linear-gradient(to bottom, transparent 0%, #000 30%, #000 45%, transparent 85%)" : "linear-gradient(to bottom, #000 0%, #000 45%, transparent 85%)" }} />
 
           {burst > 0 && (
             <svg key={burst} className="ov3-burst" width="92" height="92" viewBox="0 0 24 24" fill={DARK.accent} aria-hidden="true"
@@ -184,7 +189,7 @@ export function ObserveFeedV3({ content }: { content: ObserveFeedV3Content; isDa
   const bp = useBreakpoint();
   const isMobile = bp === "mobile";
   // Text and buttons keep a generous margin; the pictures run edge to edge.
-  const padH = isMobile ? "1.7rem" : "2.2rem";
+  const padH = isMobile ? "1.25rem" : "1.6rem";
   const blocks = content.blocks.filter((b) => b.caption.trim() !== "");
 
   // Hearts: this visitor's own (kept on the phone) and everyone's totals (from the server, when it exists).
@@ -213,6 +218,7 @@ export function ObserveFeedV3({ content }: { content: ObserveFeedV3Content; isDa
         @media (prefers-reduced-motion: reduce) { .ov3-burst, .ov3-pop svg { animation: none; } }
       `}</style>
       <div style={{ maxWidth: isMobile ? "none" : "680px", margin: "0 auto", paddingTop: 0 }}>
+      <div style={{ maxWidth: isMobile ? "none" : "620px", margin: "0 auto", padding: isMobile ? "0 1.25rem" : 0 }}>
         {blocks.map((b, i) => (
           <Post key={b.id} b={b} first={i === 0} eager={i < 2} isMobile={isMobile} padH={padH}
             liked={!!mine[slugOf(b)]} count={totals[slugOf(b)] ?? 0}
@@ -223,6 +229,7 @@ export function ObserveFeedV3({ content }: { content: ObserveFeedV3Content; isDa
           That is all, for now.
         </p>
         <div style={{ height: isMobile ? "3.5rem" : "5.5rem" }} aria-hidden="true" />
+      </div>
       </div>
     </div>
   );
