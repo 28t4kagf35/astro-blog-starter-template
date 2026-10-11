@@ -135,7 +135,7 @@ function Post({
               of the picture, clear in the middle and rising dark along the sides, strongest at the bottom. At the caption it is about
               74% in the centre and solid at the sides; the bottom edge is solid, so it lands exactly on the card. The top is masked clear. */}
           <div aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, top: 0, bottom: -1, pointerEvents: "none",
-            background: "radial-gradient(ellipse 86% 65% at 50% 30%, rgba(23,20,17,0) 0%, rgba(23,20,17,0) 20%, rgba(23,20,17,0.04) 32%, rgba(23,20,17,0.1) 44%, rgba(23,20,17,0.22) 56%, rgba(23,20,17,0.4) 68%, rgba(23,20,17,0.62) 79%, rgba(23,20,17,0.8) 88%, rgba(23,20,17,1) 100%)",
+            background: "radial-gradient(ellipse 99% 65% at 50% 30%, rgba(23,20,17,0) 0%, rgba(23,20,17,0) 20%, rgba(23,20,17,0.04) 32%, rgba(23,20,17,0.1) 44%, rgba(23,20,17,0.22) 56%, rgba(23,20,17,0.4) 68%, rgba(23,20,17,0.62) 79%, rgba(23,20,17,0.8) 88%, rgba(23,20,17,1) 100%)",
             WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, #000 30%)", maskImage: "linear-gradient(to bottom, transparent 0%, #000 30%)" }} />
 
           {burst > 0 && (
@@ -165,7 +165,7 @@ function Post({
         <div aria-hidden="true" style={{ height: "0.75rem", background: CARD }} />
 
         <p style={{
-          position: "absolute", left: 0, right: 0, bottom: 0, zIndex: 1, margin: 0, padding: `0 ${padH} 0.45rem`, maxWidth: "34rem",
+          position: "absolute", left: 0, right: 0, bottom: 0, zIndex: 1, margin: 0, padding: `0 ${padH} 0.75rem`, maxWidth: "34rem",
           fontFamily: FONT_SS4, fontStyle: "italic", fontWeight: 230, fontVariationSettings: SS4_OPSZ,
           fontSize: isMobile ? "1.02rem" : "1.18rem", lineHeight: 1.72, letterSpacing: "0.06em", color: "#D3CDC3",
           opacity: seen ? 1 : 0, transform: seen ? "none" : "translateY(6px)",
