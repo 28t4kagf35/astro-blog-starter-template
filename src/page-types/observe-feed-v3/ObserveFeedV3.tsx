@@ -21,6 +21,8 @@ const FONTS_HREF =
   "https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..300;1,8..60,200..300" +
   "&family=Source+Sans+3:wght@300;400&family=IBM+Plex+Mono:wght@400&family=Raleway:wght@300;400&display=block";
 
+// Observe cards are deeper than the page, so the picture falls away into near-black.
+const CARD = "#0E0C0A";
 const DARK = { bg: "#1A1714", surface: "#222120", rule: "#2C2A28", muted: "#6E6A65", body: "#C4BEB4", head: "#EDE9E2", accent: "#D43535" };
 // Heart and share are switched off while the picture and caption are fine-tuned; set to true to bring them back.
 const SHOW_ACTIONS = false;
@@ -112,10 +114,10 @@ function Post({
   const stop = (e: { stopPropagation: () => void }) => e.stopPropagation();
 
   return (
-    <article id={id} style={{ marginBottom: "1.2rem", scrollMarginTop: "4.5rem", background: DARK.surface, border: `1px solid ${DARK.rule}`, borderRadius: "0.35rem", overflow: "hidden" }}>
+    <article id={id} style={{ marginBottom: "1.2rem", scrollMarginTop: "4.5rem", background: CARD, border: `1px solid ${DARK.rule}`, borderRadius: "0.35rem", overflow: "hidden" }}>
       <div>
         <div ref={ref} onClick={photoTap}
-          style={{ position: "relative", width: "100%", aspectRatio: "1 / 1", overflow: "hidden", background: DARK.surface, cursor: "pointer", userSelect: "none", WebkitTapHighlightColor: "transparent" }}>
+          style={{ position: "relative", width: "100%", aspectRatio: "1 / 1", overflow: "hidden", background: CARD, cursor: "pointer", userSelect: "none", WebkitTapHighlightColor: "transparent" }}>
           {b.image ? (
             <img src={b.image} srcSet={mediaSrcSet(b.image)} sizes="(min-width: 700px) 620px, calc(100vw - 40px)" alt="" draggable={false}
               loading={eager ? "eager" : "lazy"} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", ...PHOTO }} />
@@ -133,7 +135,7 @@ function Post({
               : "linear-gradient(to bottom, rgba(26,23,20,0.5) 0%, rgba(26,23,20,0) 100%)" }} />
           {/* Bottom: the fade reaches the card colour (as in the Culture cards) and the caption rests on it inside the card. */}
           <div aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, bottom: -1, height: "50%", pointerEvents: "none",
-            background: "linear-gradient(to top, rgba(34,33,32,1) 0%, rgba(34,33,32,0.96) 14%, rgba(34,33,32,0.7) 38%, rgba(34,33,32,0.28) 70%, rgba(34,33,32,0) 100%)" }} />
+            background: "linear-gradient(to top, rgba(14,12,10,1) 0%, rgba(14,12,10,0.96) 14%, rgba(14,12,10,0.7) 38%, rgba(14,12,10,0.28) 70%, rgba(14,12,10,0) 100%)" }} />
 
           {burst > 0 && (
             <svg key={burst} className="ov3-burst" width="92" height="92" viewBox="0 0 24 24" fill={DARK.accent} aria-hidden="true"
