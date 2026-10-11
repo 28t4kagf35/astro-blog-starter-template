@@ -115,7 +115,7 @@ function Post({
   const stop = (e: { stopPropagation: () => void }) => e.stopPropagation();
 
   return (
-    <article id={id} style={{ marginBottom: "1.2rem", scrollMarginTop: "4.5rem", background: "transparent", border: "1px solid #1F1E1C", borderRadius: "0.35rem", overflow: "hidden", boxShadow: "0 8px 26px rgba(0,0,0,0.32)" }}>
+    <article id={id} style={{ position: "relative", marginBottom: "1.2rem", scrollMarginTop: "4.5rem", background: "transparent", border: "1px solid #1F1E1C", borderRadius: "0.35rem", overflow: "hidden", boxShadow: "0 8px 26px rgba(0,0,0,0.32)" }}>
       <div>
         <div ref={ref} onClick={photoTap}
           style={{ position: "relative", width: "100%", aspectRatio: "1 / 1", overflow: "hidden", background: CARD, cursor: "pointer", userSelect: "none", WebkitTapHighlightColor: "transparent" }}>
@@ -152,7 +152,7 @@ function Post({
         </div>
 
         <p style={{
-          position: "relative", zIndex: 1, margin: 0, padding: `1.3rem ${padH} 1.5rem`, maxWidth: "34rem",
+          position: "absolute", left: 0, right: 0, bottom: 0, zIndex: 1, margin: 0, padding: `0 ${padH} 1.5rem`, maxWidth: "34rem",
           fontFamily: FONT_SS4, fontStyle: "italic", fontWeight: 230, fontVariationSettings: SS4_OPSZ,
           fontSize: isMobile ? "1.02rem" : "1.18rem", lineHeight: 1.72, letterSpacing: "0.06em", color: "#D3CDC3",
           opacity: seen ? 1 : 0, transform: seen ? "none" : "translateY(6px)",
