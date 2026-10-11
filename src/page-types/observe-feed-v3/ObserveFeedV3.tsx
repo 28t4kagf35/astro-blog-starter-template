@@ -126,9 +126,9 @@ function Post({
             <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}><span style={mono()}>image unavailable</span></div>
           )}
 
-          {/* A light multiply vignette draws the eye in; the top and bottom melt into the page like the other headers. */}
+          {/* A light neutral multiply vignette (pure darkening, no tint) draws the eye in; the top and bottom melt into the page like the other headers. */}
           <div aria-hidden="true" style={{ position: "absolute", inset: 0, pointerEvents: "none", mixBlendMode: "multiply",
-            background: "radial-gradient(ellipse 78% 74% at 50% 46%, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 42%, rgba(70,60,50,0.434) 100%)" }} />
+            background: "radial-gradient(ellipse 78% 74% at 50% 46%, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 42%, rgba(0,0,0,0.28) 100%)" }} />
           {/* Top: the first picture carries the navbar, so it starts in the page colour and clears downward. */}
           <div aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, top: 0, height: first ? "36%" : "16%", pointerEvents: "none",
             background: first
