@@ -126,7 +126,11 @@ function Post({
             <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}><span style={mono()}>image unavailable</span></div>
           )}
 
-          {/* Bare baseline: no vignette and no gradients; they are rebuilt step by step. */}
+          {/* Bare baseline, rebuilt step by step. Step 1: a thin curved fade at the bottom, in the card colour.
+              Its height depends on the picture only (about a fifth of it, between 56 and 96px), never on the caption.
+              A low arc (half a vignette) rises from the centre, and a short even band keeps the corners meeting the card cleanly. */}
+          <div aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, bottom: -1, height: "clamp(56px, 20%, 96px)", pointerEvents: "none",
+            background: "linear-gradient(to top, rgba(23,20,17,1) 0%, rgba(23,20,17,0) 30%), radial-gradient(ellipse 85% 100% at 50% 100%, rgba(23,20,17,1) 0%, rgba(23,20,17,0.85) 30%, rgba(23,20,17,0.4) 62%, rgba(23,20,17,0) 100%)" }} />
 
           {burst > 0 && (
             <svg key={burst} className="ov3-burst" width="92" height="92" viewBox="0 0 24 24" fill={DARK.accent} aria-hidden="true"
