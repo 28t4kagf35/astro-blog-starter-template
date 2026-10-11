@@ -131,12 +131,12 @@ function Post({
           <div aria-hidden="true" style={{ position: "absolute", inset: 0, pointerEvents: "none", mixBlendMode: "multiply",
             background: "radial-gradient(ellipse 80% 80% at 50% 46%, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 55%, rgba(40,34,30,0.22) 100%)" }} />
 
-          {/* Rebuild, step 2: the half vignette behind the caption, in the card colour (the one balanced with the shadow and page).
-              A fixed 140px band, an oval 140% as wide as the card so the bottom corners are nearly as high as the middle.
-              Solid at the bottom edge so it lands exactly on the card; about 74% at the caption, easing to nothing at the top.
-              The 74% is the dial: a bright pixel (230) behind the text ends up near 69 at 77% and near 87 at 68%, the edge of comfortable. */}
-          <div aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, bottom: -1, height: 140, pointerEvents: "none",
-            background: "radial-gradient(ellipse 140% 100% at 50% 100%, rgba(23,20,17,1) 0%, rgba(23,20,17,0.9) 18%, rgba(23,20,17,0.74) 36%, rgba(23,20,17,0.4) 70%, rgba(23,20,17,0.14) 89%, rgba(23,20,17,0) 100%)" }} />
+          {/* Rebuild, step 2 (second try): the half vignette as a bowl. One oval in the card colour, centred above the middle
+              of the picture, clear in the middle and rising dark along the sides, strongest at the bottom. At the caption it is about
+              74% in the centre and solid at the sides; the bottom edge is solid, so it lands exactly on the card. The top is masked clear. */}
+          <div aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, top: 0, bottom: -1, pointerEvents: "none",
+            background: "radial-gradient(ellipse 80% 65% at 50% 35%, rgba(23,20,17,0) 0%, rgba(23,20,17,0) 45%, rgba(23,20,17,0.2) 62%, rgba(23,20,17,0.74) 82%, rgba(23,20,17,1) 100%)",
+            WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, #000 30%)", maskImage: "linear-gradient(to bottom, transparent 0%, #000 30%)" }} />
 
           {burst > 0 && (
             <svg key={burst} className="ov3-burst" width="92" height="92" viewBox="0 0 24 24" fill={DARK.accent} aria-hidden="true"
