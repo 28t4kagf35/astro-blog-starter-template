@@ -22,7 +22,7 @@ const FONTS_HREF =
   "&family=Source+Sans+3:wght@300;400&family=IBM+Plex+Mono:wght@400&family=Raleway:wght@300;400&display=block";
 
 // Observe cards are deeper than the page, so the picture falls away into shadow; page, shadow and card colour flow into each other.
-const CARD = "#131110";
+const CARD = "#171411";
 const DARK = { bg: "#1A1714", surface: "#222120", rule: "#2C2A28", muted: "#6E6A65", body: "#C4BEB4", head: "#EDE9E2", accent: "#D43535" };
 // Heart and share are switched off while the picture and caption are fine-tuned; set to true to bring them back.
 const SHOW_ACTIONS = false;
@@ -135,7 +135,7 @@ function Post({
               : "linear-gradient(to bottom, rgba(26,23,20,0.5) 0%, rgba(26,23,20,0) 100%)" }} />
           {/* Bottom: the fade reaches the card colour (as in the Culture cards) and the caption rests on it inside the card. */}
           <div aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, bottom: -1, height: "50%", pointerEvents: "none",
-            background: "linear-gradient(to top, rgba(19,17,16,1) 0%, rgba(19,17,16,0.96) 14%, rgba(19,17,16,0.7) 38%, rgba(19,17,16,0.28) 70%, rgba(19,17,16,0) 100%)" }} />
+            background: "linear-gradient(to top, rgba(23,20,17,1) 0%, rgba(23,20,17,0.96) 14%, rgba(23,20,17,0.7) 38%, rgba(23,20,17,0.28) 70%, rgba(23,20,17,0) 100%)" }} />
 
           {burst > 0 && (
             <svg key={burst} className="ov3-burst" width="92" height="92" viewBox="0 0 24 24" fill={DARK.accent} aria-hidden="true"
