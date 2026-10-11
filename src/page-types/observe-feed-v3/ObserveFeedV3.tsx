@@ -135,7 +135,7 @@ function Post({
               of the picture, clear in the middle and rising dark along the sides, strongest at the bottom. At the caption it is about
               74% in the centre and solid at the sides; the bottom edge is solid, so it lands exactly on the card. The top is masked clear. */}
           <div aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, top: 0, bottom: -1, pointerEvents: "none",
-            background: "radial-gradient(ellipse 90% 62% at 50% 32%, rgba(23,20,17,0) 0%, rgba(23,20,17,0) 45%, rgba(23,20,17,0.2) 62%, rgba(23,20,17,0.74) 82%, rgba(23,20,17,1) 100%)",
+            background: "radial-gradient(ellipse 86% 65% at 50% 35%, rgba(23,20,17,0) 0%, rgba(23,20,17,0) 45%, rgba(23,20,17,0.2) 62%, rgba(23,20,17,0.74) 82%, rgba(23,20,17,1) 100%)",
             WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, #000 30%)", maskImage: "linear-gradient(to bottom, transparent 0%, #000 30%)" }} />
 
           {burst > 0 && (
