@@ -126,7 +126,10 @@ function Post({
             <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}><span style={mono()}>image unavailable</span></div>
           )}
 
-          {/* Bare baseline: no vignette and no gradients; they are rebuilt step by step. */}
+          {/* Rebuild, step 1: one gentle vignette over the whole picture. A multiply layer in a deep, slightly warm dark
+              (so colours get richer, not greyer); the centre is untouched and only the outer edge is touched, up to about 18% at the corners. */}
+          <div aria-hidden="true" style={{ position: "absolute", inset: 0, pointerEvents: "none", mixBlendMode: "multiply",
+            background: "radial-gradient(ellipse 80% 80% at 50% 46%, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 55%, rgba(40,34,30,0.22) 100%)" }} />
 
           {burst > 0 && (
             <svg key={burst} className="ov3-burst" width="92" height="92" viewBox="0 0 24 24" fill={DARK.accent} aria-hidden="true"
