@@ -22,7 +22,7 @@ const FONTS_HREF =
   "&family=Source+Sans+3:wght@300;400&family=IBM+Plex+Mono:wght@400&family=Raleway:wght@300;400&display=block";
 
 // Observe cards are deeper than the page, so the picture falls away into shadow; page, shadow and card colour flow into each other.
-const CARD = "#161411";
+const CARD = "#131110";
 const DARK = { bg: "#1A1714", surface: "#222120", rule: "#2C2A28", muted: "#6E6A65", body: "#C4BEB4", head: "#EDE9E2", accent: "#D43535" };
 // Heart and share are switched off while the picture and caption are fine-tuned; set to true to bring them back.
 const SHOW_ACTIONS = false;
@@ -114,7 +114,7 @@ function Post({
   const stop = (e: { stopPropagation: () => void }) => e.stopPropagation();
 
   return (
-    <article id={id} style={{ marginBottom: "1.2rem", scrollMarginTop: "4.5rem", background: CARD, border: "1px solid #262524", borderRadius: "0.35rem", overflow: "hidden", boxShadow: "0 10px 28px rgba(0,0,0,0.5)" }}>
+    <article id={id} style={{ marginBottom: "1.2rem", scrollMarginTop: "4.5rem", background: CARD, border: "1px solid #1F1E1C", borderRadius: "0.35rem", overflow: "hidden", boxShadow: "0 6px 22px rgba(0,0,0,0.3)" }}>
       <div>
         <div ref={ref} onClick={photoTap}
           style={{ position: "relative", width: "100%", aspectRatio: "1 / 1", overflow: "hidden", background: CARD, cursor: "pointer", userSelect: "none", WebkitTapHighlightColor: "transparent" }}>
@@ -135,7 +135,7 @@ function Post({
               : "linear-gradient(to bottom, rgba(26,23,20,0.5) 0%, rgba(26,23,20,0) 100%)" }} />
           {/* Bottom: the fade reaches the card colour (as in the Culture cards) and the caption rests on it inside the card. */}
           <div aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, bottom: -1, height: "50%", pointerEvents: "none",
-            background: "linear-gradient(to top, rgba(22,20,17,1) 0%, rgba(22,20,17,0.96) 14%, rgba(22,20,17,0.7) 38%, rgba(22,20,17,0.28) 70%, rgba(22,20,17,0) 100%)" }} />
+            background: "linear-gradient(to top, rgba(19,17,16,1) 0%, rgba(19,17,16,0.96) 14%, rgba(19,17,16,0.7) 38%, rgba(19,17,16,0.28) 70%, rgba(19,17,16,0) 100%)" }} />
 
           {burst > 0 && (
             <svg key={burst} className="ov3-burst" width="92" height="92" viewBox="0 0 24 24" fill={DARK.accent} aria-hidden="true"
