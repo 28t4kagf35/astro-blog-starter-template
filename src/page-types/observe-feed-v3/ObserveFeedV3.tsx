@@ -112,10 +112,10 @@ function Post({
   const stop = (e: { stopPropagation: () => void }) => e.stopPropagation();
 
   return (
-    <article id={id} style={{ marginBottom: "1.8rem", scrollMarginTop: "4.5rem" }}>
+    <article id={id} style={{ marginBottom: "1.2rem", scrollMarginTop: "4.5rem", background: DARK.surface, border: `1px solid ${DARK.rule}`, borderRadius: "0.35rem", overflow: "hidden" }}>
       <div>
         <div ref={ref} onClick={photoTap}
-          style={{ position: "relative", width: "100%", aspectRatio: "1 / 1", overflow: "hidden", background: DARK.surface, borderRadius: "0.35rem", cursor: "pointer", userSelect: "none", WebkitTapHighlightColor: "transparent" }}>
+          style={{ position: "relative", width: "100%", aspectRatio: "1 / 1", overflow: "hidden", background: DARK.surface, cursor: "pointer", userSelect: "none", WebkitTapHighlightColor: "transparent" }}>
           {b.image ? (
             <img src={b.image} srcSet={mediaSrcSet(b.image)} sizes="(min-width: 700px) 620px, calc(100vw - 40px)" alt="" draggable={false}
               loading={eager ? "eager" : "lazy"} style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", ...PHOTO }} />
@@ -131,15 +131,9 @@ function Post({
             background: first
               ? "linear-gradient(to bottom, rgba(26,23,20,1) 0%, rgba(26,23,20,0.82) 30%, rgba(26,23,20,0.4) 65%, rgba(26,23,20,0) 100%)"
               : "linear-gradient(to bottom, rgba(26,23,20,0.5) 0%, rgba(26,23,20,0) 100%)" }} />
-          {/* Bottom: as in the hero, the fade reaches the full page colour and carries on into the page below,
-              so the heart, share and caption rest on the page colour with no edge. */}
+          {/* Bottom: the fade reaches the card colour (as in the Culture cards) and the caption rests on it inside the card. */}
           <div aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, bottom: -1, height: "50%", pointerEvents: "none",
-            background: "linear-gradient(to top, rgba(26,23,20,1) 0%, rgba(26,23,20,0.96) 14%, rgba(26,23,20,0.7) 38%, rgba(26,23,20,0.28) 70%, rgba(26,23,20,0) 100%)" }} />
-
-          {/* The same thin border as the Culture cards; it fades out with the bottom gradient so it never frames the caption. */}
-          <div aria-hidden="true" style={{ position: "absolute", inset: 0, pointerEvents: "none", borderRadius: "0.35rem", border: `1px solid ${DARK.rule}`,
-            WebkitMaskImage: first ? "linear-gradient(to bottom, transparent 0%, #000 30%, #000 45%, transparent 85%)" : "linear-gradient(to bottom, #000 0%, #000 45%, transparent 85%)",
-            maskImage: first ? "linear-gradient(to bottom, transparent 0%, #000 30%, #000 45%, transparent 85%)" : "linear-gradient(to bottom, #000 0%, #000 45%, transparent 85%)" }} />
+            background: "linear-gradient(to top, rgba(34,33,32,1) 0%, rgba(34,33,32,0.96) 14%, rgba(34,33,32,0.7) 38%, rgba(34,33,32,0.28) 70%, rgba(34,33,32,0) 100%)" }} />
 
           {burst > 0 && (
             <svg key={burst} className="ov3-burst" width="92" height="92" viewBox="0 0 24 24" fill={DARK.accent} aria-hidden="true"
@@ -165,7 +159,7 @@ function Post({
         </div>
 
         <p style={{
-          position: "relative", zIndex: 1, margin: "-2rem 0 0", padding: `0 ${padH}`, maxWidth: "34rem",
+          position: "relative", zIndex: 1, margin: "-2rem 0 0", padding: `0 ${padH} 1.5rem`, maxWidth: "34rem",
           fontFamily: FONT_SS4, fontStyle: "italic", fontWeight: 230, fontVariationSettings: SS4_OPSZ,
           fontSize: isMobile ? "1.1rem" : "1.18rem", lineHeight: 1.72, letterSpacing: "0.06em", color: DARK.head,
           opacity: seen ? 1 : 0, transform: seen ? "none" : "translateY(6px)",
