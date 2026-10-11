@@ -141,7 +141,9 @@ function Post({
             </svg>
           )}
 
-          <div onClick={stop} style={{ position: "absolute", left: padH, right: padH, bottom: "3.2rem", display: "flex", alignItems: "center", gap: "1.5rem" }}>
+          <div onClick={stop} style={{ position: "absolute", left: padH, right: padH, bottom: "3.2rem", display: "flex", alignItems: "center", gap: "1.5rem",
+            opacity: seen ? 1 : 0, transform: seen ? "none" : "translateY(6px)", pointerEvents: seen ? "auto" : "none",
+            transition: "opacity 1.1s ease 0.3s, transform 1.1s ease 0.3s" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
               <button aria-label={liked ? "Remove heart" : "Heart this"} aria-pressed={liked} onClick={onLike} className={liked ? "ov3-pop" : undefined} style={iconBtn}>
                 <HeartIcon on={liked} />
