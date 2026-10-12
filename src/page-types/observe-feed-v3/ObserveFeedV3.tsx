@@ -129,7 +129,7 @@ function Post({
           {/* Rebuild, step 1: one gentle vignette over the whole picture. A multiply layer in a deep, slightly warm dark
               (so colours get richer, not greyer); the centre is untouched and only the outer edge is touched, up to about 18% at the corners. */}
           <div aria-hidden="true" style={{ position: "absolute", inset: 0, pointerEvents: "none", mixBlendMode: "multiply",
-            background: "radial-gradient(ellipse 80% 80% at 50% 46%, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 55%, rgba(40,34,30,0.34) 100%)" }} />
+            background: "radial-gradient(ellipse 80% 80% at 50% 46%, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 55%, rgba(40,34,30,0.46) 100%)" }} />
 
           {/* Rebuild, step 2 (second try): the half vignette as a bowl. One oval in the card colour, centred above the middle
               of the picture, clear in the middle and rising dark along the sides, strongest at the bottom. At the caption it is about
