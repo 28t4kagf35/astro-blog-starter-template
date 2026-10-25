@@ -129,7 +129,7 @@ function Post({
           {/* Rebuild, step 1: one gentle vignette over the whole picture. A multiply layer in a deep, slightly warm dark
               (so colours get richer, not greyer); the centre is untouched and only the outer edge is touched, up to about 18% at the corners. */}
           <div aria-hidden="true" style={{ position: "absolute", inset: 0, pointerEvents: "none", mixBlendMode: "multiply",
-            background: "radial-gradient(ellipse farthest-corner at 50% 48%, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 58%, rgba(10,8,6,0.66) 100%)",
+            background: "radial-gradient(ellipse farthest-corner at 50% 48%, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 58%, rgba(10,8,6,0.46) 100%)",
             WebkitMaskImage: "linear-gradient(to bottom, #000 0%, #000 45%, transparent 85%)", maskImage: "linear-gradient(to bottom, #000 0%, #000 45%, transparent 85%)" }} />
 
           {/* Rebuild, step 2 (second try): the half vignette as a bowl. One oval in the card colour, centred above the middle
@@ -167,7 +167,7 @@ function Post({
 
         <p style={{
           position: "absolute", left: 0, right: 0, bottom: 0, zIndex: 1, margin: 0, padding: `0 ${padH} 1.05rem`, maxWidth: "34rem",
-          fontFamily: FONT_SS4, fontStyle: "italic", fontWeight: 270, fontVariationSettings: SS4_OPSZ,
+          fontFamily: FONT_SS4, fontStyle: "italic", fontWeight: 300, fontVariationSettings: SS4_OPSZ,
           fontSize: isMobile ? "1.02rem" : "1.18rem", lineHeight: 1.72, letterSpacing: "0.06em", color: "#E6E1D9",
           opacity: seen ? 1 : 0, transform: seen ? "none" : "translateY(6px)",
           transition: "opacity 1.1s ease 0.3s, transform 1.1s ease 0.3s",
