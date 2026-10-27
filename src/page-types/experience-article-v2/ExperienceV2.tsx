@@ -271,7 +271,7 @@ export function ExperienceV2({ content, isDark = true }: { content: ExperienceV2
     <div data-scroll="root" style={{ ...SS4_SMOOTHING, background: tk.bg, minHeight: "100vh", transition: "background 0.35s ease" }}>
 
       {/* ── HERO — shared with the other v2 pages, a calmer height for an article ── */}
-      <Hero compact image={content.heroImage} srcSet={heroSrcSet(content.heroImage)} position="center 35%" alt={content.title} title={content.title} placement={PLACEMENT.experience} isMobile={isMobile} isTablet={isTablet} isDesktop={isDesktop} />
+      <Hero compact textMax="calc(600px + 2rem)" image={content.heroImage} srcSet={heroSrcSet(content.heroImage)} position="center 35%" alt={content.title} title={content.title} placement={PLACEMENT.experience} isMobile={isMobile} isTablet={isTablet} isDesktop={isDesktop} />
 
       {/* ── BODY ── */}
       <div data-bb-field="bodyText">
