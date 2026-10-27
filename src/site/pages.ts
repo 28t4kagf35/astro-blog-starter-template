@@ -59,7 +59,7 @@ export type SitePage =
   | (Base & { type: "activitiesHome"; content: ActivitiesHomeContent })
   | (Base & { type: "previewIndex"; content: { links: Array<{ href: string; label: string }> } });
 
-export const PAGE_TYPES = ["waterfall", "masterGuide", "learnArticle", "experienceArticle", "cultureFeed", "observeFeed", "activity", "home", "cabin", "homeV2", "cabinV2", "learnV2", "waterfallV2", "experienceV2", "cultureV2", "cultureV3", "observeV2", "observeV3", "activityV2", "exploreHome", "activitiesHome", "previewIndex"] as const;
+export const PAGE_TYPES = ["waterfall", "masterGuide", "learnArticle", "experienceArticle", "cultureFeed", "observeFeed", "activity", "home", "cabin", "homeV2", "cabinV2", "learnV2", "waterfallV2", "experienceV2", "cultureV2", "cultureV3", "cultureV4", "observeV2", "observeV3", "activityV2", "exploreHome", "activitiesHome", "previewIndex"] as const;
 
 export async function buildSitePages(): Promise<SitePage[]> {
   const pages: SitePage[] = [
