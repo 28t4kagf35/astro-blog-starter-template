@@ -144,7 +144,7 @@ export function LearnV2({ content, isDark = true }: { content: LearnV2Content; i
     <div data-scroll="root" style={{ ...SS4_SMOOTHING, background: tk.bg, minHeight: "100vh", overflowX: "hidden", transition: "background 0.35s ease" }}>
 
       {/* ── HERO — shared with the other v2 pages, a calmer height for an article ── */}
-      <Hero compact image={content.heroImage} srcSet={heroSrcSet(content.heroImage)} position="center" alt={content.title} title={content.title} placement={PLACEMENT.learn} isMobile={isMobile} isTablet={isTablet} isDesktop={isDesktop} />
+      <Hero compact textMax="calc(600px + 2rem)" image={content.heroImage} srcSet={heroSrcSet(content.heroImage)} position="center" alt={content.title} title={content.title} placement={PLACEMENT.learn} isMobile={isMobile} isTablet={isTablet} isDesktop={isDesktop} />
 
       {/* ── ARTICLE: one calm page, a centred 600px column on desktop ── */}
       <div data-bb-field="bodyText" style={{ padding: `${isMobile ? "2.2rem" : isTablet ? "2.6rem" : "2.8rem"} 0 ${SEC}` }}>
