@@ -1,7 +1,7 @@
 /**
  * Page type (v5 working copy): Culture & History, v4 plus a desktop experiment: on desktop the stories are
  * stacked in one scrolling 600px column (no swipe, no cover, no progress strip, one story open at a time).
- * Phone and tablet behave exactly as in v4.
+ * Tablet uses the stack too (settled 2026-10-28) with a shorter hero (50vh). The phone behaves exactly as in v3.
  *
  * Page type (v4 working copy): Culture & History, v3 pager plus a tablet/desktop frame.
  *
@@ -246,10 +246,7 @@ export function CultureFeedV5({ content, isDark = true }: { content: CultureFeed
   const bp = useBreakpoint();
   const isMobile = bp === "mobile";
   const isTablet = bp === "tablet";
-  // The stack is the desktop experiment. On tablet it is a comparison: add ?tablet=stack to the address.
-  const [tabletStack, setTabletStack] = useState(false);
-  useEffect(() => { try { setTabletStack(new URLSearchParams(window.location.search).get("tablet") === "stack"); } catch { /* keep the pager */ } }, []);
-  const isStack = bp === "desktop" || (bp === "tablet" && tabletStack);
+  const isStack = bp !== "mobile"; // tablet and desktop: one scrolling column (the phone keeps the swipe pager)
   const [openSlug, setOpenSlug] = useState<string | null>(null);
   const tk = isDark ? DARK : LIGHT;
 
