@@ -127,6 +127,10 @@ const mono = (tk: Tk, extra?: CSSProperties): CSSProperties => ({
   fontFamily: FONT_MONO, fontSize: "0.66rem", letterSpacing: "0.14em", textTransform: "uppercase", lineHeight: 1.4, color: tk.muted, ...extra,
 });
 
+// The closed paragraph fades out by a mask, not an overlay in the card colour: a mask has no colour, so it
+// cannot drift out of step with the card when the dark/light switch eases the background.
+const FADE_MASK = "linear-gradient(to bottom, #000 calc(100% - 2.6rem), transparent 100%)";
+
 // One calm treatment for every photo.
 const PHOTO: CSSProperties = { filter: "saturate(0.86) sepia(0.1) brightness(0.94)" };
 
@@ -178,11 +182,8 @@ function Story({
         <div style={{ position: "relative" }}>
           <p style={{
             ...p, marginTop: "1rem",
-            ...(open ? {} : { display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 5, overflow: "hidden" }),
+            ...(open ? {} : { display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 5, overflow: "hidden", WebkitMaskImage: FADE_MASK, maskImage: FADE_MASK }),
           } as CSSProperties}>{entry.teaser[0]}</p>
-          {!open && (entry.teaser.length > 1 || entry.expanded.length > 0) && (
-            <div aria-hidden="true" style={{ position: "absolute", left: 0, right: 0, bottom: 0, height: "2.6rem", background: `linear-gradient(to bottom, transparent, ${tk.surface})`, pointerEvents: "none" }} />
-          )}
         </div>
         {open && entry.teaser.slice(1).map((t, i) => <p key={i} style={p}>{t}</p>)}
 
