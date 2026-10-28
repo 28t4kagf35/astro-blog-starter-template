@@ -415,7 +415,7 @@ export function CultureFeedV4({ content, isDark = true }: { content: CultureFeed
   return (
     <div style={{ background: tk.bg, minHeight: "100vh", overflowX: "hidden", transition: "background 0.35s ease", WebkitFontSmoothing: "antialiased", MozOsxFontSmoothing: "grayscale" }}>
       {!isMobile && (
-        <Hero compact textMax="680px" textMaxTablet="680px" image={content.heroImage.src} srcSet={mediaSrcSet(content.heroImage.src)} position={content.heroImage.position} alt="Culture & History" title="Culture & History" isMobile={isMobile} isTablet={isTablet} isDesktop={!isTablet} />
+        <Hero compact textMax="680px" textMaxTablet="680px" image={content.heroImage.src} srcSet={mediaSrcSet(content.heroImage.src)} position={content.heroImage.position} alt="Culture & History" title="Culture & History" placement="Explore · Culture & History" tagline={`${n} fun short stories about Norway`} isMobile={isMobile} isTablet={isTablet} isDesktop={!isTablet} />
       )}
       <div style={{ maxWidth: colMax, margin: "0 auto", paddingTop: isMobile ? "5.6rem" : "1.8rem" }}>
 
@@ -426,7 +426,7 @@ export function CultureFeedV4({ content, isDark = true }: { content: CultureFeed
               <button onClick={() => goTo(0)} aria-label="Culture and History, back to the start"
                 style={{ background: "none", border: "none", padding: 0, cursor: "pointer", ...label(tk, { color: tk.body }) }}>Culture &amp; History</button>
             ) : (
-              <span style={label(tk, { color: tk.body })}>{n} small stories from Norway</span>
+              <span aria-hidden="true" />
             )}
             <span style={mono(tk)}>{active === 0 ? `${n} stories` : `${String(active).padStart(2, "0")} / ${n}`}</span>
           </div>
