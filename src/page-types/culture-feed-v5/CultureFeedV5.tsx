@@ -246,7 +246,10 @@ export function CultureFeedV5({ content, isDark = true }: { content: CultureFeed
   const bp = useBreakpoint();
   const isMobile = bp === "mobile";
   const isTablet = bp === "tablet";
-  const isStack = bp === "desktop"; // the desktop experiment: one scrolling column
+  // The stack is the desktop experiment. On tablet it is a comparison: add ?tablet=stack to the address.
+  const [tabletStack, setTabletStack] = useState(false);
+  useEffect(() => { try { setTabletStack(new URLSearchParams(window.location.search).get("tablet") === "stack"); } catch { /* keep the pager */ } }, []);
+  const isStack = bp === "desktop" || (bp === "tablet" && tabletStack);
   const [openSlug, setOpenSlug] = useState<string | null>(null);
   const tk = isDark ? DARK : LIGHT;
 
@@ -415,14 +418,14 @@ export function CultureFeedV5({ content, isDark = true }: { content: CultureFeed
   }, [active, slots, minI, isStack]);
 
   if (isStack) {
-    const COL = "calc(600px + 2rem)"; // 600px of card, plus the 1rem gutters
+    const COL = `calc(600px + 2 * ${padH})`; // 600px of card, plus the gutters
     const goNext = (slug: string) => {
       setOpenSlug(null);
       window.setTimeout(() => { document.getElementById(slug)?.scrollIntoView({ behavior: "smooth", block: "start" }); }, 300);
     };
     return (
       <div style={{ background: tk.bg, minHeight: "100vh", overflowX: "hidden", transition: "background 0.35s ease", WebkitFontSmoothing: "antialiased", MozOsxFontSmoothing: "grayscale" }}>
-        <Hero compact textMax={COL} image={content.heroImage.src} srcSet={mediaSrcSet(content.heroImage.src)} position={content.heroImage.position} alt="Culture & History" title="Culture & History" placement="Explore · Culture & History" tagline={`${n} fun short stories about Norway`} isMobile={false} isTablet={false} isDesktop />
+        <Hero compact minHeight={isTablet ? "50vh" : undefined} textMax={COL} textMaxTablet={COL} image={content.heroImage.src} srcSet={mediaSrcSet(content.heroImage.src)} position={content.heroImage.position} alt="Culture & History" title="Culture & History" placement="Explore · Culture & History" tagline={`${n} fun short stories about Norway`} isMobile={false} isTablet={isTablet} isDesktop={!isTablet} />
         <div data-bb-field="entries" style={{ maxWidth: COL, margin: "0 auto", padding: `2.4rem ${padH} 0`, boxSizing: "border-box" }}>
           {stories.map((s, i) => (
             <div key={s.slug} id={s.slug} style={{ scrollMarginTop: "5.5rem", marginBottom: i < n - 1 ? "3.5rem" : 0 }}>
@@ -450,7 +453,7 @@ export function CultureFeedV5({ content, isDark = true }: { content: CultureFeed
   return (
     <div style={{ background: tk.bg, minHeight: "100vh", overflowX: "hidden", transition: "background 0.35s ease", WebkitFontSmoothing: "antialiased", MozOsxFontSmoothing: "grayscale" }}>
       {!isMobile && (
-        <Hero compact textMax="680px" textMaxTablet="680px" image={content.heroImage.src} srcSet={mediaSrcSet(content.heroImage.src)} position={content.heroImage.position} alt="Culture & History" title="Culture & History" placement="Explore · Culture & History" tagline={`${n} fun short stories about Norway`} isMobile={isMobile} isTablet={isTablet} isDesktop={!isTablet} />
+        <Hero compact minHeight={isTablet ? "50vh" : undefined} textMax="680px" textMaxTablet="680px" image={content.heroImage.src} srcSet={mediaSrcSet(content.heroImage.src)} position={content.heroImage.position} alt="Culture & History" title="Culture & History" placement="Explore · Culture & History" tagline={`${n} fun short stories about Norway`} isMobile={isMobile} isTablet={isTablet} isDesktop={!isTablet} />
       )}
       <div style={{ maxWidth: colMax, margin: "0 auto", paddingTop: isMobile ? "5.6rem" : "1.8rem" }}>
 

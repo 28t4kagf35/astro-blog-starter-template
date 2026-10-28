@@ -29,9 +29,11 @@ export interface HeroProps {
   textMax?: string;
   /** Same, on tablet: centre the text column at this width instead of the full width. */
   textMaxTablet?: string;
+  /** Overrides the hero's minimum height (any CSS length, e.g. "50vh"). */
+  minHeight?: string;
 }
 
-export function Hero({ image, srcSet, position = "center", alt = "", title, placement, tagline, isMobile, isTablet, isDesktop, compact, textMax, textMaxTablet }: HeroProps) {
+export function Hero({ image, srcSet, position = "center", alt = "", title, placement, tagline, isMobile, isTablet, isDesktop, compact, textMax, textMaxTablet, minHeight }: HeroProps) {
   const [cleared, setCleared] = useState(false);
   const [textVisible, setTextVisible] = useState(false);
   useEffect(() => { requestAnimationFrame(() => requestAnimationFrame(() => setCleared(true))); }, []);
@@ -42,7 +44,7 @@ export function Hero({ image, srcSet, position = "center", alt = "", title, plac
   const h1 = isMobile ? "2.6rem" : isTablet ? "3.2rem" : "3.8rem";
 
   return (
-    <div style={{ position: "relative", width: "100%", minHeight: compact ? (isMobile ? "68vh" : isTablet ? "66vh" : "70vh") : (isMobile ? "80vh" : isTablet ? "88vh" : "100dvh"), overflow: "hidden" }}>
+    <div style={{ position: "relative", width: "100%", minHeight: minHeight ?? (compact ? (isMobile ? "68vh" : isTablet ? "66vh" : "70vh") : (isMobile ? "80vh" : isTablet ? "88vh" : "100dvh")), overflow: "hidden" }}>
       {image ? (
         <img
           data-bb-field="heroImage"
