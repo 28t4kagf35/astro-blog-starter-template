@@ -17,7 +17,7 @@ const PALETTES = {
   dark: {
     bg: "#131210", rule: "#24211F", body: "#726E68", head: "#7D7972",
     underline: "#2E2C28",           // same as the waterfall detail links
-    mapLand: "#191715", mapEdge: "#131210", mapVoss: "#1E1C1A",
+    mapLand: "#1B1917", mapEdge: "#131210", mapVoss: "#22201E",
     vigRgb: "0,0,0", vigA: 0.20, vigAm: 0.171, vigC: 60, vigEase: false, vigR: 50,
   },
   light: {

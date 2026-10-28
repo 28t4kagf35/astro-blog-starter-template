@@ -1,5 +1,10 @@
 # footer-next: changelog
 
+## 1.2.0 (candidate, builds on canon Footer v1.1; awaits owner approval)
+
+- Dark mode only: the map is a little more visible. Land `#191715` to `#1B1917`, Voss `#1E1C1A` to
+  `#22201E` (same warm hue, a few steps lighter). Light mode and everything else unchanged.
+
 ## 1.1.0 (canon: Footer v1.1, approved 2026-10-10)
 
 Same code as 1.0.19, promoted to canon after review on phone and iPad (dark and light, portrait and
