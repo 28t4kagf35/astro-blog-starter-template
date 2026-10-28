@@ -17,10 +17,11 @@
     },
     "footer-next": {
       "version": "1.2.0",
-      "status": "draft",
-      "source": "this repo; candidate 1.2.0: dark map a little more visible; builds on canon Footer v1.1 (canon/footer-v1.1)",
-      "fingerprint": "0b8c409a69a33015f69060e25ba775c65bf1a1b5c386ee45e5b2eb813b6bbad1",
-      "basedOn": "footer-next 1.1.0 (canon/footer-v1.1)"
+      "status": "canon",
+      "source": "this repo; canon Footer v1.2 (adds: dark map a little more visible), approved 2026-10-28; builds on canon v1.1",
+      "fingerprint": "223ccbc2be7f68c94a1e9f3487362c9b8a6b0afdfa1950d99c6bc66af8925bf0",
+      "basedOn": "footer-next 1.1.0 (canon/footer-v1.1)",
+      "canonTag": "canon/footer-v1.2"
     }
   }
 }

@@ -13,6 +13,7 @@ version goes through the same gate again.
 | Navbar | v2.2 (mobile menu closes after the toggles) | `canon/navbar-v2.2` | 2026-10-09 20:42 (+02:00) |
 | Footer | v1 | `canon/footer-v1` | 2026-10-09 20:44 (+02:00) |
 | Footer | v1.1 (vignette, tablet margins) | `canon/footer-v1.1` | 2026-10-10 11:04 (+02:00) |
+| Footer | v1.2 (dark map a little more visible) | `canon/footer-v1.2` | 2026-10-28 13:20 (+01:00) |
 
 ## Navbar v1
 
@@ -124,3 +125,15 @@ light, portrait and landscape). Footer v1 stays canon; this is an addition. Lock
   booking links yet.
 - The Vf is still a PNG; a vector version is planned. The map is a simplified outline that can be
   refined.
+
+## Footer v1.2 (addition to v1.1)
+
+**Approved:** 2026-10-28, by the owner, with a GO, after review on phone and desktop. Footer v1 and v1.1
+stay canon; this is an addition. Locked as footer-next 1.2.0.
+
+**What is added**
+- Dark mode only: the map is a little more visible. Land `#191715` to `#1B1917`, Voss `#1E1C1A` to
+  `#22201E` (same warm hue). Light mode and everything else are unchanged.
+
+**Known and accepted**
+- The dark map stays quiet by design; on a screen with low backlight it can still read as faint.
