@@ -134,7 +134,7 @@ const FADE_MASK = "linear-gradient(to bottom, #000 calc(100% - 2.6rem), transpar
 // One calm treatment for every photo.
 const PHOTO: CSSProperties = { filter: "saturate(0.86) sepia(0.1) brightness(0.94)" };
 
-function Photo({ src, position, tk, eager, stack }: { src: string; position: string; tk: Tk; eager?: boolean; stack?: boolean }) {
+function Photo({ src, position, tk, eager, stack, vignette }: { src: string; position: string; tk: Tk; eager?: boolean; stack?: boolean; vignette?: boolean }) {
   return (
     <div style={{ position: "relative", width: "100%", aspectRatio: "16 / 10", maxHeight: stack ? undefined : "30svh", overflow: "hidden", background: tk.surface }}>
       {src ? (
@@ -151,7 +151,12 @@ function Photo({ src, position, tk, eager, stack }: { src: string; position: str
           <span style={mono(tk)}>image unavailable</span>
         </div>
       )}
-      <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(26,23,20,0.5) 0%, transparent 55%)" }} />
+      {vignette ? (
+        // Observe's edge vignette, even all round (no lower-half mask: there is no caption bowl on these cards).
+        <div aria-hidden="true" style={{ position: "absolute", inset: 0, pointerEvents: "none", mixBlendMode: "multiply", background: "radial-gradient(ellipse farthest-corner at 50% 50%, rgba(255,255,255,1) 0%, rgba(255,255,255,1) 58%, rgba(10,8,6,0.46) 100%)" }} />
+      ) : (
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(26,23,20,0.5) 0%, transparent 55%)" }} />
+      )}
     </div>
   );
 }
@@ -170,7 +175,7 @@ function Story({
   const p: CSSProperties = { margin: "0.9rem 0 0", fontFamily: FONT_SS3, fontSize: bodySz, fontWeight: 300, lineHeight: 1.78, letterSpacing: "0.01em", color: tk.body };
   return (
     <div style={{ background: tk.surface, border: `1px solid ${tk.rule}`, borderRadius: "0.35rem", overflow: "hidden", transition: "background .35s ease, border-color .35s ease" }}>
-      <Photo src={entry.image} position={entry.imagePosition} tk={tk} eager={eager} stack={stack} />
+      <Photo src={entry.image} position={entry.imagePosition} tk={tk} eager={eager} stack={stack} vignette={!isMobile} />
       <div style={{ padding: `1.3rem ${pad} 1.4rem` }}>
         <div style={{ display: "flex", justifyContent: "flex-start", alignItems: "baseline", gap: "1rem", marginBottom: "0.8rem" }}>
           <span style={label(tk)}>{KIND[entry.slug] ?? "Culture & History"}</span>
