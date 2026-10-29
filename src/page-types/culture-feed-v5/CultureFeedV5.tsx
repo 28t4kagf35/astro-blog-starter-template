@@ -319,7 +319,7 @@ export function CultureFeedV5({ content, isDark = true }: { content: CultureFeed
         if (!el || typeof el.animate !== "function") return;
         el.animate(
           [{ transform: "translateX(0)" }, { transform: "translateX(-15px)", offset: 0.4375 }, { transform: "translateX(0)" }],
-          { duration: 2816, easing: "cubic-bezier(0.16, 0.84, 0.3, 1)" },
+          { duration: 2253, easing: "cubic-bezier(0.16, 0.84, 0.3, 1)" },
         );
       });
     }, 1000);
