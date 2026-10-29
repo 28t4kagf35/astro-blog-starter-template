@@ -36,17 +36,17 @@ const FONT_LBL  = "'Raleway', system-ui, sans-serif";
 
 const SS4_OPSZ_DISPLAY = '"opsz" 36, "wght" 300';
 
-const DARK = {
+export const DARK = {
   bg: "#1A1714", surface: "#222120", rule: "#2C2A28", muted: "#6E6A65",
   body: "#C4BEB4", head: "#EDE9E2", bq: "#7A8B74", accent: "#D43535",
 } as const;
-const LIGHT = {
+export const LIGHT = {
   bg: "#F4F2EE", surface: "#EBE7DF", rule: "#D6D2CB", muted: "#8E8A84",
   body: "#201E18", head: "#111010", bq: "#A4AE9C", accent: "#D43535",
 } as const;
-type Tk = typeof DARK | typeof LIGHT;
+export type Tk = typeof DARK | typeof LIGHT;
 
-const FONTS_HREF =
+export const FONTS_HREF =
   "https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;1,8..60,300" +
   "&family=Source+Sans+3:wght@300;400" +
   "&family=IBM+Plex+Mono:wght@400" +
@@ -67,7 +67,7 @@ export interface CultureFeedV5Content {
 }
 
 // The kind of story each is, from the copy's own cluster lines ("EXPLORE → CULTURE & HISTORY → …").
-const KIND: Record<string, string> = {
+export const KIND: Record<string, string> = {
   "huldra": "Living Lore",
   "jul-nisse": "Living Lore",
   "trollveggen": "Living Lore",
@@ -86,7 +86,7 @@ const KIND: Record<string, string> = {
 };
 
 // Moods alternate, so each swipe feels different; the pager ends on Voss. Stories not listed follow.
-const ORDER = [
+export const ORDER = [
   "friluftsliv",
   "huldra",
   "norway-tiny-history",
@@ -104,7 +104,7 @@ const ORDER = [
   "voss",
 ];
 
-function useBreakpoint() {
+export function useBreakpoint() {
   const get = () => {
     const w = typeof window !== "undefined" ? window.innerWidth : 390;
     return w >= 1024 ? "desktop" : w >= 600 ? "tablet" : "mobile";
@@ -119,11 +119,11 @@ function useBreakpoint() {
   return bp;
 }
 
-const label = (tk: Tk, extra?: CSSProperties): CSSProperties => ({
+export const label = (tk: Tk, extra?: CSSProperties): CSSProperties => ({
   fontFamily: FONT_LBL, fontSize: "0.72rem", fontWeight: 400, letterSpacing: "0.14em",
   textTransform: "uppercase", lineHeight: 1.4, color: tk.muted, ...extra,
 });
-const mono = (tk: Tk, extra?: CSSProperties): CSSProperties => ({
+export const mono = (tk: Tk, extra?: CSSProperties): CSSProperties => ({
   fontFamily: FONT_MONO, fontSize: "0.66rem", letterSpacing: "0.14em", textTransform: "uppercase", lineHeight: 1.4, color: tk.muted, ...extra,
 });
 
@@ -161,13 +161,18 @@ function Photo({ src, position, tk, eager, stack, vignette }: { src: string; pos
   );
 }
 
-function Story({
-  entry, tk, isActive, isMobile, eager, nextTitle, onNext, index, total, stack, onOpen,
+export function Story({
+  entry, tk, isActive, isMobile, eager, nextTitle, onNext, index, total, stack, onOpen, startOpen, titleTag,
 }: {
   entry: CultureCardV5; tk: Tk; isActive: boolean; isMobile: boolean; eager: boolean;
   nextTitle?: string; onNext?: () => void; index: number; total: number; stack?: boolean; onOpen?: () => void;
+  /** Story pages: the card loads open (no "Read on"). */
+  startOpen?: boolean;
+  /** Story pages: the title is the page heading. */
+  titleTag?: "h1" | "h2";
 }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(!!startOpen);
+  const Title = titleTag ?? "h2";
   // A story you swiped away from folds itself shut, so the pager stays short.
   useEffect(() => { if (!isActive) setOpen(false); }, [isActive]);
   const pad = isMobile ? "1.25rem" : "1.6rem";
@@ -180,9 +185,9 @@ function Story({
         <div style={{ display: "flex", justifyContent: "flex-start", alignItems: "baseline", gap: "1rem", marginBottom: "0.8rem" }}>
           <span style={label(tk)}>{KIND[entry.slug] ?? "Culture & History"}</span>
         </div>
-        <h2 style={{ margin: 0, fontFamily: FONT_SS4, fontSize: isMobile ? "1.7rem" : "1.9rem", fontWeight: 300, fontStyle: "italic", fontVariationSettings: SS4_OPSZ_DISPLAY, color: tk.head, lineHeight: 1.16, letterSpacing: "-0.01em" }}>
+        <Title style={{ margin: 0, fontFamily: FONT_SS4, fontSize: isMobile ? "1.7rem" : "1.9rem", fontWeight: 300, fontStyle: "italic", fontVariationSettings: SS4_OPSZ_DISPLAY, color: tk.head, lineHeight: 1.16, letterSpacing: "-0.01em" }}>
           {entry.title}
-        </h2>
+        </Title>
         {/* Closed: one opening paragraph, clamped with a soft fade, so the card ends inside the screen and "Read on" is always in sight. */}
         <div style={{ position: "relative" }}>
           <p style={{

@@ -23,6 +23,7 @@ import CultureFeedV2Page from "../page-types/culture-feed-v2/index.tsx";
 import CultureFeedV3Page from "../page-types/culture-feed-v3/index.tsx";
 import CultureFeedV4Page from "../page-types/culture-feed-v4/index.tsx";
 import CultureFeedV5Page from "../page-types/culture-feed-v5/index.tsx";
+import CultureStoryV5Page from "../page-types/culture-story-v5/index.tsx";
 import ObserveFeedV3Page from "../page-types/observe-feed-v3/index.tsx";
 import ObserveFeedV2Page from "../page-types/observe-feed-v2/index.tsx";
 import ActivityV2Page from "../page-types/activity-v2/index.tsx";
@@ -64,6 +65,7 @@ if (!(PAGE_TYPES as readonly string[]).includes(page.type)) {
 	{page.type === "cultureV3" && <CultureFeedV3Page client:load content={page.content} />}
 	{page.type === "cultureV4" && <CultureFeedV4Page client:load content={page.content} />}
 	{page.type === "cultureV5" && <CultureFeedV5Page client:load content={page.content} />}
+	{page.type === "cultureStoryV5" && <CultureStoryV5Page client:load content={page.content} />}
 	{page.type === "observeV3" && <ObserveFeedV3Page client:load content={page.content} />}
 	{page.type === "observeV2" && <ObserveFeedV2Page client:load content={page.content} />}
 	{page.type === "activityV2" && <ActivityV2Page client:load content={page.content} />}
