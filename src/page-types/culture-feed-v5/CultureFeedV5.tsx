@@ -232,7 +232,7 @@ function Cover({ tk, count, image, position, isMobile, onStart }: { tk: Tk; coun
         </p>
         <button onClick={onStart}
           style={{ display: "flex", alignItems: "center", gap: "0.5rem", margin: "1rem 0 0", padding: "0.7rem 0", background: "none", border: "none", cursor: "pointer", ...label(tk, { color: tk.body }) }}>
-          Begin <span aria-hidden="true">→</span>
+          Swipe this card left to start
         </button>
       </div>
     </div>
@@ -468,13 +468,13 @@ export function CultureFeedV5({ content, isDark = true }: { content: CultureFeed
             ) : (
               <span aria-hidden="true" />
             )}
-            <span style={mono(tk)}>{active === 0 ? `${n} stories` : `${String(active).padStart(2, "0")} / ${n}`}</span>
+            <span style={active === 0 ? mono(tk, { color: tk === DARK ? "#9A958D" : "#5E5A54" }) : mono(tk)}>{`${String(active).padStart(2, "0")} / ${n}`}</span>
           </div>
           <div style={{ display: "flex", gap: 3 }} aria-hidden="true">
             {stories.map((s, i) => (
               <button key={s.slug} tabIndex={-1} onClick={() => goTo(i + 1)}
                 style={{ flex: 1, height: 14, padding: 0, background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center" }}>
-                <span style={{ display: "block", width: "100%", height: 2, background: i + 1 === active ? tk.head : i + 1 < active ? tk.muted : tk.rule, opacity: i + 1 === active ? 0.85 : 1, transition: "background .3s ease" }} />
+                <span style={{ display: "block", width: "100%", height: 2, background: i + 1 === active || (active === 0 && i === 0) ? tk.head : i + 1 < active ? tk.muted : tk.rule, opacity: i + 1 === active || (active === 0 && i === 0) ? 0.85 : 1, transition: "background .3s ease" }} />
               </button>
             ))}
           </div>
