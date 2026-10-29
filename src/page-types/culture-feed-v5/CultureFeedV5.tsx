@@ -219,8 +219,22 @@ function Story({
 
 function Cover({ tk, count, image, position, isMobile, onStart }: { tk: Tk; count: number; image: string; position: string; isMobile: boolean; onStart: () => void }) {
   const pad = isMobile ? "1.25rem" : "1.6rem";
+  const ref = useRef<HTMLDivElement>(null);
+  // One brief nudge to the left, a second after the page opens: it shows which way the card goes.
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || typeof el.animate !== "function") return;
+    try { if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return; } catch { /* animate anyway */ }
+    const t = window.setTimeout(() => {
+      el.animate(
+        [{ transform: "translateX(0)" }, { transform: "translateX(-18px)", offset: 0.4 }, { transform: "translateX(0)" }],
+        { duration: 800, easing: "cubic-bezier(0.3, 0.7, 0.4, 1)" },
+      );
+    }, 1000);
+    return () => window.clearTimeout(t);
+  }, []);
   return (
-    <div style={{ background: tk.surface, border: `1px solid ${tk.rule}`, borderRadius: "0.35rem", overflow: "hidden", transition: "background .35s ease, border-color .35s ease" }}>
+    <div ref={ref} style={{ background: tk.surface, border: `1px solid ${tk.rule}`, borderRadius: "0.35rem", overflow: "hidden", transition: "background .35s ease, border-color .35s ease" }}>
       <Photo src={image} position={position} tk={tk} eager />
       <div style={{ padding: `1.3rem ${pad} 1.4rem` }}>
         <div style={{ ...label(tk), marginBottom: "0.8rem" }}>Explore · Culture &amp; History</div>
@@ -232,7 +246,7 @@ function Cover({ tk, count, image, position, isMobile, onStart }: { tk: Tk; coun
         </p>
         <button onClick={onStart}
           style={{ display: "flex", alignItems: "center", gap: "0.5rem", margin: "1rem 0 0", padding: "0.7rem 0", background: "none", border: "none", cursor: "pointer", ...label(tk, { color: tk.body }) }}>
-          Swipe this card left to start
+          <span aria-hidden="true">«</span> Swipe this card left to start
         </button>
       </div>
     </div>
@@ -468,7 +482,7 @@ export function CultureFeedV5({ content, isDark = true }: { content: CultureFeed
             ) : (
               <span aria-hidden="true" />
             )}
-            <span style={active === 0 ? mono(tk, { color: tk === DARK ? "#9A958D" : "#5E5A54" }) : mono(tk)}>{`${String(active).padStart(2, "0")} / ${n}`}</span>
+            <span style={active === 0 ? mono(tk, { color: tk === DARK ? "#9A958D" : "#5E5A54" }) : mono(tk)}>{`${active === 0 ? "0" : String(active).padStart(2, "0")} / ${n}`}</span>
           </div>
           <div style={{ display: "flex", gap: 3 }} aria-hidden="true">
             {stories.map((s, i) => (
