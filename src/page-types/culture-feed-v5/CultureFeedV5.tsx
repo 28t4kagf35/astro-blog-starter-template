@@ -227,8 +227,8 @@ function Cover({ tk, count, image, position, isMobile, onStart }: { tk: Tk; coun
     try { if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return; } catch { /* animate anyway */ }
     const t = window.setTimeout(() => {
       el.animate(
-        [{ transform: "translateX(0)" }, { transform: "translateX(-18px)", offset: 0.4 }, { transform: "translateX(0)" }],
-        { duration: 800, easing: "cubic-bezier(0.3, 0.7, 0.4, 1)" },
+        [{ transform: "translateX(0)" }, { transform: "translateX(-10px)", offset: 0.28 }, { transform: "translateX(0)" }],
+        { duration: 1100, easing: "cubic-bezier(0.16, 0.84, 0.3, 1)" },
       );
     }, 1000);
     return () => window.clearTimeout(t);
