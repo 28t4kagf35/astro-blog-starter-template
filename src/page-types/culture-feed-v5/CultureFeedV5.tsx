@@ -2,7 +2,7 @@
  * Page type (v5 working copy): Culture & History, v4 plus a desktop experiment: on desktop the stories are
  * stacked in one scrolling 600px column (no swipe, no cover, no progress strip, one story open at a time).
  * Tablet uses the stack too (settled 2026-10-28) with a shorter hero (50vh). The phone keeps the swipe pager of
- * v3, but has no cover card: a short title-only header (24vh) sits above it and the pager starts at story 1.
+ * v3, but has no cover card and no hero photo: the title is a line of text under the nav, then the counter and the pager, which starts at story 1.
  *
  * Page type (v4 working copy): Culture & History, v3 pager plus a tablet/desktop frame.
  *
@@ -433,11 +433,12 @@ export function CultureFeedV5({ content, isDark = true }: { content: CultureFeed
 
   return (
     <div style={{ background: tk.bg, minHeight: "100vh", overflowX: "hidden", transition: "background 0.35s ease", WebkitFontSmoothing: "antialiased", MozOsxFontSmoothing: "grayscale" }}>
-      {/* Phone: a short header (title only) instead of a cover card; tablet and desktop use the stack above. */}
-      <Hero compact minHeight="24vh" image={content.heroImage.src} srcSet={mediaSrcSet(content.heroImage.src)} position={content.heroImage.position} alt="Culture & History" title="Culture & History" isMobile isTablet={false} isDesktop={false} />
-      <div style={{ maxWidth: colMax, margin: "0 auto", paddingTop: "1.8rem" }}>
+      <div style={{ maxWidth: colMax, margin: "0 auto", paddingTop: "5.6rem" }}>
 
-        {/* Orientation: where you are, with one thin segment per story. */}
+        {/* Phone: the title as a line of text under the nav (no hero photo), then the counter and the pager. */}
+        <h1 style={{ margin: 0, padding: `0 ${padH}`, marginBottom: "1.6rem", fontFamily: FONT_SS4, fontSize: "2.6rem", fontWeight: 300, fontStyle: "italic", fontVariationSettings: SS4_OPSZ_DISPLAY, lineHeight: 1.06, letterSpacing: "-0.01em", color: tk.head }}>Culture &amp; History</h1>
+
+        {/* Orientation: where you are, with one thin segment per story. */}}
         <div style={{ padding: `0 ${padH}`, marginBottom: "1.1rem" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "0.8rem" }}>
             <span aria-hidden="true" />
