@@ -20,8 +20,6 @@ import type { CultureFeedV2Content } from "../page-types/culture-feed-v2";
 import type { CultureFeedV3Content } from "../page-types/culture-feed-v3";
 import type { CultureFeedV4Content } from "../page-types/culture-feed-v4";
 import type { CultureFeedV5Content } from "../page-types/culture-feed-v5";
-import type { CultureStoryV5Content } from "../page-types/culture-story-v5";
-import { cultureStoryV5Pages, cultureIndexV5Content } from "../page-types/culture-story-v5/pages";
 import type { ObserveFeedV3Content } from "../page-types/observe-feed-v3";
 import type { ObserveFeedV2Content } from "../page-types/observe-feed-v2";
 import type { ActivityV2Content } from "../page-types/activity-v2";
@@ -54,7 +52,6 @@ export type SitePage =
   | (Base & { type: "cultureV3"; content: CultureFeedV3Content })
   | (Base & { type: "cultureV4"; content: CultureFeedV4Content })
   | (Base & { type: "cultureV5"; content: CultureFeedV5Content })
-  | (Base & { type: "cultureStoryV5"; content: CultureStoryV5Content })
   | (Base & { type: "observeV3"; content: ObserveFeedV3Content })
   | (Base & { type: "observeV2"; content: ObserveFeedV2Content })
   | (Base & { type: "activityV2"; content: ActivityV2Content })
@@ -64,7 +61,7 @@ export type SitePage =
   | (Base & { type: "activitiesHome"; content: ActivitiesHomeContent })
   | (Base & { type: "previewIndex"; content: { links: Array<{ href: string; label: string }> } });
 
-export const PAGE_TYPES = ["waterfall", "masterGuide", "learnArticle", "experienceArticle", "cultureFeed", "observeFeed", "activity", "home", "cabin", "homeV2", "cabinV2", "learnV2", "waterfallV2", "experienceV2", "cultureV2", "cultureV3", "cultureV4", "cultureV5", "cultureStoryV5", "observeV2", "observeV3", "activityV2", "exploreHome", "activitiesHome", "previewIndex"] as const;
+export const PAGE_TYPES = ["waterfall", "masterGuide", "learnArticle", "experienceArticle", "cultureFeed", "observeFeed", "activity", "home", "cabin", "homeV2", "cabinV2", "learnV2", "waterfallV2", "experienceV2", "cultureV2", "cultureV3", "cultureV4", "cultureV5", "observeV2", "observeV3", "activityV2", "exploreHome", "activitiesHome", "previewIndex"] as const;
 
 export async function buildSitePages(): Promise<SitePage[]> {
   const pages: SitePage[] = [
@@ -90,8 +87,7 @@ export async function buildSitePages(): Promise<SitePage[]> {
     if (p.type === "cultureFeed" && !pages.some((x) => x.type === "cultureV2")) pages.push({ ...p, path: "culture-v2", type: "cultureV2", title: `${p.title} (v2)`, listLabel: `${p.listLabel} (v2)`, content: p.content as unknown as CultureFeedV2Content });
     if (p.type === "cultureFeed" && !pages.some((x) => x.type === "cultureV3")) pages.push({ ...p, path: "culture-v3", type: "cultureV3", title: `${p.title} (v3)`, listLabel: `${p.listLabel} (v3)`, content: p.content as unknown as CultureFeedV3Content });
     if (p.type === "cultureFeed" && !pages.some((x) => x.type === "cultureV4")) pages.push({ ...p, path: "culture-v4", type: "cultureV4", title: `${p.title} (v4)`, listLabel: `${p.listLabel} (v4)`, content: p.content as unknown as CultureFeedV4Content });
-    if (p.type === "cultureFeed" && !pages.some((x) => x.type === "cultureV5")) pages.push({ ...p, path: "culture-v5", type: "cultureV5", title: `${p.title} (v5)`, listLabel: `${p.listLabel} (v5)`, content: cultureIndexV5Content(p.content as unknown as CultureFeedV5Content) });
-    if (p.type === "cultureFeed" && !pages.some((x) => x.type === "cultureStoryV5")) pages.push(...cultureStoryV5Pages((p.content as unknown as CultureFeedV5Content).cards));
+    if (p.type === "cultureFeed" && !pages.some((x) => x.type === "cultureV5")) pages.push({ ...p, path: "culture-v5", type: "cultureV5", title: `${p.title} (v5)`, listLabel: `${p.listLabel} (v5)`, content: p.content as unknown as CultureFeedV5Content });
     if (p.type === "observeFeed" && !pages.some((x) => x.type === "observeV3")) pages.push({ ...p, path: "observe-v3", type: "observeV3", title: `${p.title} (v3)`, listLabel: `${p.listLabel} (v3)`, content: p.content as unknown as ObserveFeedV3Content });
     if (p.type === "observeFeed" && !pages.some((x) => x.type === "observeV2")) pages.push({ ...p, path: "observe-v2", type: "observeV2", title: `${p.title} (v2)`, listLabel: `${p.listLabel} (v2)`, content: p.content as unknown as ObserveFeedV2Content });
     if (p.type === "activity" && !pages.some((x) => x.type === "activityV2")) pages.push({ ...p, path: "activity-v2", type: "activityV2", title: `${p.title} (v2)`, listLabel: `${p.listLabel} (v2)`, content: p.content as unknown as ActivityV2Content });

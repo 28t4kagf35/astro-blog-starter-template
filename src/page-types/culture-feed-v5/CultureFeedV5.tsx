@@ -36,17 +36,17 @@ const FONT_LBL  = "'Raleway', system-ui, sans-serif";
 
 const SS4_OPSZ_DISPLAY = '"opsz" 36, "wght" 300';
 
-export const DARK = {
+const DARK = {
   bg: "#1A1714", surface: "#222120", rule: "#2C2A28", muted: "#6E6A65",
   body: "#C4BEB4", head: "#EDE9E2", bq: "#7A8B74", accent: "#D43535",
 } as const;
-export const LIGHT = {
+const LIGHT = {
   bg: "#F4F2EE", surface: "#EBE7DF", rule: "#D6D2CB", muted: "#8E8A84",
   body: "#201E18", head: "#111010", bq: "#A4AE9C", accent: "#D43535",
 } as const;
-export type Tk = typeof DARK | typeof LIGHT;
+type Tk = typeof DARK | typeof LIGHT;
 
-export const FONTS_HREF =
+const FONTS_HREF =
   "https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;1,8..60,300" +
   "&family=Source+Sans+3:wght@300;400" +
   "&family=IBM+Plex+Mono:wght@400" +
@@ -60,18 +60,14 @@ export type CultureCardV5 = {
   expanded: string[];
   image: string;
   imagePosition: string;
-  /** The index carries only the opening paragraph; this says the story has more (on its own page). */
-  more?: boolean;
 };
 export interface CultureFeedV5Content {
   heroImage: { src: string; position: string };
   cards: CultureCardV5[];
-  /** Where the story pages live (preview: "/culture-v5"). Without it, stories expand in place as before. */
-  basePath?: string;
 }
 
 // The kind of story each is, from the copy's own cluster lines ("EXPLORE → CULTURE & HISTORY → …").
-export const KIND: Record<string, string> = {
+const KIND: Record<string, string> = {
   "huldra": "Living Lore",
   "jul-nisse": "Living Lore",
   "trollveggen": "Living Lore",
@@ -90,7 +86,7 @@ export const KIND: Record<string, string> = {
 };
 
 // Moods alternate, so each swipe feels different; the pager ends on Voss. Stories not listed follow.
-export const ORDER = [
+const ORDER = [
   "friluftsliv",
   "huldra",
   "norway-tiny-history",
@@ -108,7 +104,7 @@ export const ORDER = [
   "voss",
 ];
 
-export function useBreakpoint() {
+function useBreakpoint() {
   const get = () => {
     const w = typeof window !== "undefined" ? window.innerWidth : 390;
     return w >= 1024 ? "desktop" : w >= 600 ? "tablet" : "mobile";
@@ -123,11 +119,11 @@ export function useBreakpoint() {
   return bp;
 }
 
-export const label = (tk: Tk, extra?: CSSProperties): CSSProperties => ({
+const label = (tk: Tk, extra?: CSSProperties): CSSProperties => ({
   fontFamily: FONT_LBL, fontSize: "0.72rem", fontWeight: 400, letterSpacing: "0.14em",
   textTransform: "uppercase", lineHeight: 1.4, color: tk.muted, ...extra,
 });
-export const mono = (tk: Tk, extra?: CSSProperties): CSSProperties => ({
+const mono = (tk: Tk, extra?: CSSProperties): CSSProperties => ({
   fontFamily: FONT_MONO, fontSize: "0.66rem", letterSpacing: "0.14em", textTransform: "uppercase", lineHeight: 1.4, color: tk.muted, ...extra,
 });
 
@@ -165,42 +161,13 @@ function Photo({ src, position, tk, eager, stack, vignette }: { src: string; pos
   );
 }
 
-export function Story({
-  entry, tk, isActive, isMobile, eager, nextTitle, onNext, index, total, stack, onOpen, startOpen, titleTag, readOnHref, fetchHref,
+function Story({
+  entry, tk, isActive, isMobile, eager, nextTitle, onNext, index, total, stack, onOpen,
 }: {
   entry: CultureCardV5; tk: Tk; isActive: boolean; isMobile: boolean; eager: boolean;
   nextTitle?: string; onNext?: () => void; index: number; total: number; stack?: boolean; onOpen?: () => void;
-  /** Story pages: the card loads open (no "Read on"). */
-  startOpen?: boolean;
-  /** Story pages: the title is the page heading. */
-  titleTag?: "h1" | "h2";
-  /** Tablet and desktop index: "Read on" is a link to the story page. */
-  readOnHref?: string;
-  /** Phone index: "Read on" fetches the rest from the story page and opens it in place. */
-  fetchHref?: string;
 }) {
-  const [open, setOpen] = useState(!!startOpen);
-  const Title = titleTag ?? "h2";
-  const hasMore = !!entry.more || entry.expanded.length > 0 || entry.teaser.length > 1;
-  const [rest, setRest] = useState<string[] | null>(null);
-  const [loading, setLoading] = useState(false);
-  // Phone: the index holds only the opening paragraph. "Read on" takes the rest from the story's own page
-  // (its paragraphs are marked data-story-p), and opens it in place. If that fails, go to the page.
-  const openIt = async () => {
-    if (fetchHref && entry.more && !rest) {
-      setLoading(true);
-      try {
-        const res = await fetch(fetchHref, { credentials: "same-origin" });
-        if (!res.ok) throw new Error(String(res.status));
-        const doc = new DOMParser().parseFromString(await res.text(), "text/html");
-        const ps = Array.from(doc.querySelectorAll("p[data-story-p]")).map((el) => (el.textContent ?? "").trim()).filter(Boolean).slice(1);
-        if (!ps.length) throw new Error("empty");
-        setRest(ps);
-      } catch { window.location.href = fetchHref; return; }
-      setLoading(false);
-    }
-    setOpen(true); onOpen?.();
-  };
+  const [open, setOpen] = useState(false);
   // A story you swiped away from folds itself shut, so the pager stays short.
   useEffect(() => { if (!isActive) setOpen(false); }, [isActive]);
   const pad = isMobile ? "1.25rem" : "1.6rem";
@@ -213,38 +180,32 @@ export function Story({
         <div style={{ display: "flex", justifyContent: "flex-start", alignItems: "baseline", gap: "1rem", marginBottom: "0.8rem" }}>
           <span style={label(tk)}>{KIND[entry.slug] ?? "Culture & History"}</span>
         </div>
-        <Title style={{ margin: 0, fontFamily: FONT_SS4, fontSize: isMobile ? "1.7rem" : "1.9rem", fontWeight: 300, fontStyle: "italic", fontVariationSettings: SS4_OPSZ_DISPLAY, color: tk.head, lineHeight: 1.16, letterSpacing: "-0.01em" }}>
+        <h2 style={{ margin: 0, fontFamily: FONT_SS4, fontSize: isMobile ? "1.7rem" : "1.9rem", fontWeight: 300, fontStyle: "italic", fontVariationSettings: SS4_OPSZ_DISPLAY, color: tk.head, lineHeight: 1.16, letterSpacing: "-0.01em" }}>
           {entry.title}
-        </Title>
+        </h2>
         {/* Closed: one opening paragraph, clamped with a soft fade, so the card ends inside the screen and "Read on" is always in sight. */}
         <div style={{ position: "relative" }}>
-          <p data-story-p="" style={{
+          <p style={{
             ...p, marginTop: "1rem",
             ...(open ? {} : { display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 5, overflow: "hidden", WebkitMaskImage: FADE_MASK, maskImage: FADE_MASK }),
           } as CSSProperties}>{entry.teaser[0]}</p>
         </div>
-        {open && entry.teaser.slice(1).map((t, i) => <p key={i} data-story-p="" style={p}>{t}</p>)}
-        {open && rest?.map((t, i) => <p key={"r" + i} style={p}>{t}</p>)}
+        {open && entry.teaser.slice(1).map((t, i) => <p key={i} style={p}>{t}</p>)}
 
-        {!open && hasMore && (readOnHref ? (
-          <a href={readOnHref}
-            style={{ display: "flex", alignItems: "center", gap: "0.5rem", margin: "1rem 0 0", padding: "0.7rem 0", textDecoration: "none", ...label(tk, { color: tk.body }) }}>
-            Read on <span aria-hidden="true">→</span>
-          </a>
-        ) : (
-          <button onClick={openIt} disabled={loading} aria-expanded={false}
-            style={{ display: "flex", alignItems: "center", gap: "0.5rem", margin: "1rem 0 0", padding: "0.7rem 0", background: "none", border: "none", cursor: loading ? "default" : "pointer", ...label(tk, { color: tk.body }) }}>
-            {loading ? "Opening…" : <>Read on <span aria-hidden="true">↓</span></>}
+        {!open && (entry.expanded.length > 0 || entry.teaser.length > 1) && (
+          <button onClick={() => { setOpen(true); onOpen?.(); }} aria-expanded={false}
+            style={{ display: "flex", alignItems: "center", gap: "0.5rem", margin: "1rem 0 0", padding: "0.7rem 0", background: "none", border: "none", cursor: "pointer", ...label(tk, { color: tk.body }) }}>
+            Read on <span aria-hidden="true">↓</span>
           </button>
-        ))}
+        )}
 
         <div style={{ display: "grid", gridTemplateRows: open ? "1fr" : "0fr", transition: "grid-template-rows 0.26s cubic-bezier(0.65, 0, 0.35, 1)" }}>
           <div style={{ overflow: "hidden", minHeight: 0 }}>
-            {entry.expanded.map((t, i) => <p key={i} data-story-p="" style={p}>{t}</p>)}
+            {entry.expanded.map((t, i) => <p key={i} style={p}>{t}</p>)}
           </div>
         </div>
 
-        {(open || !hasMore) && onNext && nextTitle && (
+        {(open || (entry.expanded.length === 0 && entry.teaser.length <= 1)) && onNext && nextTitle && (
           <button onClick={onNext}
             style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "0.35rem", width: "100%", margin: "1.6rem 0 0", padding: "1.1rem 0 0", background: "none", border: "none", borderTop: `1px solid ${tk.rule}`, cursor: "pointer", textAlign: "left" }}>
             <span style={label(tk)}>Next · {index + 1} / {total}</span>
@@ -493,7 +454,6 @@ export function CultureFeedV5({ content, isDark = true }: { content: CultureFeed
                 nextTitle={stories[i + 1]?.title}
                 onNext={stories[i + 1] ? () => goNext(stories[i + 1].slug) : undefined}
                 onOpen={() => setOpenSlug(s.slug)}
-                readOnHref={content.basePath ? `${content.basePath}/${s.slug}` : undefined}
               />
             </div>
           ))}
@@ -565,7 +525,6 @@ export function CultureFeedV5({ content, isDark = true }: { content: CultureFeed
                   index={i + 1} total={n}
                   nextTitle={stories[i + 1]?.title}
                   onNext={stories[i + 1] ? () => goTo(i + 2) : undefined}
-                  fetchHref={content.basePath ? `${content.basePath}/${s.slug}` : undefined}
                 />
               </div>
             ))}
