@@ -219,22 +219,8 @@ function Story({
 
 function Cover({ tk, count, image, position, isMobile, onStart }: { tk: Tk; count: number; image: string; position: string; isMobile: boolean; onStart: () => void }) {
   const pad = isMobile ? "1.25rem" : "1.6rem";
-  const ref = useRef<HTMLDivElement>(null);
-  // One brief nudge to the left, a second after the page opens: it shows which way the card goes.
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || typeof el.animate !== "function") return;
-    try { if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return; } catch { /* animate anyway */ }
-    const t = window.setTimeout(() => {
-      el.animate(
-        [{ transform: "translateX(0)" }, { transform: "translateX(-10px)", offset: 0.28 }, { transform: "translateX(0)" }],
-        { duration: 1100, easing: "cubic-bezier(0.16, 0.84, 0.3, 1)" },
-      );
-    }, 1000);
-    return () => window.clearTimeout(t);
-  }, []);
   return (
-    <div ref={ref} style={{ background: tk.surface, border: `1px solid ${tk.rule}`, borderRadius: "0.35rem", overflow: "hidden", transition: "background .35s ease, border-color .35s ease" }}>
+    <div style={{ background: tk.surface, border: `1px solid ${tk.rule}`, borderRadius: "0.35rem", overflow: "hidden", transition: "background .35s ease, border-color .35s ease" }}>
       <Photo src={image} position={position} tk={tk} eager />
       <div style={{ padding: `1.3rem ${pad} 1.4rem` }}>
         <div style={{ ...label(tk), marginBottom: "0.8rem" }}>Explore · Culture &amp; History</div>
@@ -322,6 +308,23 @@ export function CultureFeedV5({ content, isDark = true }: { content: CultureFeed
   // The swipe reads the latest values through a ref, so it can never act on a stale card or width.
   const live = useRef({ active: 0, step: 0, slots: 0, minI: 0 });
   live.current = { active, step, slots, minI };
+
+  // One slow nudge to the left, a second after the page opens, on the cover and on the card behind it: it
+  // shows which way the cards go. Skipped if the visitor has already moved, or asked for less motion.
+  useEffect(() => {
+    try { if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return; } catch { /* animate anyway */ }
+    const t = window.setTimeout(() => {
+      if (live.current.active !== 0) return;
+      [slotRefs.current[0], slotRefs.current[1]].forEach((el) => {
+        if (!el || typeof el.animate !== "function") return;
+        el.animate(
+          [{ transform: "translateX(0)" }, { transform: "translateX(-10px)", offset: 0.28 }, { transform: "translateX(0)" }],
+          { duration: 2200, easing: "cubic-bezier(0.16, 0.84, 0.3, 1)" },
+        );
+      });
+    }, 1000);
+    return () => window.clearTimeout(t);
+  }, []);
 
   const begin = (x: number, y: number) => {
     const wrap = wrapRef.current; if (wrap) wrap.style.userSelect = "";
