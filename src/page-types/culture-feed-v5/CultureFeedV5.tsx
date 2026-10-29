@@ -438,7 +438,7 @@ export function CultureFeedV5({ content, isDark = true }: { content: CultureFeed
         {/* Phone: the title as a line of text under the nav (no hero photo), then the counter and the pager. */}
         <h1 style={{ margin: 0, padding: `0 ${padH}`, marginBottom: "1.6rem", fontFamily: FONT_SS4, fontSize: "2.6rem", fontWeight: 300, fontStyle: "italic", fontVariationSettings: SS4_OPSZ_DISPLAY, lineHeight: 1.06, letterSpacing: "-0.01em", color: tk.head }}>Culture &amp; History</h1>
 
-        {/* Orientation: where you are, with one thin segment per story. */}}
+        {/* Orientation: where you are, with one thin segment per story. */}
         <div style={{ padding: `0 ${padH}`, marginBottom: "1.1rem" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "0.8rem" }}>
             <span aria-hidden="true" />
