@@ -1,7 +1,8 @@
 /**
  * Page type (v5 working copy): Culture & History, v4 plus a desktop experiment: on desktop the stories are
  * stacked in one scrolling 600px column (no swipe, no cover, no progress strip, one story open at a time).
- * Tablet uses the stack too (settled 2026-10-28) with a shorter hero (50vh). The phone behaves exactly as in v3.
+ * Tablet uses the stack too (settled 2026-10-28) with a shorter hero (50vh). The phone keeps the swipe pager of
+ * v3, but has no cover card: a short title-only header (24vh) sits above it and the pager starts at story 1.
  *
  * Page type (v4 working copy): Culture & History, v3 pager plus a tablet/desktop frame.
  *
@@ -217,28 +218,6 @@ function Story({
   );
 }
 
-function Cover({ tk, count, image, position, isMobile, onStart }: { tk: Tk; count: number; image: string; position: string; isMobile: boolean; onStart: () => void }) {
-  const pad = isMobile ? "1.25rem" : "1.6rem";
-  return (
-    <div style={{ background: tk.surface, border: `1px solid ${tk.rule}`, borderRadius: "0.35rem", overflow: "hidden", transition: "background .35s ease, border-color .35s ease" }}>
-      <Photo src={image} position={position} tk={tk} eager />
-      <div style={{ padding: `1.3rem ${pad} 1.4rem` }}>
-        <div style={{ ...label(tk), marginBottom: "0.8rem" }}>Explore · Culture &amp; History</div>
-        <h1 style={{ margin: 0, fontFamily: FONT_SS4, fontSize: isMobile ? "2.1rem" : "2.4rem", fontWeight: 300, fontStyle: "italic", fontVariationSettings: SS4_OPSZ_DISPLAY, color: tk.head, lineHeight: 1.12, letterSpacing: "-0.01em" }}>
-          Culture &amp; History
-        </h1>
-        <p style={{ margin: "1rem 0 0", fontFamily: FONT_SS3, fontSize: isMobile ? "0.95rem" : "1rem", fontWeight: 300, lineHeight: 1.78, letterSpacing: "0.01em", color: tk.body }}>
-          {count} fun short stories about Norway
-        </p>
-        <button onClick={onStart}
-          style={{ display: "flex", alignItems: "center", gap: "0.5rem", margin: "1rem 0 0", padding: "0.7rem 0", background: "none", border: "none", cursor: "pointer", ...label(tk, { color: tk.body }) }}>
-          Begin <span aria-hidden="true">→</span>
-        </button>
-      </div>
-    </div>
-  );
-}
-
 export function CultureFeedV5({ content, isDark = true }: { content: CultureFeedV5Content; isDark?: boolean }) {
   useEffect(() => {
     const doc = globalThis["document"];
@@ -261,7 +240,7 @@ export function CultureFeedV5({ content, isDark = true }: { content: CultureFeed
   });
   const n = stories.length;
   const slots = n + 1; // slot 0 is the cover (phone only)
-  const minI = isMobile ? 0 : 1; // tablet and desktop have no cover: the pager starts at story 1
+  const minI = 1; // there is no cover card on any screen: the pager starts at story 1
 
   const padH = isMobile ? "1.25rem" : isTablet ? "1.4rem" : "1rem";
   const SEC = isMobile ? "3.5rem" : isTablet ? "4.5rem" : "5.5rem";
@@ -272,7 +251,7 @@ export function CultureFeedV5({ content, isDark = true }: { content: CultureFeed
   const wrapRef = useRef<HTMLDivElement>(null);
   const rowRef = useRef<HTMLDivElement>(null);
   const slotRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const [active, setActive] = useState(0);
+  const [active, setActive] = useState(1);
   const [height, setHeight] = useState<number | undefined>(undefined);
   const [switching, setSwitching] = useState(false);
   const [step, setStep] = useState(0); // px from one card to the next, measured
@@ -281,7 +260,7 @@ export function CultureFeedV5({ content, isDark = true }: { content: CultureFeed
   const instant = useRef(false);
 
   // The first paint is phone-first; once the real size is known, tablet and desktop start at story 1.
-  useEffect(() => { if (bp !== "mobile") { instant.current = true; setActive((a) => Math.max(1, a)); } }, [bp]);
+  useEffect(() => { instant.current = true; setActive((a) => Math.max(1, a)); }, [bp]);
   const EASE = "transform 0.42s cubic-bezier(0.22, 0.8, 0.28, 1)"; // eases out and settles
   // Moving to another card brings the page back to the top, so the new card is read from its start.
   const toTop = () => { try { window.scrollTo({ top: 0, behavior: "smooth" }); } catch { window.scrollTo(0, 0); } };
@@ -454,20 +433,14 @@ export function CultureFeedV5({ content, isDark = true }: { content: CultureFeed
 
   return (
     <div style={{ background: tk.bg, minHeight: "100vh", overflowX: "hidden", transition: "background 0.35s ease", WebkitFontSmoothing: "antialiased", MozOsxFontSmoothing: "grayscale" }}>
-      {!isMobile && (
-        <Hero compact minHeight={isTablet ? "50vh" : undefined} textMax="680px" textMaxTablet="680px" image={content.heroImage.src} srcSet={mediaSrcSet(content.heroImage.src)} position={content.heroImage.position} alt="Culture & History" title="Culture & History" placement="Explore · Culture & History" tagline={`${n} fun short stories about Norway`} isMobile={isMobile} isTablet={isTablet} isDesktop={!isTablet} />
-      )}
-      <div style={{ maxWidth: colMax, margin: "0 auto", paddingTop: isMobile ? "5.6rem" : "1.8rem" }}>
+      {/* Phone: a short header (title only) instead of a cover card; tablet and desktop use the stack above. */}
+      <Hero compact minHeight="24vh" image={content.heroImage.src} srcSet={mediaSrcSet(content.heroImage.src)} position={content.heroImage.position} alt="Culture & History" title="Culture & History" isMobile isTablet={false} isDesktop={false} />
+      <div style={{ maxWidth: colMax, margin: "0 auto", paddingTop: "1.8rem" }}>
 
         {/* Orientation: where you are, with one thin segment per story. */}
         <div style={{ padding: `0 ${padH}`, marginBottom: "1.1rem" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: "0.8rem" }}>
-            {isMobile ? (
-              <button onClick={() => goTo(0)} aria-label="Culture and History, back to the start"
-                style={{ background: "none", border: "none", padding: 0, cursor: "pointer", ...label(tk, { color: tk.body }) }}>Culture &amp; History</button>
-            ) : (
-              <span aria-hidden="true" />
-            )}
+            <span aria-hidden="true" />
             <span style={mono(tk)}>{active === 0 ? `${n} stories` : `${String(active).padStart(2, "0")} / ${n}`}</span>
           </div>
           <div style={{ display: "flex", gap: 3 }} aria-hidden="true">
@@ -499,7 +472,7 @@ export function CultureFeedV5({ content, isDark = true }: { content: CultureFeed
           )}
           <div ref={rowRef} style={{ display: "flex", alignItems: "flex-start", gap: GAP, paddingLeft: padH, willChange: "transform" }}>
             <div ref={(el) => { slotRefs.current[0] = el; }} style={{ flex: `0 0 ${slotW}` }}>
-              {isMobile ? <Cover tk={tk} count={n} image={content.heroImage.src} position={content.heroImage.position} isMobile={isMobile} onStart={() => goTo(1)} /> : null}
+              {null}
             </div>
             {stories.map((s, i) => (
               <div key={s.slug} ref={(el) => { slotRefs.current[i + 1] = el; }} style={{ flex: `0 0 ${slotW}` }}>
