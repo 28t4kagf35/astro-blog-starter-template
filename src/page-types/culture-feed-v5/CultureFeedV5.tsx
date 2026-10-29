@@ -60,10 +60,14 @@ export type CultureCardV5 = {
   expanded: string[];
   image: string;
   imagePosition: string;
+  /** The index carries only the opening paragraph; this says the story has more (on its own page). */
+  more?: boolean;
 };
 export interface CultureFeedV5Content {
   heroImage: { src: string; position: string };
   cards: CultureCardV5[];
+  /** Where the story pages live (preview: "/culture-v5"). Without it, stories expand in place as before. */
+  basePath?: string;
 }
 
 // The kind of story each is, from the copy's own cluster lines ("EXPLORE → CULTURE & HISTORY → …").
@@ -162,7 +166,7 @@ function Photo({ src, position, tk, eager, stack, vignette }: { src: string; pos
 }
 
 export function Story({
-  entry, tk, isActive, isMobile, eager, nextTitle, onNext, index, total, stack, onOpen, startOpen, titleTag,
+  entry, tk, isActive, isMobile, eager, nextTitle, onNext, index, total, stack, onOpen, startOpen, titleTag, readOnHref, fetchHref,
 }: {
   entry: CultureCardV5; tk: Tk; isActive: boolean; isMobile: boolean; eager: boolean;
   nextTitle?: string; onNext?: () => void; index: number; total: number; stack?: boolean; onOpen?: () => void;
@@ -170,9 +174,33 @@ export function Story({
   startOpen?: boolean;
   /** Story pages: the title is the page heading. */
   titleTag?: "h1" | "h2";
+  /** Tablet and desktop index: "Read on" is a link to the story page. */
+  readOnHref?: string;
+  /** Phone index: "Read on" fetches the rest from the story page and opens it in place. */
+  fetchHref?: string;
 }) {
   const [open, setOpen] = useState(!!startOpen);
   const Title = titleTag ?? "h2";
+  const hasMore = !!entry.more || entry.expanded.length > 0 || entry.teaser.length > 1;
+  const [rest, setRest] = useState<string[] | null>(null);
+  const [loading, setLoading] = useState(false);
+  // Phone: the index holds only the opening paragraph. "Read on" takes the rest from the story's own page
+  // (its paragraphs are marked data-story-p), and opens it in place. If that fails, go to the page.
+  const openIt = async () => {
+    if (fetchHref && entry.more && !rest) {
+      setLoading(true);
+      try {
+        const res = await fetch(fetchHref, { credentials: "same-origin" });
+        if (!res.ok) throw new Error(String(res.status));
+        const doc = new DOMParser().parseFromString(await res.text(), "text/html");
+        const ps = Array.from(doc.querySelectorAll("p[data-story-p]")).map((el) => (el.textContent ?? "").trim()).filter(Boolean).slice(1);
+        if (!ps.length) throw new Error("empty");
+        setRest(ps);
+      } catch { window.location.href = fetchHref; return; }
+      setLoading(false);
+    }
+    setOpen(true); onOpen?.();
+  };
   // A story you swiped away from folds itself shut, so the pager stays short.
   useEffect(() => { if (!isActive) setOpen(false); }, [isActive]);
   const pad = isMobile ? "1.25rem" : "1.6rem";
@@ -190,27 +218,33 @@ export function Story({
         </Title>
         {/* Closed: one opening paragraph, clamped with a soft fade, so the card ends inside the screen and "Read on" is always in sight. */}
         <div style={{ position: "relative" }}>
-          <p style={{
+          <p data-story-p="" style={{
             ...p, marginTop: "1rem",
             ...(open ? {} : { display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 5, overflow: "hidden", WebkitMaskImage: FADE_MASK, maskImage: FADE_MASK }),
           } as CSSProperties}>{entry.teaser[0]}</p>
         </div>
-        {open && entry.teaser.slice(1).map((t, i) => <p key={i} style={p}>{t}</p>)}
+        {open && entry.teaser.slice(1).map((t, i) => <p key={i} data-story-p="" style={p}>{t}</p>)}
+        {open && rest?.map((t, i) => <p key={"r" + i} style={p}>{t}</p>)}
 
-        {!open && (entry.expanded.length > 0 || entry.teaser.length > 1) && (
-          <button onClick={() => { setOpen(true); onOpen?.(); }} aria-expanded={false}
-            style={{ display: "flex", alignItems: "center", gap: "0.5rem", margin: "1rem 0 0", padding: "0.7rem 0", background: "none", border: "none", cursor: "pointer", ...label(tk, { color: tk.body }) }}>
-            Read on <span aria-hidden="true">↓</span>
+        {!open && hasMore && (readOnHref ? (
+          <a href={readOnHref}
+            style={{ display: "flex", alignItems: "center", gap: "0.5rem", margin: "1rem 0 0", padding: "0.7rem 0", textDecoration: "none", ...label(tk, { color: tk.body }) }}>
+            Read on <span aria-hidden="true">→</span>
+          </a>
+        ) : (
+          <button onClick={openIt} disabled={loading} aria-expanded={false}
+            style={{ display: "flex", alignItems: "center", gap: "0.5rem", margin: "1rem 0 0", padding: "0.7rem 0", background: "none", border: "none", cursor: loading ? "default" : "pointer", ...label(tk, { color: tk.body }) }}>
+            {loading ? "Opening…" : <>Read on <span aria-hidden="true">↓</span></>}
           </button>
-        )}
+        ))}
 
         <div style={{ display: "grid", gridTemplateRows: open ? "1fr" : "0fr", transition: "grid-template-rows 0.26s cubic-bezier(0.65, 0, 0.35, 1)" }}>
           <div style={{ overflow: "hidden", minHeight: 0 }}>
-            {entry.expanded.map((t, i) => <p key={i} style={p}>{t}</p>)}
+            {entry.expanded.map((t, i) => <p key={i} data-story-p="" style={p}>{t}</p>)}
           </div>
         </div>
 
-        {(open || (entry.expanded.length === 0 && entry.teaser.length <= 1)) && onNext && nextTitle && (
+        {(open || !hasMore) && onNext && nextTitle && (
           <button onClick={onNext}
             style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: "0.35rem", width: "100%", margin: "1.6rem 0 0", padding: "1.1rem 0 0", background: "none", border: "none", borderTop: `1px solid ${tk.rule}`, cursor: "pointer", textAlign: "left" }}>
             <span style={label(tk)}>Next · {index + 1} / {total}</span>
@@ -459,6 +493,7 @@ export function CultureFeedV5({ content, isDark = true }: { content: CultureFeed
                 nextTitle={stories[i + 1]?.title}
                 onNext={stories[i + 1] ? () => goNext(stories[i + 1].slug) : undefined}
                 onOpen={() => setOpenSlug(s.slug)}
+                readOnHref={content.basePath ? `${content.basePath}/${s.slug}` : undefined}
               />
             </div>
           ))}
@@ -530,6 +565,7 @@ export function CultureFeedV5({ content, isDark = true }: { content: CultureFeed
                   index={i + 1} total={n}
                   nextTitle={stories[i + 1]?.title}
                   onNext={stories[i + 1] ? () => goTo(i + 2) : undefined}
+                  fetchHref={content.basePath ? `${content.basePath}/${s.slug}` : undefined}
                 />
               </div>
             ))}

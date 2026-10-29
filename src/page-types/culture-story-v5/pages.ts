@@ -1,6 +1,6 @@
 // The 15 story pages of Culture v5, built from the same cards as the index (preview: /culture-v5/<story>).
 import type { SitePage } from "../../site/pages";
-import { ORDER, type CultureCardV5 } from "../culture-feed-v5/CultureFeedV5";
+import { ORDER, type CultureCardV5, type CultureFeedV5Content } from "../culture-feed-v5/CultureFeedV5";
 import type { CultureStoryV5Content } from "./CultureStoryV5";
 
 const BASE = "culture-v5";
@@ -30,4 +30,16 @@ export function cultureStoryV5Pages(cards: CultureCardV5[]): SitePage[] {
       content,
     };
   });
+}
+
+/**
+ * The index's content: each card keeps only its opening paragraph (the rest lives on the story's own page,
+ * so the index does not repeat the stories), and the index knows where the story pages are.
+ */
+export function cultureIndexV5Content(c: { heroImage: { src: string; position: string }; cards: CultureCardV5[] }): CultureFeedV5Content {
+  return {
+    heroImage: c.heroImage,
+    basePath: `/${BASE}`,
+    cards: c.cards.map((s) => ({ ...s, teaser: s.teaser.slice(0, 1), expanded: [], more: s.teaser.length > 1 || s.expanded.length > 0 })),
+  };
 }
