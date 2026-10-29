@@ -223,12 +223,12 @@ function Cover({ tk, count, image, position, isMobile, onStart }: { tk: Tk; coun
     <div style={{ background: tk.surface, border: `1px solid ${tk.rule}`, borderRadius: "0.35rem", overflow: "hidden", transition: "background .35s ease, border-color .35s ease" }}>
       <Photo src={image} position={position} tk={tk} eager />
       <div style={{ padding: `1.3rem ${pad} 1.4rem` }}>
-        <div style={{ ...label(tk), marginBottom: "0.8rem" }}>Explore</div>
+        <div style={{ ...label(tk), marginBottom: "0.8rem" }}>Explore · Culture &amp; History</div>
         <h1 style={{ margin: 0, fontFamily: FONT_SS4, fontSize: isMobile ? "2.1rem" : "2.4rem", fontWeight: 300, fontStyle: "italic", fontVariationSettings: SS4_OPSZ_DISPLAY, color: tk.head, lineHeight: 1.12, letterSpacing: "-0.01em" }}>
           Culture &amp; History
         </h1>
         <p style={{ margin: "1rem 0 0", fontFamily: FONT_SS3, fontSize: isMobile ? "0.95rem" : "1rem", fontWeight: 300, lineHeight: 1.78, letterSpacing: "0.01em", color: tk.body }}>
-          {count} small stories from Norway. Swipe to begin.
+          {count} fun short stories about Norway
         </p>
         <button onClick={onStart}
           style={{ display: "flex", alignItems: "center", gap: "0.5rem", margin: "1rem 0 0", padding: "0.7rem 0", background: "none", border: "none", cursor: "pointer", ...label(tk, { color: tk.body }) }}>
