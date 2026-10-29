@@ -318,8 +318,8 @@ export function CultureFeedV5({ content, isDark = true }: { content: CultureFeed
       [slotRefs.current[0], slotRefs.current[1]].forEach((el) => {
         if (!el || typeof el.animate !== "function") return;
         el.animate(
-          [{ transform: "translateX(0)" }, { transform: "translateX(-10px)", offset: 0.28 }, { transform: "translateX(0)" }],
-          { duration: 2200, easing: "cubic-bezier(0.16, 0.84, 0.3, 1)" },
+          [{ transform: "translateX(0)" }, { transform: "translateX(-15px)", offset: 0.4375 }, { transform: "translateX(0)" }],
+          { duration: 2816, easing: "cubic-bezier(0.16, 0.84, 0.3, 1)" },
         );
       });
     }, 1000);
