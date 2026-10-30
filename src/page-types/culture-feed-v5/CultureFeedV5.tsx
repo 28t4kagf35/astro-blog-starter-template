@@ -168,6 +168,33 @@ function Story({
   nextTitle?: string; onNext?: () => void; index: number; total: number; stack?: boolean; onOpen?: () => void;
 }) {
   const [open, setOpen] = useState(false);
+  // Tablet and desktop (the stack): at least MIN_LINES lines of text show before "Read on". If the first teaser
+  // paragraph is shorter, the next one carries on under it, cut at a whole line. A longer first paragraph is
+  // cut at five lines, as before. Measured, so it follows the column width and the loaded fonts.
+  const MIN_LINES = 4;
+  const blockRef = useRef<HTMLDivElement>(null);
+  const [clampH, setClampH] = useState<number | undefined>(undefined);
+  useEffect(() => {
+    if (!stack) return;
+    const el = blockRef.current; if (!el) return;
+    const measure = () => {
+      const ps = Array.from(el.children) as HTMLElement[];
+      if (!ps.length) return;
+      const lh = parseFloat(getComputedStyle(ps[0]).lineHeight) || 28;
+      const lines = (n: HTMLElement) => Math.max(1, Math.round(n.offsetHeight / lh));
+      const gap = ps[1] ? parseFloat(getComputedStyle(ps[1]).marginTop) || 0 : 0;
+      const l1 = lines(ps[0]);
+      let h = 0;
+      if (l1 >= MIN_LINES) h = Math.min(l1, 5) * lh;
+      else {
+        let need = MIN_LINES;
+        for (let i = 0; i < ps.length && need > 0; i++) { const take = Math.min(lines(ps[i]), need); h += (i > 0 ? gap : 0) + take * lh; need -= take; }
+      }
+      setClampH(Math.ceil(h));
+    };
+    measure();
+    if (typeof ResizeObserver !== "undefined") { const ro = new ResizeObserver(measure); ro.observe(el); try { document.fonts?.ready.then(measure); } catch { /* fine */ } return () => ro.disconnect(); }
+  }, [stack, entry.slug]);
   // A story you swiped away from folds itself shut, so the pager stays short.
   useEffect(() => { if (!isActive) setOpen(false); }, [isActive]);
   const pad = isMobile ? "1.25rem" : "1.6rem";
@@ -183,14 +210,24 @@ function Story({
         <h2 style={{ margin: 0, fontFamily: FONT_SS4, fontSize: isMobile ? "1.7rem" : "1.9rem", fontWeight: 300, fontStyle: "italic", fontVariationSettings: SS4_OPSZ_DISPLAY, color: tk.head, lineHeight: 1.16, letterSpacing: "-0.01em" }}>
           {entry.title}
         </h2>
-        {/* Closed: one opening paragraph, clamped with a soft fade, so the card ends inside the screen and "Read on" is always in sight. */}
-        <div style={{ position: "relative" }}>
-          <p style={{
-            ...p, marginTop: "1rem",
-            ...(open ? {} : { display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 5, overflow: "hidden", WebkitMaskImage: FADE_MASK, maskImage: FADE_MASK }),
-          } as CSSProperties}>{entry.teaser[0]}</p>
-        </div>
-        {open && entry.teaser.slice(1).map((t, i) => <p key={i} style={p}>{t}</p>)}
+        {stack ? (
+          /* Tablet and desktop: all teaser paragraphs sit in one block; closed, it is cut at a measured height. */
+          <div ref={blockRef} style={{ marginTop: "1rem", position: "relative", overflow: open ? "visible" : "hidden",
+            ...(open ? {} : { height: clampH, maxHeight: clampH === undefined ? "calc(5 * 1.78em)" : undefined, WebkitMaskImage: FADE_MASK, maskImage: FADE_MASK }) } as CSSProperties}>
+            {entry.teaser.map((t, i) => <p key={i} style={i === 0 ? { ...p, marginTop: 0 } : p}>{t}</p>)}
+          </div>
+        ) : (
+          <>
+            {/* Closed: one opening paragraph, clamped with a soft fade, so the card ends inside the screen and "Read on" is always in sight. */}
+            <div style={{ position: "relative" }}>
+              <p style={{
+                ...p, marginTop: "1rem",
+                ...(open ? {} : { display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 5, overflow: "hidden", WebkitMaskImage: FADE_MASK, maskImage: FADE_MASK }),
+              } as CSSProperties}>{entry.teaser[0]}</p>
+            </div>
+            {open && entry.teaser.slice(1).map((t, i) => <p key={i} style={p}>{t}</p>)}
+          </>
+        )}
 
         {!open && (entry.expanded.length > 0 || entry.teaser.length > 1) && (
           <button onClick={() => { setOpen(true); onOpen?.(); }} aria-expanded={false}
